@@ -1,0 +1,20 @@
+{
+  "name": "kaede-photo",
+  "version": "1.0.0",
+  "description": "kaede photo 予約サイト（Netlify Functions + Resend + Upstash + Notion）",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step (static site)'"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "@upstash/ratelimit": "^2.0.4",
+    "@upstash/redis": "^1.34.3",
+    "resend": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

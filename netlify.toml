@@ -1,0 +1,30 @@
+# ============================================================
+# Netlify 設定ファイル
+# ============================================================
+
+[build]
+  # 静的サイト本体の置き場所
+  publish = "public"
+  # Functions のソースディレクトリ
+  functions = "netlify/functions"
+
+[functions]
+  # ESM + 依存パッケージのバンドル
+  node_bundler = "esbuild"
+
+# --- セキュリティヘッダー（全ページ共通）---------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+
+# --- API（Functions）への明示ルーティング ---------------------
+[[redirects]]
+  from = "/api/booking"
+  to = "/.netlify/functions/booking"
+  status = 200

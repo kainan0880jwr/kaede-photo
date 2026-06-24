@@ -6,16 +6,26 @@
 <title>kaede photo — 子ども・家族専門出張カメラマン</title>
 <meta name="description" content="大阪・和歌山を中心に全国対応の子ども・家族専門出張カメラマン。交通費込みの安心価格、高画質レタッチ、オンラインデータ納品。">
 
-<!-- OGP / SNSシェア用 -->
+<!-- 正規URL（※独自ドメイン確定後に kaedephoto.com を実ドメインへ） -->
+<link rel="canonical" href="https://kaedephoto.com/">
+
+<!-- ファビコン（SVG・テラコッタ地に "k"） -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23B5633F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23ffffff' text-anchor='middle'%3Ek%3C/text%3E%3C/svg%3E">
+
+<!-- heroの背景写真を優先読み込み（LCP改善・WebP） -->
+<link rel="preload" as="image" href="images/maternity-3.webp" type="image/webp">
+
+<!-- OGP / SNSシェア用（※クローラはJSを実行しないため絶対URL固定。独自ドメイン確定後に差し替え） -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://kaedephoto.com/">
 <meta property="og:title" content="kaede photo — 子ども・家族専門出張カメラマン">
 <meta property="og:description" content="大阪・和歌山を中心に全国対応。交通費込みの安心価格で、公園・お家・どこへでも出張します。">
-<meta property="og:image" content="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=1200&q=80">
+<meta property="og:image" content="https://kaedephoto.com/images/family-1.jpg">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="kaede photo — 子ども・家族専門出張カメラマン">
 <meta name="twitter:description" content="大阪・和歌山を中心に全国対応。交通費込みの安心価格で、公園・お家・どこへでも出張します。">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=1200&q=80">
+<meta name="twitter:image" content="https://kaedephoto.com/images/family-1.jpg">
 
 <!-- Google Fonts: 非同期ロード（レンダーブロッキング回避） -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,6 +104,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 img{display:block;width:100%;height:100%;object-fit:cover;}
+picture{display:block;width:100%;height:100%;}
 a{text-decoration:none;color:inherit;}
 button{font-family:var(--f-ui);cursor:pointer;border:none;background:none;}
 ul{list-style:none;}
@@ -140,6 +151,15 @@ ul{list-style:none;}
   display:flex;align-items:center;gap:5px;
 }
 .btn-line-nav:hover{background:#05a849;}
+.btn-ig-nav{
+  background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
+  color:#fff;
+  font-size:11px;letter-spacing:.06em;
+  padding:8px 16px;border-radius:2px;
+  transition:filter var(--dur) var(--ease);
+  display:flex;align-items:center;gap:5px;
+}
+.btn-ig-nav:hover{filter:brightness(.94);}
 .btn-reserve-nav{
   border:1px solid var(--terra);color:var(--terra);
   font-size:11px;letter-spacing:.08em;
@@ -173,7 +193,7 @@ ul{list-style:none;}
   transition:color var(--dur) var(--ease);
 }
 .mobile-menu a:hover{color:var(--terra);}
-.mobile-menu-actions{display:flex;gap:12px;margin-top:16px;}
+.mobile-menu-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:16px;}
 
 /* Mobile sticky CTA */
 .sticky-cta{
@@ -186,6 +206,7 @@ ul{list-style:none;}
   box-shadow:0 -4px 20px rgba(44,31,26,.15);
 }
 .sticky-cta .btn-line{flex:1;}
+.sticky-cta .btn-ig{flex:1;}
 .sticky-cta .btn-primary{flex:1;}
 
 /* ══════════════════════════════════════
@@ -218,6 +239,12 @@ ul{list-style:none;}
   padding:13px 28px;display:inline-flex;align-items:center;gap:8px;
 }
 .btn-line:hover{background:#05a849;}
+.btn-ig{
+  background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
+  color:#fff;
+  padding:13px 28px;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-ig:hover{filter:brightness(.94);}
 .btn-sm{padding:9px 20px;font-size:11px;}
 
 /* ══════════════════════════════════════
@@ -237,7 +264,6 @@ ul{list-style:none;}
 .section{padding:80px 0;}
 .section-sm{padding:48px 0;}
 .section-alt{background:var(--surface);}
-.section-dark{background:var(--brown);}
 
 /* Eyebrow + heading */
 .eyebrow{
@@ -282,8 +308,11 @@ ul{list-style:none;}
 .hero-bg::after{
   content:'';position:absolute;top:0;right:0;
   width:52%;height:100%;
-  background:url('https://images.unsplash.com/photo-1519689680058-324335c77eba?w=1200&q=80') center/cover no-repeat;
-  opacity:.2;
+  background-image:url('images/maternity-3.jpg');
+  background-image:-webkit-image-set(url('images/maternity-3.webp') type('image/webp'), url('images/maternity-3.jpg') type('image/jpeg'));
+  background-image:image-set(url('images/maternity-3.webp') type('image/webp'), url('images/maternity-3.jpg') type('image/jpeg'));
+  background-position:center;background-size:cover;background-repeat:no-repeat;
+  opacity:.38;
 }
 .hero-content{
   position:relative;z-index:1;
@@ -314,6 +343,19 @@ ul{list-style:none;}
   background:linear-gradient(to bottom,var(--muted),transparent);
 }
 
+/* Hero タイトルをその場でゆっくりフェード表示 */
+@keyframes heroFadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+.hero-title{
+  opacity:0;
+  animation:heroFadeIn 1.2s var(--ease) .2s forwards;
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-title{opacity:1;animation:none;}
+}
+
 /* ══════════════════════════════════════
    PLAN CARDS
 ══════════════════════════════════════ */
@@ -321,6 +363,7 @@ ul{list-style:none;}
   background:var(--white);border:1px solid var(--beige);border-radius:6px;
   padding:28px 24px;position:relative;
   transition:all var(--dur) var(--ease);
+  display:flex;flex-direction:column;
 }
 .plan-card:hover{
   box-shadow:0 12px 48px rgba(44,31,26,.1);
@@ -355,6 +398,7 @@ ul{list-style:none;}
 .plan-price{
   font-family:var(--f-display);font-size:26px;font-weight:300;
   color:var(--brown);letter-spacing:.04em;
+  margin-top:auto;
 }
 .plan-price span{font-size:13px;color:var(--muted);}
 .plan-btn{margin-top:16px;width:100%;}
@@ -458,6 +502,13 @@ ul{list-style:none;}
    AREA TABLE
 ══════════════════════════════════════ */
 .area-table{width:100%;border-collapse:collapse;}
+.area-table th{
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);padding:10px 16px;font-weight:400;
+  border-bottom:2px solid var(--beige);background:var(--surface);
+  text-align:left;
+}
+.area-table th:last-child{text-align:right;}
 .area-table tr{border-bottom:1px solid var(--beige);}
 .area-table td{padding:12px 16px;font-size:13px;color:var(--text);}
 .area-table td:first-child{color:var(--brown);}
@@ -496,6 +547,7 @@ ul{list-style:none;}
 .gitem.ar-34{aspect-ratio:3/4;}
 .gitem.ar-11{aspect-ratio:1/1;}
 .gitem.ar-54{aspect-ratio:5/4;}
+.gitem.ar-32{aspect-ratio:3/2;}
 .gitem[hidden]{display:none!important;}
 
 /* ══════════════════════════════════════
@@ -698,7 +750,7 @@ footer{
   padding:8px 18px;border-radius:2px;
 }
 .social-line{background:var(--line-green);color:#fff;}
-.social-ig{border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.5);}
+.social-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;}
 .footer-copy{
   font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.06em;
   border-top:1px solid rgba(255,255,255,.08);padding-top:24px;
@@ -731,6 +783,7 @@ footer{
   .gitem.span-3{grid-column:span 5;}
   .gitem.span-12{grid-column:span 12;}
   .gitem.ar-54{grid-column:span 12;}
+  .gitem.ar-32{grid-column:span 12;}
   .gitem.ar-54.span-4{display:none;}
 }
 </style>
@@ -747,9 +800,13 @@ footer{
     <li><a href="#" onclick="goPage('faq');return false;" data-page="faq">FAQ</a></li>
   </ul>
   <div class="nav-actions">
-    <a href="#" class="btn-line-nav" onclick="goPage('booking');return false;">
+    <a href="https://lin.ee/Pz3VLXT" class="btn-line-nav" target="_blank" rel="noopener noreferrer">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.68 1 1 3.36 1 6.27c0 1.62.82 3.07 2.1 4.03L2.5 13l2.8-1.4C5.72 11.86 6.35 12 7 12c3.31 0 6-2.36 6-5.27C13 3.36 10.31 1 7 1z" fill="#fff"/></svg>
       LINEで相談
+    </a>
+    <a href="https://www.instagram.com/kae_photo6378/" class="btn-ig-nav" target="_blank" rel="noopener noreferrer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.3" fill="#fff" stroke="none"/></svg>
+      Instagramで相談
     </a>
     <a href="#" class="btn-reserve-nav" onclick="goPage('booking');return false;">予約する</a>
   </div>
@@ -768,15 +825,17 @@ footer{
   <a href="#" onclick="goPage('voice');toggleMenu();return false;">Voice</a>
   <a href="#" onclick="goPage('faq');toggleMenu();return false;">FAQ</a>
   <div class="mobile-menu-actions">
-    <a href="#" class="btn btn-line btn-sm" onclick="goPage('booking');toggleMenu();return false;">LINEで相談</a>
+    <a href="https://lin.ee/Pz3VLXT" class="btn btn-line btn-sm" target="_blank" rel="noopener noreferrer" onclick="toggleMenu()">LINEで相談</a>
+    <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig btn-sm" target="_blank" rel="noopener noreferrer" onclick="toggleMenu()">Instagramで相談</a>
     <a href="#" class="btn btn-primary btn-sm" onclick="goPage('booking');toggleMenu();return false;">予約する</a>
   </div>
 </div>
 
 <!-- Mobile Sticky CTA -->
 <div class="sticky-cta">
-  <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談</a>
-  <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約する</a>
+  <a href="https://lin.ee/Pz3VLXT" class="btn btn-line btn-sm" target="_blank" rel="noopener noreferrer">LINE</a>
+  <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig btn-sm" target="_blank" rel="noopener noreferrer">Instagram</a>
+  <a href="#" class="btn btn-primary btn-sm" onclick="goPage('booking');return false;">予約</a>
 </div>
 
 
@@ -789,7 +848,7 @@ footer{
     <div class="hero-content">
       <div class="hero-eyebrow">子ども・家族専門カメラマン</div>
       <h1 class="hero-title">"家族の今"を、<br>ずっと残したい。</h1>
-      <p class="hero-sub">大阪・和歌山を中心に、全国出張対応。<br>交通費込みの安心価格でご自宅・公園・どこへでも。</p>
+      <p class="hero-sub">大阪・和歌山を中心に全国どこへでも、<br>ご家族の大切な瞬間をお好きな場所で撮影いたします。</p>
       <div class="flex-gap">
         <a href="#" class="btn btn-primary" onclick="goPage('plan');return false;">撮影プランを見る</a>
         <a href="#" class="btn btn-ghost" onclick="goPage('booking');return false;">予約する</a>
@@ -806,10 +865,10 @@ footer{
           <div class="eyebrow">About</div>
           <h2 class="heading-lg">あの瞬間は、<br>二度と戻らない。</h2>
           <p class="lead">子どもの笑顔、家族の空気感、何気ない日常のひとコマ。<br>写真は、時間が経つほどかけがえのない宝物になります。</p>
-          <p class="body-sm">kaede photoは、自然体のご家族の姿を丁寧に切り取る出張撮影専門のカメラマンです。スタジオではなく、公園でも、お家でも、「家族らしい場所」で撮影します。</p>
+          <p class="body-sm">kaede photoは、自然体のご家族の姿を丁寧に切り取る出張撮影専門のカメラマンです。スタジオでも、公園でも、お家でも、「家族らしい場所」で撮影します。</p>
         </div>
         <div style="aspect-ratio:4/3;overflow:hidden;border-radius:4px;">
-          <img src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80" alt="家族写真" style="object-fit:cover;filter:sepia(8%) saturate(.9);">
+          <picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" alt="窓辺で赤ちゃんを抱くご家族の写真" style="object-fit:cover;filter:sepia(8%) saturate(.9);"></picture>
         </div>
       </div>
     </div>
@@ -824,22 +883,26 @@ footer{
         <div class="plan-card">
           <div class="plan-name">simple</div>
           <div class="plan-catch">"今"をコンパクトに残すプラン</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 30cuts</div>
           <div class="plan-price">¥19,000<span>（税込）</span></div>
         </div>
         <div class="plan-card featured">
           <div class="plan-badge">人気 No.1</div>
           <div class="plan-name">standard</div>
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 65cuts</div>
           <div class="plan-price">¥29,000<span>（税込）</span></div>
         </div>
         <div class="plan-card">
           <div class="plan-name">special</div>
           <div class="plan-catch">"家族の今"をより深く残すプラン</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts</div>
           <div class="plan-price">¥39,000<span>（税込）</span></div>
         </div>
         <div class="plan-card">
           <div class="plan-name">premium</div>
           <div class="plan-catch">"家族の想い"まで残すプラン</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts ＋ムービー込み</div>
           <div class="plan-price">¥77,000<span>（税込）</span></div>
         </div>
       </div>
@@ -863,12 +926,12 @@ footer{
         <div class="trust-item">
           <div class="trust-num">02</div>
           <div class="trust-title">お子さまペースで撮影</div>
-          <div class="trust-body">泣いても、走っても大丈夫。自然な表情を引き出すのが得意です。焦らずお任せください。</div>
+          <div class="trust-body">泣いても、走っても大丈夫。自然な表情を引き出すのが得意です。安心してお任せください。</div>
         </div>
         <div class="trust-item">
           <div class="trust-num">03</div>
           <div class="trust-title">安心の保証制度</div>
-          <div class="trust-body">お子さまの発熱・悪天候は無料で日程変更。2,000円の安心保証金は<strong>撮影当日に全額返金</strong>します。</div>
+          <div class="trust-body">ご家族の発熱・悪天候は無料で日程変更。2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>は<strong>撮影当日に全額返金</strong>します。</div>
         </div>
       </div>
     </div>
@@ -878,10 +941,11 @@ footer{
   <div class="cta-block">
     <div class="container">
       <div class="cta-title">まずはお気軽にご予約を</div>
-      <div class="cta-sub">ご予約時に2,000円の安心保証金をお預かりし、撮影当日に全額お返しします。<br>ご不明な点はLINEでお気軽にどうぞ。</div>
+      <div class="cta-sub">ご不明な点はお気軽にどうぞ。</div>
       <div class="flex-gap flex-center">
         <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
-        <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談する</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
       </div>
     </div>
   </div>
@@ -896,13 +960,15 @@ footer{
         <li><a href="#" onclick="goPage('gallery');return false;">ギャラリー</a></li>
         <li><a href="#" onclick="goPage('voice');return false;">お客様の声</a></li>
         <li><a href="#" onclick="goPage('booking');return false;">予約フォーム</a></li>
+        <li><a href="#" onclick="goPage('deposit');return false;">安心保証金について</a></li>
         <li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li>
         <li><a href="#" onclick="goPage('faq');return false;">よくある質問</a></li>
         <li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li>
+        <li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li>
       </ul>
       <div class="footer-social">
-        <a href="#" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
-        <a href="#" class="social-ig" style="border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.5);padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
+        <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
+        <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
       </div>
       <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
     </div>
@@ -918,7 +984,17 @@ footer{
     <div class="container">
       <div class="eyebrow">Plan</div>
       <h1 class="heading-lg">撮影プラン</h1>
-      <p class="body-sm" style="margin-bottom:40px;">すべてのプランに高画質レタッチ・オンラインデータ納品が含まれます。<br>交通費は大阪府内・和歌山県北部が無料、他エリアは交通費表をご確認ください。</p>
+      <p class="body-sm" style="margin-bottom:20px;">交通費は大阪府内・和歌山県北部が無料、他エリアは交通費表をご確認ください。</p>
+
+      <div style="background:var(--surface);border-radius:8px;padding:18px 24px;margin-bottom:32px;">
+        <div style="font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;">全プラン共通</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px;color:var(--text);">
+          <span>✓ 高画質レタッチ</span>
+          <span>✓ 交通費込み</span>
+          <span>✓ オンラインデータ納品</span>
+          <span>✓ ご家族写真込み</span>
+        </div>
+      </div>
 
       <div class="grid-4" style="margin-bottom:48px;">
         <div class="plan-card">
@@ -926,15 +1002,11 @@ footer{
           <div class="plan-catch">"今"をコンパクトに残すプラン</div>
           <ul class="plan-specs">
             <li>撮影データ 30cuts</li>
-            <li>高画質レタッチ</li>
             <li>撮影時間 約0.5〜1時間</li>
-            <li>交通費込み</li>
-            <li>オンラインデータ納品</li>
             <li>納期 約1ヶ月</li>
-            <li>ご家族のお写真も可</li>
           </ul>
           <div class="plan-price">¥19,000<span>（税込）</span></div>
-          <a href="#" class="btn btn-outline plan-btn" onclick="goPage('booking');return false;">このプランで予約</a>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('simple');return false;">このプランで予約</a>
         </div>
         <div class="plan-card featured">
           <div class="plan-badge">人気 No.1</div>
@@ -942,57 +1014,47 @@ footer{
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
           <ul class="plan-specs">
             <li>撮影データ 65cuts</li>
-            <li>高画質レタッチ</li>
             <li>撮影時間 約1時間</li>
-            <li>交通費込み</li>
-            <li>オンラインデータ納品</li>
             <li>納期 約1ヶ月</li>
-            <li>ご家族のお写真も可</li>
           </ul>
           <div class="plan-price">¥29,000<span>（税込）</span></div>
-          <a href="#" class="btn btn-primary plan-btn" onclick="goPage('booking');return false;">このプランで予約</a>
+          <a href="#" class="btn btn-primary plan-btn" onclick="selectPlanAndBook('standard');return false;">このプランで予約</a>
         </div>
         <div class="plan-card">
           <div class="plan-name">special</div>
           <div class="plan-catch">"家族の今"をより深く残すプラン</div>
           <ul class="plan-specs">
             <li>撮影データ 100〜150cuts</li>
-            <li>高画質レタッチ</li>
             <li>撮影時間 約1〜1.5時間</li>
-            <li>交通費込み</li>
-            <li>オンラインデータ納品</li>
             <li>納期 約1ヶ月</li>
-            <li>ご家族のお写真も可</li>
           </ul>
           <div class="plan-price">¥39,000<span>（税込）</span></div>
-          <a href="#" class="btn btn-outline plan-btn" onclick="goPage('booking');return false;">このプランで予約</a>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('special');return false;">このプランで予約</a>
         </div>
         <div class="plan-card">
           <div class="plan-name">premium</div>
           <div class="plan-catch">"家族の想い"まで残すプラン</div>
           <ul class="plan-specs">
             <li>撮影データ 100〜150cuts</li>
-            <li>高画質レタッチ</li>
             <li>撮影時間 約1〜1.5時間</li>
-            <li>お手紙ムービー（1〜2分）</li>
-            <li>交通費込み</li>
-            <li>オンラインデータ納品</li>
-            <li>ご家族写真込み</li>
+            <li>納期 約1ヶ月半</li>
+            <li style="color:var(--terra);font-weight:600;">お手紙ムービー（1〜2分・音声付き）込み<br><span style="font-weight:400;font-size:11px;">通常¥39,800のオプションが標準付帯</span></li>
           </ul>
+          <div style="background:#FDF1EB;border-radius:4px;padding:10px 12px;margin:0 0 8px;font-size:11px;color:var(--terra-dk);line-height:1.6;">special＋お手紙ムービー（¥39,800）相当を、実質¥77,000で。<strong>約¥1,800おトク</strong></div>
           <div class="plan-price">¥77,000<span>（税込）</span></div>
-          <a href="#" class="btn btn-outline plan-btn" onclick="goPage('booking');return false;">このプランで予約</a>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('premium');return false;">このプランで予約</a>
         </div>
       </div>
 
       <!-- Simulator -->
       <div class="sim-wrap" style="margin-bottom:48px;">
-        <div class="sim-title">かんたん料金チェック</div>
+        <h2 class="sim-title">かんたん料金チェック</h2>
         <div class="sim-sub">プラン・オプション・エリアを選ぶだけで概算料金がわかります。</div>
         <div class="sim-grid">
           <div class="sim-step">
             <div class="sim-num">01</div>
             <div class="sim-label">プランを選ぶ</div>
-            <select class="sim-select" id="sp" onchange="calcSim()">
+            <select class="sim-select" id="sp" onchange="toggleSimMovie();calcSim()" aria-label="プランを選ぶ">
               <option value="19000">simple — ¥19,000</option>
               <option value="29000" selected>standard — ¥29,000</option>
               <option value="39000">special — ¥39,000</option>
@@ -1003,22 +1065,27 @@ footer{
             <div class="sim-num">02</div>
             <div class="sim-label">オプション</div>
             <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> 土日祝日 ＋3,000円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="5000" onchange="calcSim()"> 早期納品7日 ＋5,000円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> 早期納品10日 ＋3,000円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> データ追加 ＋3,000円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="10000" onchange="calcSim()"> 2箇所撮影 ＋10,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="5000" data-excl="sim-delivery" onchange="calcSim()"> 早期納品（7日以内） ＋5,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="3000" data-excl="sim-delivery" onchange="calcSim()"> 早期納品（10日以内） ＋3,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> データ追加（10枚単位） ＋3,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> ご自身でデータ選択 ＋3,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="10000" onchange="calcSim()"> 2箇所での撮影（＋20枚） ＋10,000円</label>
+            <label class="sim-check" id="sim-movie-row"><input type="checkbox" class="so" id="sim-movie" value="39800" onchange="calcSim()"> お手紙ムービー ＋39,800円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-1000" onchange="calcSim()"> SNS割 −1,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-3000" onchange="calcSim()"> ご紹介割 −3,000円</label>
+            <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります</div>
           </div>
           <div class="sim-step">
             <div class="sim-num">03</div>
             <div class="sim-label">エリア（交通費）</div>
-            <select class="sim-select" id="sa" onchange="calcSim()">
-              <option value="0">大阪府内・和歌山北部（無料）</option>
-              <option value="3000">奈良県・兵庫県南部 ＋3,000円</option>
-              <option value="5000">京都府南部・和歌山南部 ＋5,000円</option>
-              <option value="6000">兵庫県北部 ＋6,000円</option>
-              <option value="8000">京都府北部 ＋8,000円</option>
+            <select class="sim-select" id="sa" onchange="calcSim()" aria-label="エリア（交通費）を選ぶ">
+              <option value="0" data-area="大阪府内・和歌山県北部">大阪府内・和歌山県北部（無料）</option>
+              <option value="3000" data-area="奈良県全域">奈良県全域 ＋3,000円</option>
+              <option value="3000" data-area="兵庫県南部">兵庫県南部 ＋3,000円</option>
+              <option value="6000" data-area="兵庫県北部">兵庫県北部 ＋6,000円</option>
+              <option value="5000" data-area="京都府南部">京都府南部 ＋5,000円</option>
+              <option value="8000" data-area="京都府北部">京都府北部 ＋8,000円</option>
+              <option value="5000" data-area="和歌山県南部">和歌山県南部 ＋5,000円</option>
             </select>
           </div>
         </div>
@@ -1027,14 +1094,18 @@ footer{
             <div class="sim-result-label">概算料金（税込）</div>
             <div class="sim-result-sub">※ 実際の料金はご予約確定後にご案内します</div>
           </div>
-          <div class="sim-total" id="sim-total">¥29,000</div>
+          <div class="sim-total" id="sim-total" aria-live="polite">¥29,000</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:10px;">※ 土日祝の撮影は ＋3,000円 です</div>
+        <div style="text-align:center;margin-top:16px;">
+          <button type="button" class="btn btn-primary" onclick="simToBooking()">この内容で予約に進む</button>
         </div>
       </div>
 
       <!-- Options table -->
       <div class="grid-2" style="gap:40px;margin-bottom:48px;">
         <div>
-          <h3 class="heading-md">オプション</h3>
+          <h2 class="heading-md">オプション</h2>
           <table class="option-table">
             <thead><tr><th>内容</th><th>料金</th></tr></thead>
             <tbody>
@@ -1044,26 +1115,29 @@ footer{
               <tr><td>データ追加（10枚単位）</td><td class="price">＋3,000円</td></tr>
               <tr><td>ご自身でデータ選択</td><td class="price">＋3,000円</td></tr>
               <tr><td>2箇所での撮影（＋20枚）</td><td class="price">＋10,000円</td></tr>
-              <tr><td>お手紙ムービー</td><td class="price">＋39,800円</td></tr>
-              <tr><td>SNS割（撮影後に投稿）</td><td class="price discount">−1,000円</td></tr>
+              <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
+              <tr><td>SNS割<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を、kaede photoのSNS（Instagram等）に掲載させていただける方が対象です</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>ご紹介割（紹介者・ご本人）</td><td class="price discount">−3,000円</td></tr>
             </tbody>
           </table>
         </div>
         <div>
-          <h3 class="heading-md">交通費参考表</h3>
+          <h2 class="heading-md">交通費参考表</h2>
           <table class="area-table">
-            <tr><td>大阪府内・和歌山県北部</td><td class="area-free">無料</td></tr>
-            <tr><td>奈良県全域</td><td>＋3,000円</td></tr>
-            <tr><td>兵庫県南部</td><td>＋3,000円</td></tr>
-            <tr><td>兵庫県北部</td><td>＋6,000円</td></tr>
-            <tr><td>京都府南部</td><td>＋5,000円</td></tr>
-            <tr><td>京都府北部</td><td>＋8,000円</td></tr>
-            <tr><td>和歌山県南部</td><td>＋5,000円</td></tr>
+            <thead><tr><th>エリア</th><th>交通費</th></tr></thead>
+            <tbody>
+              <tr><td>大阪府内・和歌山県北部</td><td class="area-free">無料</td></tr>
+              <tr><td>奈良県全域</td><td>＋3,000円</td></tr>
+              <tr><td>兵庫県南部</td><td>＋3,000円</td></tr>
+              <tr><td>兵庫県北部</td><td>＋6,000円</td></tr>
+              <tr><td>京都府南部</td><td>＋5,000円</td></tr>
+              <tr><td>京都府北部</td><td>＋8,000円</td></tr>
+              <tr><td>和歌山県南部</td><td>＋5,000円</td></tr>
+            </tbody>
           </table>
           <p class="body-sm" style="margin-top:12px;">全国出張可能です。その他遠方エリアはご相談ください。</p>
 
-          <h3 class="heading-md" style="margin-top:28px;">スタジオ撮影について</h3>
+          <h2 class="heading-md" style="margin-top:28px;">スタジオ撮影について</h2>
           <p class="body-sm">お好みの雰囲気のレンタルスタジオを手配しての撮影も可能です。ご相談ください。<br><br>所要時間：約1.5時間<br>追加料金：約6,500〜8,000円（スタジオにより異なります）</p>
         </div>
       </div>
@@ -1076,7 +1150,8 @@ footer{
       <div class="cta-sub">LINEでのご相談も受け付けています。</div>
       <div class="flex-gap flex-center">
         <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
-        <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談する</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
       </div>
     </div>
   </div>
@@ -1099,12 +1174,12 @@ footer{
         <button class="gallery-tab" data-filter="maternity" aria-pressed="false">マタニティ</button>
       </div>
       <div class="gallery-grid" id="gallery-grid">
-        <div class="gitem span-5 ar-45" data-cat="baby"><img src="https://images.unsplash.com/photo-1543342384-1f1350e27861?w=700&q=75" alt="赤ちゃん写真" loading="lazy" decoding="async"></div>
-        <div class="gitem span-4 ar-34" data-cat="family"><img src="https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=700&q=75" alt="家族写真" loading="lazy" decoding="async"></div>
-        <div class="gitem span-3 ar-34" data-cat="family"><img src="https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=700&q=75" alt="家族写真" loading="lazy" decoding="async"></div>
-        <div class="gitem span-3 ar-11" data-cat="baby"><img src="https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=700&q=75" alt="赤ちゃん写真" loading="lazy" decoding="async"></div>
-        <div class="gitem span-5 ar-54" data-cat="maternity"><img src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=700&q=75" alt="マタニティ写真" loading="lazy" decoding="async"></div>
-        <div class="gitem span-4 ar-45" data-cat="family"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=700&q=75" alt="家族写真" loading="lazy" decoding="async"></div>
+        <div class="gitem span-5 ar-32" data-cat="family"><picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" alt="窓辺で赤ちゃんを抱くご家族の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="maternity"><picture><source srcset="images/maternity-3.webp" type="image/webp"><img src="images/maternity-3.jpg" alt="妊婦さんと男の子のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-3 ar-11" data-cat="baby"><picture><source srcset="images/baby-1.webp" type="image/webp"><img src="images/baby-1.jpg" alt="生まれたばかりの赤ちゃんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-3 ar-11" data-cat="family"><picture><source srcset="images/family-2.webp" type="image/webp"><img src="images/family-2.jpg" alt="ソファでくつろぐご家族の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-5 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-1.webp" type="image/webp"><img src="images/maternity-1.jpg" alt="エコー写真を持つご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-2.webp" type="image/webp"><img src="images/maternity-2.jpg" alt="エコー写真に囲まれたご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
       </div>
     </div>
   </section>
@@ -1114,7 +1189,8 @@ footer{
       <div class="cta-sub">あなたのご家族の"今"も、同じように残しませんか。</div>
       <div class="flex-gap flex-center">
         <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
-        <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談する</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
       </div>
     </div>
   </div>
@@ -1130,36 +1206,54 @@ footer{
       <div class="eyebrow">Voice</div>
       <h1 class="heading-lg">お客様の声</h1>
       <p class="body-sm" style="margin-bottom:40px;">撮影していただいたご家族からのメッセージをご紹介します。</p>
-      <div class="grid-3">
+      <div class="grid-2" style="align-items:start;">
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">子どもが緊張してしまうか心配でしたが、とっても自然な表情を引き出してくださいました。家族みんなの宝物になる写真です。</div>
-          <div class="review-author">— N.K 様・1歳のお子さま</div>
+          <div class="review-text">お久しぶりです♡<br><br>めちゃくちゃ素敵に作ってくださりありがとうございます😭✨ 娘を産んだ日のことを遠い昔のように感じる毎日だったので、当時の映像、音、文字を残して頂けて本当に良かったです😭<br><br>また家族の形を残したいタイミングにはカエデさんのお力をお借りしたいと思っていますので、遠方だと思いますが今後ともよろしくお願いいたします❤️‍🔥</div>
+          <div class="review-author">— お手紙ムービー付きプラン</div>
         </div>
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">公園で撮っていただいたのに、こんなに素敵な写真になるとは思っていませんでした。また来年もお願いします！</div>
-          <div class="review-author">— M.T 様・3歳のお子さま</div>
+          <div class="review-text">先日は撮影ありがとうございました！写真ダウンロードし、家族親戚に送りまくりました笑！素敵な写真ありがとうございます🥹<br><br>初めての場所や初めての人には緊張しがちな息子で、いつもは帰る頃にやっと打ち解けることが多いのですが、kaeさんが最初に名前を呼んで「遊ぼう！」と声をかけてくださった瞬間に、「ここ楽しい場所かも！」と感じたようで、一気に表情が変わりました☺️<br><br>本来の騒がしさ全開ではありましたが😂、終始とても楽しそうに、走り回る息子を追いかけながらその動きに合わせてたくさん撮ってくださいました📷✨<br><br>ちょうど3歳。思い通りにいかない時期ですが、今しかない自由に楽しんでいる姿をそのまま残していただけて、本当に嬉しかったです🌿 写真を見返すと息子が「また遊びに行く？また遊びたい！」と話してくれます✨優しい声かけと柔軟な進行、ありがとうございました！</div>
+          <div class="review-author">— 出張撮影（3歳）</div>
         </div>
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">急に子どもが泣き出してしまいましたが、優しく対応してくださり、最終的には笑顔の写真がたくさん撮れました。</div>
-          <div class="review-author">— Y.S 様・0歳のお子さま</div>
+          <div class="review-text">この間はありがとうございました🥹🤍<br><br>ハーフバースデーの写真どうしようか正直悩んでいて、お家フォトだけでもいいかなと思っていましたが楓さんに撮って頂いてほんとに良かったです😭<br><br>今回このような機会に出会えて感謝しています！色々グッズも貸して頂き可愛い娘の写真を残すことが出来ました。<br><br>3人で撮る時は緊張しましたが、凄く素敵に撮って頂き、なかなか3人で撮ることも少ないので記念になりました😢 また機会があればぜひよろしくお願いします🥰</div>
+          <div class="review-author">— ハーフバースデー撮影</div>
         </div>
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">お手紙ムービーも注文したのですが、子どもへのメッセージを動画にしていただいて、見るたびに泣いてしまいます。</div>
-          <div class="review-author">— A.O 様・2歳のお子さま</div>
+          <div class="review-text">人見知りするペットもいる中で、どんな風に撮影が進むか心配でしたが、とてもスムーズに、且つ赤ちゃんのペースにも合わせてくださりとてもありがたかったです😌<br><br>今写真を振り返っても既に変化を感じるくらいすくすく育っているのが実感できて、改めてニューボーンフォトをお願いしてよかったなと思います☺️<br><br>貴重な新生児期の、自然な家族の様子を残せて嬉しいです💓 また機会があればよろしくお願いします😌</div>
+          <div class="review-author">— ニューボーンフォト</div>
         </div>
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">レタッチがとても丁寧で、全部の写真がプロ仕様でした。友人にも紹介したいと思います。</div>
-          <div class="review-author">— R.N 様・双子のお子さま</div>
+          <div class="review-text">お久しぶりです！！旦那と写真確認しました！！<br><br>マタニティフォトを撮っていただき、ありがとうございました🤍📸 旦那と一緒に写真を撮るのが初めてでめっちゃ恥ずかしかったのですが…とても素敵に撮っていただけて、本当に嬉しかったです🥹✨<br><br>家族の大切な今の瞬間をこうして残せて、すごく幸せな気持ちになりました👶💐 娘もとても楽しそうにしていて、その姿も一緒に残せたのも嬉しかったです😊🌼<br><br>2人目が生まれて物心がついた頃には、またぜひ撮っていただきたいですし、「お腹の中にいた時も撮ってもらってたんだよ」って伝えたいなと思います🌷<br><br>初めてのマタニティフォトをお任せできて、本当に良かったです🥹改めて、ありがとうございました！</div>
+          <div class="review-author">— マタニティフォト</div>
         </div>
         <div class="review-card">
-          <div class="stars">★★★★★</div>
-          <div class="review-text">撮影中ずっと子どもに話しかけてくださって、気づいたら笑顔になっていました。本当にありがとうございました。</div>
-          <div class="review-author">— H.K 様・4歳のお子さま</div>
+          <div class="review-text">撮影は最初は緊張しましたが、気軽に話しかけてくださったり、娘とも遊んでくださったおかげで私も話しやすくなり、とても楽しい時間でした🥰<br><br>新居に越したばかりでまだ整ってない部屋でしたが、その中でもとても可愛く撮影していただけて素敵な思い出になりました✨<br><br>親子ショットや姉弟ショットなど様々なパターンで撮影していただけて嬉しかったです📷<br><br>あっという間に大きくなってしまうので、貴重な新生児期を写真に残せて振り返ることができる機会をいただけて、とても光栄です🌱 本当に貴重な体験ありがとうございました🌷</div>
+          <div class="review-author">— ニューボーンフォト（ご姉弟）</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">先日は本当にありがとうございました🙇‍♀️<br><br>初めてのニューボーンフォトで少し緊張していましたが、赤ちゃんへの接し方がとても優しくて上手で、安心してお任せすることができました👶✨<br><br>こんな雰囲気で撮りたいというイメージも丁寧に聞いてくださり、大切にしていただけたのが嬉しかったです🕊️ 産後でバタバタしている中でも、ペースを合わせて進めてくださり本当に助かりました(&gt;＜)♡<br><br>自宅の和室での撮影でしたが、小物やセッティングで雰囲気をがらっと変えてくださり、まるでスタジオのような仕上がりで感動しました📸🤍<br><br>大切なこの時期を素敵に残していただき、心から感謝しています✨</div>
+          <div class="review-author">— ニューボーンフォト</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">こんにちは🌞 家族4人での生活がスタートして、幸せだけど寝不足の毎日です😂♡<br><br>早速納品ありがとうございます！ありのままの私たちがたくさん写っていて、嬉しくもありちょっぴり恥ずかしいような、そんな気持ちで夫と思い出話をしながら見させて頂きました📷👀<br><br>自分で言うのも…ですが、家族の温かさが伝わるめちゃくちゃ素敵な写真で感動しました🥹 息子のはじめての&quot;お兄ちゃん&quot;姿も、可愛くかっこよく収めて頂き夫婦共々感無量です..！<br><br>忙しない日々の中で、絶対に忘れたく無いかけがえのない時間とありのままの家族の姿を、kaedeさんに私の理想の形で残してもらえて本当によかったです。はじめて家族で娘を囲んだ日のこと、はじめて息子がお兄ちゃんになった日のこと、世界一幸せだったこの日のこと、この写真たちのおかげで何年経っても鮮明に思い出せます❤️‍🔥<br><br>何よりも、kaedeさんがとにかく優しくて話しやすくて、人見知りの我々が緊張せず挑めたことがありがたかったです😭✨ これからも機会がありましたら、一緒に息子と娘の成長を切り取って頂きたいです📷！！！</div>
+          <div class="review-author">— ご家族写真</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">写真確認しました！動画もいただきありがとうございました🥰<br><br>長男が気分屋なとこもあり、ちゃんと一緒に写真撮れるかなーと心配してましたが、素敵な写真を撮っていただきありがとうございました😭💕 当日は長男の遊び相手もしながら撮影を進めていただいたので、長男が楽しく過ごせたことが、何より安心できました🌼 夜に話を聞くと、写真楽しかったと言ってました👦<br><br>普段の自然な笑顔、表情を撮影いただけて嬉しかったです！貴重な新生児期に依頼して本当に良かったです❣️<br><br>2人目が産まれて、長男を優先したいと思いながらも、もどかしさや反省を感じることもありましたが、写真に映る子供たちや自分の笑顔を見て、楽しく過ごせているし、子供も私の気持ちを受け取ってくれていると感じれました🙏<br><br>本当にありがとうございました☺️ 遠方から来ていただき恐縮ですが、また機会がございましたら是非よろしくお願いします🙇‍♀️</div>
+          <div class="review-author">— ニューボーンフォト（動画付き）</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">とても明るく元気な方がお家まで出張して下さり、安心したのが一番初めの感想でした。<br><br>事前にこんな写真を撮りたい、色味や雰囲気まですり合わせをしてくださり、私たち家族が求めているショットを時間の限り叶えてくださりました🥺✨<br><br>息子のこともたくさん褒めてくれて、夫婦でにやけながら撮影してもらいました笑🤍<br><br>ナチュラルな姿を撮っていただけたのでよかったです！ありがとうございました🦁✨</div>
+          <div class="review-author">— 出張撮影</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">こんにちは🌞 先日はありがとうございました！そして素敵な写真をありがとうございます😊♡<br><br>終始楽しくて、ほんとに撮影会に参加させていただけて良かったです🥰<br><br>写真を撮られるのに慣れてない私ですが、たくさん話していただけて、自然体でいられました🌻<br><br>また機会があれば、ぜひともよろしくお願いいたします🙇‍♀️✨</div>
+          <div class="review-author">— 撮影会</div>
+        </div>
+        <div class="review-card">
+          <div class="review-text">最初は緊張していましたが、色んなお話をしていただきながら終始和やかな雰囲気で、楽しく過ごすことができました☺️<br><br>体調なども気遣ってくださったり、ロケーションの場所も下見してくださっており、安心して撮影をお任せすることが出来ました。<br><br>また、撮影の中でやりたいことや「このように撮って欲しい」などの要望も柔軟に対応してくださりました。<br><br>撮影をお任せして本当によかったです🥹♡ この度は本当にありがとうございました。</div>
+          <div class="review-author">— ロケーション撮影</div>
         </div>
       </div>
     </div>
@@ -1167,10 +1261,11 @@ footer{
   <div class="cta-block">
     <div class="container">
       <div class="cta-title">あなたのご家族の"今"も、残しませんか。</div>
-      <div class="cta-sub">ご不明な点はLINEでお気軽にどうぞ。</div>
+      <div class="cta-sub">ご不明な点はお気軽にどうぞ。</div>
       <div class="flex-gap flex-center">
         <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
-        <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談する</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
       </div>
     </div>
   </div>
@@ -1190,7 +1285,7 @@ footer{
       <div class="flow-row">
         <div class="flow-step"><div class="flow-num">01</div><div class="flow-label">フォーム送信</div></div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step hl"><div class="flow-num">02</div><div class="flow-label">安心保証金<br>2,000円</div><div class="flow-note">メールでご案内</div></div>
+        <div class="flow-step hl"><div class="flow-num">02</div><div class="flow-label">安心保証金<br>2,000円</div><div class="flow-note">別途ご案内</div></div>
         <div class="flow-arrow">→</div>
         <div class="flow-step"><div class="flow-num">03</div><div class="flow-label">予約確定</div></div>
         <div class="flow-arrow">→</div>
@@ -1198,13 +1293,13 @@ footer{
         <div class="flow-arrow">→</div>
         <div class="flow-step hl"><div class="flow-num">05</div><div class="flow-label">2,000円<br><strong>全額返金</strong></div></div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step"><div class="flow-num">06</div><div class="flow-label">データ納品<br>約1ヶ月後</div></div>
+        <div class="flow-step"><div class="flow-num">06</div><div class="flow-label">データ納品<br>約1ヶ月後</div><div class="flow-note">※premiumは約1ヶ月半</div></div>
       </div>
 
       <!-- Form -->
       <div class="form-wrap">
         <div style="background:var(--white);border:1px solid var(--beige);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text);line-height:1.9;">
-          ご予約確定後に <strong>2,000円の安心保証金（PayPay）</strong> をお預かりします。<br>
+          ご予約確定後に <strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）</strong> をお預かりします。<br>
           <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。
         </div>
 
@@ -1212,11 +1307,11 @@ footer{
           <div class="form-row">
             <div class="form-field">
               <label class="form-label" for="f-name">お名前 <span class="req">*</span></label>
-              <input class="form-input" id="f-name" name="name" type="text" placeholder="山田 花子" autocomplete="name" required>
+              <input class="form-input" id="f-name" name="name" type="text" placeholder="例：山田 花子" autocomplete="name" required>
             </div>
             <div class="form-field">
               <label class="form-label" for="f-email">メールアドレス <span class="req">*</span></label>
-              <input class="form-input" id="f-email" name="email" type="email" placeholder="example@gmail.com" autocomplete="email" required>
+              <input class="form-input" id="f-email" name="email" type="email" placeholder="例：example@gmail.com" autocomplete="email" required>
             </div>
           </div>
           <div class="form-row">
@@ -1231,16 +1326,16 @@ footer{
           </div>
           <div class="form-field">
             <label class="form-label" for="f-location">撮影場所・エリア <span class="req">*</span></label>
-            <input class="form-input" id="f-location" name="location" type="text" placeholder="例：大阪市天王寺区○○公園" required>
+            <input class="form-input" id="f-location" name="location" type="text" placeholder="例：自宅" required>
           </div>
           <div class="form-field">
             <label class="form-label" for="f-plan">ご希望のプラン <span class="req">*</span></label>
-            <select class="form-select" id="f-plan" name="plan" required>
+            <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie()">
               <option value="">選択してください</option>
-              <option>standard plan ¥29,000（人気 No.1）</option>
-              <option>simple plan ¥19,000</option>
-              <option>special plan ¥39,000</option>
-              <option>premium plan ¥77,000</option>
+              <option>simple ¥19,000</option>
+              <option>standard ¥29,000（人気No.1）</option>
+              <option>special ¥39,000</option>
+              <option>premium ¥77,000</option>
             </select>
           </div>
 
@@ -1249,16 +1344,16 @@ footer{
             <div class="opt-group">
               <div class="opt-group-title">追加オプション</div>
               <label class="check-row"><input type="checkbox"> 土日祝日 ＋3,000円</label>
-              <label class="check-row"><input type="checkbox"> 早期納品（7日以内） ＋5,000円</label>
-              <label class="check-row"><input type="checkbox"> 早期納品（10日以内） ＋3,000円</label>
+              <label class="check-row"><input type="checkbox" data-excl="form-delivery"> 早期納品（7日以内） ＋5,000円</label>
+              <label class="check-row"><input type="checkbox" data-excl="form-delivery"> 早期納品（10日以内） ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> データ追加（10枚単位） ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> ご自身でデータ選択 ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> 2箇所での撮影（＋20枚） ＋10,000円</label>
-              <label class="check-row"><input type="checkbox"> お手紙ムービー ＋39,800円</label>
+              <label class="check-row" id="form-movie-row"><input type="checkbox" id="form-movie"> お手紙ムービー ＋39,800円</label>
             </div>
             <div class="opt-group" style="margin-top:8px;">
               <div class="opt-group-title">割引</div>
-              <label class="check-row"><input type="checkbox"> SNS割（撮影後に投稿でご提示） −1,000円</label>
+              <label class="check-row"><input type="checkbox"> SNS割（撮影写真をkaede photoのSNSに掲載可の方） −1,000円</label>
               <label class="check-row"><input type="checkbox" id="referral-check" onchange="toggleReferral()"> ご紹介割 −3,000円（紹介者・ご本人どちらも）</label>
               <div id="referral-name" style="display:none;margin-top:8px;">
                 <input class="form-input" type="text" placeholder="ご紹介者のお名前">
@@ -1266,16 +1361,13 @@ footer{
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-field">
-              <label class="form-label" for="f-kids-num">お子さまの人数 <span class="req">*</span></label>
-              <input class="form-input" id="f-kids-num" name="kids_count" type="number" min="1" max="10" placeholder="1" required>
-            </div>
-            <div class="form-field">
-              <label class="form-label" for="f-kids-age">お子さまの年齢 <span class="req">*</span></label>
-              <input class="form-input" id="f-kids-age" name="kids_age" type="text" placeholder="例：2歳" required>
-            </div>
+          <div class="form-field">
+            <label class="form-label" for="f-kids-num">お子さまの人数 <span class="req">*</span></label>
+            <input class="form-input" id="f-kids-num" name="kids_count" type="number" min="1" max="10" placeholder="例：2" required oninput="renderKidsFields()">
           </div>
+
+          <!-- 人数に応じて「お名前・年齢」欄を自動生成 -->
+          <div id="kids-fields" aria-live="polite"></div>
 
           <div class="form-field">
             <label class="form-label" for="f-source">kaede photoをどこでお知りになりましたか？</label>
@@ -1301,17 +1393,86 @@ footer{
             </label>
           </div>
 
+          <!-- honeypot: 人間には見えない。botが埋めたらサーバー側で弾く -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+            <label>会社名<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
+          </div>
+
           <button type="submit" class="btn btn-primary form-submit">予約を申し込む</button>
+          <div class="form-msg" id="form-msg" role="status" aria-live="polite" style="display:none;margin-top:16px;padding:14px 16px;border-radius:4px;font-size:13px;line-height:1.7;white-space:pre-line;"></div>
           <div class="form-note">
             ※ ご予約は先着順となります。<br>
             ※ 送信後2営業日以内にご連絡いたします。<br>
-            ※ ご不明な点はLINEでもご相談いただけます。
+            ※ ご不明な点はLINEやInstagramでもご相談いただけます。
           </div>
         </form>
       </div>
     </div>
   </section>
   <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+</div>
+
+
+<!-- ════════════════════ PAGE: DEPOSIT（安心保証金） ════════════════════ -->
+<div class="page" id="page-deposit">
+  <div class="pt-nav"></div>
+  <section class="section">
+    <div class="container" style="max-width:720px;">
+      <div class="eyebrow">Deposit</div>
+      <h1 class="heading-lg">安心保証金について</h1>
+
+      <div class="policy-intro">
+        <strong style="display:block;font-size:16px;color:var(--brown);margin-bottom:10px;">安心保証金とは？</strong>
+        万が一キャンセルとなった場合も、<strong>キャンセル料は一律2,000円</strong>（お預かりする安心保証金のみ）です。<br>
+        ご予約時にお預かりする <strong>2,000円</strong> の保証金で、直前の無断キャンセルなどを防ぎ、<strong>お客様とカメラマン双方が安心して撮影日を迎えるため</strong>の制度です。<span style="color:var(--terra);">撮影当日に全額そのままお返しします</span>ので、実質的なご負担はありません。
+      </div>
+
+      <div class="grid-3" style="margin-bottom:32px;gap:12px;">
+        <div style="background:var(--surface);border-radius:6px;padding:18px 16px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;">金額</div>
+          <div style="font-family:var(--f-display);font-size:24px;color:var(--brown);">2,000円</div>
+        </div>
+        <div style="background:var(--surface);border-radius:6px;padding:18px 16px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;">お支払い方法</div>
+          <div style="font-family:var(--f-display);font-size:19px;color:var(--brown);">PayPay／振込</div>
+        </div>
+        <div style="background:var(--surface);border-radius:6px;padding:18px 16px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;">返金</div>
+          <div style="font-family:var(--f-display);font-size:19px;color:var(--terra);">撮影当日に全額</div>
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd green">✓ お支払いと返金の流れ</div>
+        <div class="policy-bd">
+          ① ご予約確定後、安心保証金 2,000円（PayPayまたは振込）をお支払い<br>
+          ② 撮影当日に、お預かりした2,000円を全額そのまま返金
+          <div class="policy-positive">実質的なご負担なくご予約いただけます。</div>
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd green">お客様にとってのメリット</div>
+        <div class="policy-bd">
+          ・撮影当日に<strong>全額返金</strong>。実質的なご負担はありません<br>
+          ・人気の日程も、<strong>確実に予約枠を確保</strong>できます<br>
+          ・ご家族の急な発熱・悪天候は<strong>無料で日程変更</strong><br>
+          ・万が一キャンセルになっても、<strong>キャンセル料は分かりやすく一律2,000円</strong>（お預かりした保証金のみ）。高額・複雑なキャンセル料は一切かかりません
+          <div class="policy-positive">「もしも」に備えながら、安心して当日を迎えていただくための制度です。</div>
+        </div>
+      </div>
+
+      <p class="body-sm" style="margin-top:20px;">
+        キャンセル・日程変更・返金の詳しい条件は <a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a> をご覧ください。
+      </p>
+
+      <div style="margin-top:24px;" class="flex-gap">
+        <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
+        <a href="#" class="btn btn-ghost" onclick="goPage('policy');return false;">キャンセルポリシー</a>
+      </div>
+    </div>
+  </section>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1324,15 +1485,16 @@ footer{
       <h1 class="heading-lg">キャンセルポリシー</h1>
 
       <div class="policy-intro">
-        ご予約時に <strong>2,000円の安心保証金（PayPay）</strong> をお預かりしております。<br>
-        <span style="color:var(--terra);">撮影当日に全額お返しします。</span><br>
-        お客様・カメラマン双方の安心のための制度です。
+        ご予約時にお預かりする <strong>安心保証金（2,000円）</strong> の、キャンセル・日程変更・返金についてのご案内です。<br>
+        安心保証金そのものについては <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a> をご覧ください。
       </div>
+
+      <h2 class="heading-md" style="margin-top:8px;">撮影前のキャンセル・日程変更</h2>
 
       <div class="policy-block">
         <div class="policy-hd green">✓ こんな場合は無料で日程変更できます</div>
         <div class="policy-bd">
-          ・お子さまの急な発熱・体調不良<br>
+          ・ご家族の急な発熱・体調不良<br>
           ・当日の悪天候（雨・荒天）
           <div class="policy-positive">お気軽にご連絡ください。安心保証金はそのままお預かりします。</div>
         </div>
@@ -1340,14 +1502,40 @@ footer{
 
       <div class="policy-block">
         <div class="policy-hd blue">↩ 安心保証金を全額返金する場合</div>
-        <div class="policy-bd">撮影日の2日前までにご連絡いただいた場合</div>
+        <div class="policy-bd">撮影日の5日前までにご連絡いただいた場合のみ、全額返金いたします。</div>
       </div>
 
       <div class="policy-block">
-        <div class="policy-hd red">✗ 返金できない場合</div>
+        <div class="policy-hd red">✗ 安心保証金を返金できない場合</div>
         <div class="policy-bd" style="font-size:12px;color:var(--muted);">
-          無断キャンセル、または前日・当日のご自身都合によるキャンセル<br>
-          キャンセル・変更のご連絡はできる限りお早めにお願いいたします。<br><br>
+          下記の場合は、安心保証金を返金できません。<br>
+          ・無断キャンセル<br>
+          ・撮影日の4日前以降のお客様都合によるキャンセル（前日・当日を含む）<br><br>
+          キャンセル・日程変更のご連絡は、できる限りお早めにお願いいたします。
+        </div>
+      </div>
+
+      <h2 class="heading-md" style="margin-top:40px;">撮影後について</h2>
+
+      <div class="policy-block">
+        <div class="policy-hd green">✓ 安心保証金の返金</div>
+        <div class="policy-bd">
+          撮影が完了したその日に、お預かりした安心保証金 2,000円を全額そのまま返金いたします。
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd blue">◷ 撮影データの納品</div>
+        <div class="policy-bd">
+          撮影後、約1ヶ月（premium プランは約1ヶ月半）でオンラインにてデータを納品いたします。
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd red">✗ 撮影後のキャンセル・返金</div>
+        <div class="policy-bd" style="font-size:12px;color:var(--muted);">
+          撮影が完了した後のキャンセル・ご返金はお受けできません。<br>
+          納品データについてご不明な点・不備がございましたら、お早めに下記までご連絡ください。<br><br>
           kaepafu1995@gmail.com
         </div>
       </div>
@@ -1396,7 +1584,7 @@ footer{
           <span class="faq-q-inner"><span class="faq-q-mark">Q</span><span>子どもが泣いてしまったり、動き回っても大丈夫ですか？</span></span>
           <span class="faq-icon" aria-hidden="true">＋</span>
         </button>
-        <div class="faq-a">大丈夫です！子どものペースに合わせてゆっくり撮影します。泣き顔も、走り回る姿も、全部が思い出の1枚になります。焦らずお任せください。</div>
+        <div class="faq-a">大丈夫です！お子様のペースに合わせてゆっくり撮影します。泣き顔も、走り回る姿も、全部が思い出の1枚になります。安心してお任せください。</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
@@ -1417,7 +1605,7 @@ footer{
           <span class="faq-q-inner"><span class="faq-q-mark">Q</span><span>予約から撮影までの流れを教えてください。</span></span>
           <span class="faq-icon" aria-hidden="true">＋</span>
         </button>
-        <div class="faq-a">① フォームを送信 → ② メールにてご確認のご連絡（2営業日以内）→ ③ 安心保証金 2,000円（PayPay）をお支払い → 予約確定 → ④ 撮影当日 → ⑤ 撮影終了後、安心保証金 2,000円を全額返金 → ⑥ 約1ヶ月後にデータ納品</div>
+        <div class="faq-a">① フォームを送信 → ② メールにてご確認のご連絡（2営業日以内）→ ③ <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a> 2,000円（PayPayまたは振込）をお支払い → 予約確定 → ④ 撮影当日 → ⑤ 撮影終了後、安心保証金 2,000円を全額返金 → ⑥ 約1ヶ月後にデータ納品</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
@@ -1429,7 +1617,8 @@ footer{
 
       <div style="margin-top:40px;" class="flex-gap">
         <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
-        <a href="#" class="btn btn-line" onclick="goPage('booking');return false;">LINEで相談する</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
       </div>
     </div>
   </section>
@@ -1471,6 +1660,41 @@ footer{
 </div>
 
 
+<!-- ════════════════════ PAGE: TOKUSHO（特定商取引法に基づく表記） ════════════════════ -->
+<div class="page" id="page-tokusho">
+  <div class="pt-nav"></div>
+  <section class="section">
+    <div class="container" style="max-width:720px;">
+      <div class="eyebrow">Legal</div>
+      <h1 class="heading-lg">特定商取引法に基づく表記</h1>
+
+      <table class="area-table" style="margin-bottom:8px;">
+        <tbody>
+          <tr><td style="width:38%;color:var(--brown);font-weight:400;">販売事業者</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">Kaede Photo</td></tr>
+          <tr><td style="color:var(--brown);">運営統括責任者</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">池端 楓</td></tr>
+          <tr><td style="color:var(--brown);">所在地</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します</td></tr>
+          <tr><td style="color:var(--brown);">電話番号</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します</td></tr>
+          <tr><td style="color:var(--brown);">メールアドレス</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">kaepafu1995@gmail.com</td></tr>
+          <tr><td style="color:var(--brown);">販売価格</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">各撮影プランに表示（¥19,000〜¥77,000・税込）。オプション・交通費は別途。詳細は<a href="#" onclick="goPage('plan');return false;" style="color:var(--terra);text-decoration:underline;">撮影プラン</a>をご確認ください。</td></tr>
+          <tr><td style="color:var(--brown);">商品代金以外の必要料金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">交通費（エリア別・プランページ参照）、各種オプション料金、お振込の場合の振込手数料</td></tr>
+          <tr><td style="color:var(--brown);">安心保証金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約確定後に2,000円（PayPayまたは振込）をお預かりし、撮影当日に全額返金します。詳細は<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a>。</td></tr>
+          <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">PayPay／銀行振込</td></tr>
+          <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：ご予約確定後。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。</td></tr>
+          <tr><td style="color:var(--brown);">役務の提供時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約時に確定した撮影日に撮影を行います。撮影データは撮影後約1ヶ月（premiumプランは約1ヶ月半）でオンライン納品します。</td></tr>
+          <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:32px;" class="flex-gap">
+        <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">予約フォームへ</a>
+        <a href="#" class="btn btn-ghost" onclick="goPage('policy');return false;">キャンセルポリシー</a>
+      </div>
+    </div>
+  </section>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+</div>
+
+
 <!-- ════════════════════ FORM SUCCESS ════════════════════ -->
 <div class="page" id="page-success">
   <div class="pt-nav"></div>
@@ -1498,9 +1722,11 @@ const PAGE_META = {
   gallery: { title: 'ギャラリー | kaede photo', desc: '実際の撮影写真をご覧ください。赤ちゃん・家族・マタニティのカテゴリーでフィルタリングできます。' },
   voice:   { title: 'お客様の声 | kaede photo', desc: '撮影していただいたご家族からのメッセージをご紹介します。' },
   booking: { title: 'ご予約 | kaede photo', desc: '撮影のご予約フォームです。2営業日以内にご連絡いたします。' },
-  policy:  { title: 'キャンセルポリシー | kaede photo', desc: '安心保証金・キャンセル・日程変更についてのご案内。' },
+  deposit: { title: '安心保証金について | kaede photo', desc: 'ご予約時にお預かりする安心保証金（2,000円）について。撮影当日に全額返金します。' },
+  policy:  { title: 'キャンセルポリシー | kaede photo', desc: 'キャンセル・日程変更・返金についてのご案内。' },
   faq:     { title: 'よくある質問 | kaede photo', desc: '撮影場所・雨天・データ受け取り・服装など、よくいただく質問をまとめました。' },
   privacy: { title: 'プライバシーポリシー | kaede photo', desc: '個人情報の取り扱いについてのご案内。' },
+  tokusho: { title: '特定商取引法に基づく表記 | kaede photo', desc: '特定商取引法に基づく事業者情報・料金・キャンセルについての表記。' },
   success: { title: 'ご予約完了 | kaede photo', desc: '' },
 };
 
@@ -1553,6 +1779,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const hash = location.hash.replace('#', '');
   const initialPage = (hash && document.getElementById('page-' + hash)) ? hash : 'top';
   goPage(initialPage, { updateHistory: false });
+  // ブラウザの復元・オートフィルに備え、フォームの動的表示を初期同期
+  if (typeof toggleFormMovie === 'function') toggleFormMovie();
+  if (typeof toggleSimMovie === 'function') toggleSimMovie();
+  if (typeof renderKidsFields === 'function') renderKidsFields();
+  // 撮影希望日は本日以降のみ選択可（過去日の送信を防止）
+  const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD（ローカルTZ）
+  ['f-date1', 'f-date2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.min = today;
+  });
 });
 
 /* ────────────────────────────────
@@ -1604,6 +1840,98 @@ document.addEventListener('keydown', e => {
 /* ────────────────────────────────
    料金シミュレーター
 ──────────────────────────────── */
+// 予約フォーム：お子さまの人数に応じて「お名前・年齢」欄を自動生成
+function renderKidsFields(){
+  const countEl = document.getElementById('f-kids-num');
+  const container = document.getElementById('kids-fields');
+  if(!countEl || !container) return;
+  let n = parseInt(countEl.value, 10);
+  if(isNaN(n) || n < 1){ container.innerHTML = ''; return; }
+  if(n > 10) n = 10;
+  // 既存の入力値を保持してから再生成
+  const prevNames = [...container.querySelectorAll('.kid-name')].map(el => el.value);
+  const prevAges  = [...container.querySelectorAll('.kid-age')].map(el => el.value);
+  const esc = s => (s || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  let html = '';
+  for(let i = 0; i < n; i++){
+    const no = i + 1;
+    html += `
+      <div class="form-field">
+        <div class="form-label">お子さま ${no}人目 <span class="req">*</span></div>
+        <div class="form-row">
+          <input class="form-input kid-name" type="text" name="kid_name_${no}" aria-label="お子さま${no}人目 お名前" placeholder="お名前・ニックネーム" value="${esc(prevNames[i])}" required>
+          <input class="form-input kid-age" type="text" name="kid_age_${no}" aria-label="お子さま${no}人目 年齢" placeholder="例：2歳" value="${esc(prevAges[i])}" required>
+        </div>
+      </div>`;
+  }
+  container.innerHTML = html;
+}
+
+// 予約フォーム：premiumプラン選択時は、含まれている「お手紙ムービー」オプションを隠す
+function toggleFormMovie(){
+  const plan = document.getElementById('f-plan');
+  const row = document.getElementById('form-movie-row');
+  const cb = document.getElementById('form-movie');
+  if(!plan || !row || !cb) return;
+  const isPremium = plan.value.indexOf('premium') === 0;
+  row.style.display = isPremium ? 'none' : '';
+  if(isPremium) cb.checked = false;
+}
+
+// premiumプラン選択時は、含まれている「お手紙ムービー」オプションを隠す
+function toggleSimMovie(){
+  const isPremium = document.getElementById('sp').value === '77000';
+  const row = document.getElementById('sim-movie-row');
+  const cb = document.getElementById('sim-movie');
+  if(!row || !cb) return;
+  row.style.display = isPremium ? 'none' : '';
+  if(isPremium) cb.checked = false;
+}
+
+// 「このプランで予約」：選んだプランを予約フォームに引き継いでフォームへ
+function selectPlanAndBook(planKey){
+  const sel = document.getElementById('f-plan');
+  if(sel){
+    for(const opt of sel.options){
+      if(opt.textContent.trim().toLowerCase().startsWith(planKey)){ sel.value = opt.value; break; }
+    }
+    if(typeof toggleFormMovie === 'function') toggleFormMovie();
+  }
+  goPage('booking');
+}
+
+// 料金シミュレーターの選択（プラン・オプション・エリア）を予約フォームに引き継ぐ
+function simToBooking(){
+  const planMap = { '19000':'simple', '29000':'standard', '39000':'special', '77000':'premium' };
+  const sel = document.getElementById('f-plan');
+  const planKey = planMap[document.getElementById('sp').value];
+  if(sel && planKey){
+    for(const opt of sel.options){
+      if(opt.textContent.trim().toLowerCase().startsWith(planKey)){ sel.value = opt.value; break; }
+    }
+  }
+  if(typeof toggleFormMovie === 'function') toggleFormMovie();
+
+  // オプション：フォーム側をいったん解除し、シミュレーターのチェックをラベル一致で反映
+  const norm = t => (t || '').replace(/[\s　]/g, '').replace(/[＋+−\-][\d,]+円/g, '');
+  const formRows = [...document.querySelectorAll('#page-booking .opt-group .check-row')];
+  formRows.forEach(r => { const cb = r.querySelector('input[type="checkbox"]'); if(cb) cb.checked = false; });
+  document.querySelectorAll('.so:checked').forEach(simCb => {
+    const label = simCb.closest('label');
+    const simName = norm(label ? label.textContent : '');
+    if(!simName) return;
+    const row = formRows.find(r => norm(r.textContent).indexOf(simName) !== -1);
+    if(row){
+      const cb = row.querySelector('input[type="checkbox"]');
+      if(cb && !cb.disabled) cb.checked = true;
+    }
+  });
+  if(typeof toggleReferral === 'function') toggleReferral();
+
+  goPage('booking');
+}
+
 function calcSim(){
   const plan = parseInt(document.getElementById('sp').value) || 0;
   const area = parseInt(document.getElementById('sa').value) || 0;
@@ -1614,6 +1942,21 @@ function calcSim(){
   const total = Math.max(0, plan + area + opts);
   document.getElementById('sim-total').textContent = '¥' + total.toLocaleString();
 }
+
+/* ────────────────────────────────
+   排他チェック（同一グループ内で一つ選ぶと他を外す）
+   例：早期納品「7日以内」「10日以内」は同時選択不可
+──────────────────────────────── */
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.matches && el.matches('input[type="checkbox"][data-excl]') && el.checked) {
+    const scope = el.closest('.sim-step, .opt-group') || document;
+    scope.querySelectorAll('input[type="checkbox"][data-excl="' + el.dataset.excl + '"]').forEach(other => {
+      if (other !== el) other.checked = false;
+    });
+    if (typeof calcSim === 'function') calcSim();
+  }
+});
 
 /* ────────────────────────────────
    紹介者名フィールド表示切り替え
@@ -1657,21 +2000,110 @@ document.addEventListener('click', e => {
 
 /* ────────────────────────────────
    フォーム送信
-   ※ 本番運用時は Formspree 等のエンドポイントに差し替えてください
-   例: const res = await fetch('https://formspree.io/f/YOUR_ID', {...})
+   Netlify Functions の /api/booking へ POST。
+   追加項目（第2希望日・撮影場所・お子さま情報・オプション・割引・流入経路）は
+   バックエンドの message 欄に構造化してまとめて送る。
 ──────────────────────────────── */
-function submitForm(e){
+const BOOKING_ENDPOINT = '/api/booking';
+
+function showFormMsg(type, text){
+  const el = document.getElementById('form-msg');
+  if(!el) return;
+  el.style.display = 'block';
+  el.textContent = text;
+  if(type === 'ok'){
+    el.style.background = '#EEF6EF';
+    el.style.color = '#2D6A30';
+  } else {
+    el.style.background = '#FAEEED';
+    el.style.color = '#C0392B';
+  }
+}
+
+async function submitForm(e){
   e.preventDefault();
-  const btn = e.target.querySelector('[type="submit"]');
+  const form = e.target;
+
+  // HTML5 標準バリデーション（必須項目・メール形式・プライバシー同意）
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+
+  const btn = form.querySelector('[type="submit"]');
+  const msgEl = document.getElementById('form-msg');
+  if(msgEl) msgEl.style.display = 'none';
+
+  const val = id => (document.getElementById(id)?.value || '').trim();
+
+  // 第1・第2希望日
+  const date1 = val('f-date1');
+  const date2 = val('f-date2');
+  const preferredDate = date2 ? `${date1}（第1希望） / ${date2}（第2希望）` : date1;
+
+  // 選択されたオプション・割引（ラベル文言を収集）
+  const options = [...form.querySelectorAll('.opt-group .check-row')]
+    .filter(row => row.querySelector('input[type="checkbox"]')?.checked)
+    .map(row => row.textContent.trim().replace(/\s+/g, ' '));
+
+  // 紹介者名（ご紹介割にチェックがある場合）
+  const referralChecked = document.getElementById('referral-check')?.checked;
+  const referralName = referralChecked
+    ? (document.querySelector('#referral-name input')?.value || '').trim()
+    : '';
+
+  // バックエンドの message 欄に詰める構造化メモ
+  const lines = [];
+  lines.push(`【撮影場所・エリア】${val('f-location') || '—'}`);
+  lines.push(`【お子さまの人数】${val('f-kids-num') || '—'}`);
+  const kidNames = [...form.querySelectorAll('.kid-name')];
+  const kidAges = [...form.querySelectorAll('.kid-age')];
+  kidNames.forEach((el, i) => {
+    const nm = el.value.trim() || '—';
+    const ag = (kidAges[i]?.value || '').trim() || '—';
+    lines.push(`　・お子さま${i + 1}人目： ${nm}（${ag}）`);
+  });
+  if(options.length) lines.push(`【オプション/割引】${options.join(' / ')}`);
+  if(referralName) lines.push(`【ご紹介者】${referralName}`);
+  if(val('f-source')) lines.push(`【流入経路】${val('f-source')}`);
+  const userMessage = val('f-message');
+  if(userMessage) lines.push(`【ご要望・ご質問】\n${userMessage}`);
+
+  const payload = {
+    name: val('f-name'),
+    email: val('f-email'),
+    preferredDate,
+    plan: val('f-plan'),
+    message: lines.join('\n'),
+    company: (form.querySelector('input[name="company"]')?.value || ''), // honeypot
+  };
+
   btn.disabled = true;
   btn.textContent = '送信中...';
-  // ── 本番はここを fetch() に差し替え ──
-  setTimeout(() => {
-    goPage('success');
-    e.target.reset();
+
+  try {
+    const res = await fetch(BOOKING_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const result = await res.json().catch(() => ({}));
+
+    if(res.ok && result.ok){
+      form.reset();
+      toggleReferral();
+      renderKidsFields();
+      toggleFormMovie();
+      goPage('success');
+    } else {
+      showFormMsg('ng', result.error || '送信に失敗しました。時間をおいて再度お試しください。');
+    }
+  } catch(err){
+    showFormMsg('ng', '通信エラーが発生しました。ネットワークをご確認のうえ再度お試しください。');
+  } finally {
     btn.disabled = false;
     btn.textContent = '予約を申し込む';
-  }, 600);
+  }
 }
 
 /* ────────────────────────────────
