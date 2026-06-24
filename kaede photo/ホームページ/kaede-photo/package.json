@@ -1,0 +1,22 @@
+{
+  "name": "kaede-photo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "kaede photo — 子ども・家族専門出張カメラマン",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "lint": "node --input-type=module --eval \"import('./netlify/functions/booking.js').catch(e => { console.error(e); process.exit(1); })\""
+  },
+  "dependencies": {
+    "@upstash/ratelimit": "^1.2.1",
+    "@upstash/redis": "^1.28.4",
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
