@@ -179,9 +179,11 @@ export const handler = async (event) => {
   }
 
   // 5. Notionへ記録（失敗してもメールは届いているので成功を返す）
+  let notionDebug = null; // ← 一時デバッグ：原因特定後に削除する
   try {
     await createBookingRecord(data);
   } catch (err) {
+    notionDebug = err?.message || String(err); // ← 一時デバッグ
     console.error('[notion] failed:', err);
     // だいきさんへアラート（手動で台帳に追記してもらう）
     try {
@@ -197,5 +199,5 @@ export const handler = async (event) => {
     }
   }
 
-  return json(200, { ok: true });
+  return json(200, { ok: true, _notionDebug: notionDebug }); // ← 一時デバッグ
 };
