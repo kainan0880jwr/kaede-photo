@@ -61,7 +61,8 @@ export async function createBookingRecord(data) {
     properties['電話番号'] = { phone_number: text(data.phone) };
   }
   if (data.plan) {
-    properties['プラン'] = { select: { name: text(data.plan) } };
+    // Notionのセレクト名はカンマ不可のため除去（例: ¥29,000 → ¥29000）
+    properties['プラン'] = { select: { name: text(data.plan).replace(/,/g, '') } };
   }
 
   return getClient().pages.create({
