@@ -521,7 +521,7 @@ ul{list-style:none;}
 /* ══════════════════════════════════════
    GALLERY
 ══════════════════════════════════════ */
-.gallery-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.gallery-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
 .gallery-tab{
   font-size:12px;letter-spacing:.06em;padding:6px 16px;
   border-radius:20px;cursor:pointer;border:none;font-family:var(--f-ui);
@@ -1172,6 +1172,9 @@ footer{
         <button class="gallery-tab" data-filter="baby" aria-pressed="false">赤ちゃん</button>
         <button class="gallery-tab" data-filter="family" aria-pressed="false">家族</button>
         <button class="gallery-tab" data-filter="maternity" aria-pressed="false">マタニティ</button>
+        <button class="gallery-tab" data-filter="omiyamairi" aria-pressed="false">お宮参り</button>
+        <button class="gallery-tab" data-filter="shichigosan" aria-pressed="false">七五三</button>
+        <button class="gallery-tab" data-filter="sekku" aria-pressed="false">節句・キッズ</button>
       </div>
       <div class="gallery-grid" id="gallery-grid">
         <div class="gitem span-5 ar-32" data-cat="family"><picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" alt="窓辺で赤ちゃんを抱くご家族の写真" loading="lazy" decoding="async"></picture></div>
@@ -1180,6 +1183,41 @@ footer{
         <div class="gitem span-3 ar-11" data-cat="family"><picture><source srcset="images/family-2.webp" type="image/webp"><img src="images/family-2.jpg" alt="ソファでくつろぐご家族の写真" loading="lazy" decoding="async"></picture></div>
         <div class="gitem span-5 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-1.webp" type="image/webp"><img src="images/maternity-1.jpg" alt="エコー写真を持つご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
         <div class="gitem span-4 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-2.webp" type="image/webp"><img src="images/maternity-2.jpg" alt="エコー写真に囲まれたご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="maternity"><picture><source srcset="images/maternity-7.webp" type="image/webp"><img src="images/maternity-7.jpg" alt="夫が妻のお腹にそっとキスをするマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="omiyamairi"><picture><source srcset="images/omiyamairi-1.webp" type="image/webp"><img src="images/omiyamairi-1.jpg" alt="お宮参りで新生児を抱くお父さんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="shichigosan"><picture><source srcset="images/shichigosan-1.webp" type="image/webp"><img src="images/shichigosan-1.jpg" alt="鳥居前を手をつないで歩く七五三の母娘の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="sekku"><picture><source srcset="images/sekku-1.webp" type="image/webp"><img src="images/sekku-1.jpg" alt="兜飾りと一緒に写る男の子の節句写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="family"><picture><source srcset="images/family-5.webp" type="image/webp"><img src="images/family-5.jpg" alt="赤ちゃんに頬を寄せるご両親の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-3.webp" type="image/webp"><img src="images/baby-3.jpg" alt="水色のドレスで寝そべる赤ちゃんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-8.webp" type="image/webp"><img src="images/maternity-8.jpg" alt="エコー写真を見せて笑い合うご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="omiyamairi"><picture><source srcset="images/omiyamairi-2.webp" type="image/webp"><img src="images/omiyamairi-2.jpg" alt="お宮参りで神社を背に新生児を抱くご夫婦の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="shichigosan"><picture><source srcset="images/shichigosan-2.webp" type="image/webp"><img src="images/shichigosan-2.jpg" alt="七五三の着物姿の足元の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="sekku"><picture><source srcset="images/sekku-2.webp" type="image/webp"><img src="images/sekku-2.jpg" alt="紙吹雪の中で笑う三兄妹のバースデー写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="family"><picture><source srcset="images/family-6.webp" type="image/webp"><img src="images/family-6.jpg" alt="ソファに座る赤ちゃんと男の子を含むご家族の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-4.webp" type="image/webp"><img src="images/baby-4.jpg" alt="お母さんの指を握る赤ちゃんの手の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="maternity"><picture><source srcset="images/maternity-9.webp" type="image/webp"><img src="images/maternity-9.jpg" alt="ぬいぐるみを手に笑顔で見つめ合うご夫婦のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="shichigosan"><picture><source srcset="images/shichigosan-3.webp" type="image/webp"><img src="images/shichigosan-3.jpg" alt="鳥居をくぐる七五三の母娘の後ろ姿の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="family"><picture><source srcset="images/family-7.webp" type="image/webp"><img src="images/family-7.jpg" alt="白い背景で笑顔を見せるご家族3人の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-5.webp" type="image/webp"><img src="images/baby-5.jpg" alt="白い衣装の赤ちゃんのアップ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="maternity"><picture><source srcset="images/maternity-10.webp" type="image/webp"><img src="images/maternity-10.jpg" alt="海辺でエコー写真を眺めるご家族のマタニティ写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="shichigosan"><picture><source srcset="images/shichigosan-4.webp" type="image/webp"><img src="images/shichigosan-4.jpg" alt="神社で花を手渡す七五三の母娘の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="family"><picture><source srcset="images/family-8.webp" type="image/webp"><img src="images/family-8.jpg" alt="男の子を抱きしめて笑うお母さんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-6.webp" type="image/webp"><img src="images/baby-6.jpg" alt="ぬいぐるみと一緒に遊ぶ赤ちゃんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="shichigosan"><picture><source srcset="images/shichigosan-5.webp" type="image/webp"><img src="images/shichigosan-5.jpg" alt="花を持ってほほえむ七五三の女の子の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="family"><picture><source srcset="images/family-9.webp" type="image/webp"><img src="images/family-9.jpg" alt="赤ちゃんに頬を寄せる兄姉の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-7.webp" type="image/webp"><img src="images/baby-7.jpg" alt="くまのぬいぐるみを抱く赤ちゃんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="shichigosan"><picture><source srcset="images/shichigosan-6.webp" type="image/webp"><img src="images/shichigosan-6.jpg" alt="神社の縁側に立つ七五三の女の子の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="family"><picture><source srcset="images/family-10.webp" type="image/webp"><img src="images/family-10.jpg" alt="赤ちゃんに頬を寄せるご両親の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="baby"><picture><source srcset="images/baby-8.webp" type="image/webp"><img src="images/baby-8.jpg" alt="新生児にそっとキスをするお母さんの写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="shichigosan"><picture><source srcset="images/shichigosan-7.webp" type="image/webp"><img src="images/shichigosan-7.jpg" alt="参道に並ぶ七五三のご家族の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="family"><picture><source srcset="images/family-11.webp" type="image/webp"><img src="images/family-11.jpg" alt="新生児を抱いて寄り添うご夫婦の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="baby"><picture><source srcset="images/baby-9.webp" type="image/webp"><img src="images/baby-9.jpg" alt="チュールに包まれて眠る新生児の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="shichigosan"><picture><source srcset="images/shichigosan-8.webp" type="image/webp"><img src="images/shichigosan-8.jpg" alt="参道を歩く七五三のご家族の後ろ姿の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="baby"><picture><source srcset="images/baby-10.webp" type="image/webp"><img src="images/baby-10.jpg" alt="リボンを付けて眠る新生児の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="shichigosan"><picture><source srcset="images/shichigosan-9.webp" type="image/webp"><img src="images/shichigosan-9.jpg" alt="鳥居の前でおじぎをする七五三のご家族の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="baby"><picture><source srcset="images/baby-11.webp" type="image/webp"><img src="images/baby-11.jpg" alt="花びらが舞う中で過ごす新生児の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-32" data-cat="baby"><picture><source srcset="images/baby-12.webp" type="image/webp"><img src="images/baby-12.jpg" alt="お母さんの指を小さな手で握る新生児の写真" loading="lazy" decoding="async"></picture></div>
+        <div class="gitem span-4 ar-34" data-cat="baby"><picture><source srcset="images/baby-13.webp" type="image/webp"><img src="images/baby-13.jpg" alt="桜の装飾の中で笑う赤ちゃんの写真" loading="lazy" decoding="async"></picture></div>
       </div>
     </div>
   </section>
