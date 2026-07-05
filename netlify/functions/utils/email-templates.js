@@ -20,6 +20,11 @@ function nl2br(value = '') {
   return esc(value).replace(/\n/g, '<br>');
 }
 
+// 件名用サニタイズ（改行・制御文字を除去して件名偽装/ヘッダ混入を防ぐ）
+function subj(value = '') {
+  return String(value).replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120);
+}
+
 const BRAND = '#b07d62';
 const BG = '#faf7f4';
 
@@ -73,7 +78,7 @@ export function ownerNotification(data) {
     ${detailsTable(data)}
     <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">受付日時：${esc(data.receivedAt)}</p>`;
   return {
-    subject: `【新規予約】${data.name} 様（${data.preferredDate || '日程未定'}）`,
+    subject: subj(`【新規予約】${data.name} 様（${data.preferredDate || '日程未定'}）`),
     html: wrap('新しい予約リクエスト', inner),
   };
 }
@@ -103,7 +108,7 @@ export function notionFailureAlert(data, errorMessage) {
     ${detailsTable(data)}
     <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">エラー内容：${esc(errorMessage)}</p>`;
   return {
-    subject: `【要対応】Notion記録失敗 - ${data.name} 様の予約`,
+    subject: subj(`【要対応】Notion記録失敗 - ${data.name} 様の予約`),
     html: wrap('Notion記録に失敗しました', inner),
   };
 }

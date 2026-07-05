@@ -25,25 +25,51 @@ import { createBookingRecord } from './utils/notion.js';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Upstash の環境変数が揃っているときだけレート制限を有効化
-let ratelimit = null;
+let redis = null;
+let ratelimit = null;         // IPごと：1時間に5件
+let globalRatelimit = null;   // サイト全体：1日40件（メール爆撃・送信ドメイン汚染の頭打ち）
 if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  redis = Redis.fromEnv();
   ratelimit = new Ratelimit({
-    redis: Redis.fromEnv(),
+    redis,
     limiter: Ratelimit.slidingWindow(5, '1 h'),
     prefix: 'ratelimit:booking',
     analytics: false,
   });
+  globalRatelimit = new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(40, '1 d'),
+    prefix: 'ratelimit:booking:global',
+    analytics: false,
+  });
+} else {
+  // 環境変数が欠けるとレート制限が無効化される＝無警告の全開放を防ぐため明示的に警告
+  console.error('[ratelimit] 警告: Upstashが未設定のため、レート制限が無効です。環境変数を確認してください。');
 }
+
+// 予約プランのホワイトリスト（先頭一致で判定）
+const ALLOWED_PLAN_PREFIXES = ['simple', 'standard', 'special', 'premium'];
 
 // --- ヘルパー ------------------------------------------------
 function corsHeaders() {
   const origin = process.env.SITE_URL || '';
-  return {
-    'Access-Control-Allow-Origin': origin || 'null',
+  const headers = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json; charset=utf-8',
   };
+  // SITE_URL が設定されているときだけ許可オリジンを明示（未設定時は 'null' を返さない）
+  if (origin) headers['Access-Control-Allow-Origin'] = origin;
+  return headers;
+}
+
+// リクエスト元オリジンの検証（SITE_URL 設定時のみ。他サイトからのPOSTを弾く）
+function isAllowedOrigin(event) {
+  const allowed = process.env.SITE_URL;
+  if (!allowed) return true; // 未設定なら従来どおり通す
+  const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
+  if (!origin) return true; // 同一オリジンfetch等でOriginヘッダが無い場合は通す
+  return origin === allowed;
 }
 
 function json(statusCode, body) {
@@ -79,8 +105,20 @@ function validate(data) {
   if (data.phone && data.phone.length > 30) {
     errors.push('電話番号が長すぎます。');
   }
-  if (data.message && data.message.length > 2000) {
-    errors.push('ご要望は2000文字以内で入力してください。');
+  // message はフォームの各項目（撮影場所・お子さま情報・オプション等）を集約するため上限を広めに
+  if (data.message && data.message.length > 6000) {
+    errors.push('入力内容が長すぎます。ご要望を短くしてお試しください。');
+  }
+  if (data.preferredDate && data.preferredDate.length > 200) {
+    errors.push('ご希望日の形式が正しくありません。');
+  }
+  // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）
+  if (data.plan) {
+    const key = data.plan.toLowerCase();
+    const ok = ALLOWED_PLAN_PREFIXES.some((p) => key.startsWith(p));
+    if (!ok || data.plan.length > 100) {
+      errors.push('ご希望のプランが正しくありません。');
+    }
   }
 
   return errors;
@@ -96,6 +134,11 @@ export const handler = async (event) => {
     return json(405, { ok: false, error: 'Method Not Allowed' });
   }
 
+  // 別オリジンからのPOSTを拒否（CSRF/スパム対策・SITE_URL設定時のみ）
+  if (!isAllowedOrigin(event)) {
+    return json(403, { ok: false, error: 'Forbidden' });
+  }
+
   // ボディのパース
   let payload;
   try {
@@ -109,12 +152,31 @@ export const handler = async (event) => {
     return json(200, { ok: true });
   }
 
-  // 2. レート制限
+  // 2-a. 冪等性（二重送信対策）：同じ requestId が短時間に再送されたら重複とみなす
+  if (redis) {
+    const reqId = String(payload.requestId || '').slice(0, 64);
+    if (reqId) {
+      try {
+        const set = await redis.set(`booking:req:${reqId}`, '1', { nx: true, ex: 3600 });
+        if (set === null) {
+          // 既に処理済み（再送・戻る操作など）→ 成功扱いで静かに終了
+          return json(200, { ok: true, duplicate: true });
+        }
+      } catch (err) {
+        console.error('[idempotency] failed, continuing:', err);
+      }
+    }
+  }
+
+  // 2-b. レート制限（IPごと ＋ サイト全体）
   if (ratelimit) {
     try {
       const ip = getClientIp(event);
-      const { success } = await ratelimit.limit(ip);
-      if (!success) {
+      const [perIp, global] = await Promise.all([
+        ratelimit.limit(ip),
+        globalRatelimit ? globalRatelimit.limit('global') : Promise.resolve({ success: true }),
+      ]);
+      if (!perIp.success || !global.success) {
         return json(429, {
           ok: false,
           error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください。',
@@ -144,38 +206,48 @@ export const handler = async (event) => {
     return json(400, { ok: false, error: errors.join('\n') });
   }
 
-  // 4. メール2通を並列送信
+  // 4. メール送信（直列）
+  //    まずオーナー宛を送り、成功したときだけお客様宛の自動返信を送る。
+  //    （並列だと「オーナー宛失敗なのにお客様には受付完了メールが届く」矛盾が起きるため）
   const from = process.env.MAIL_FROM;
   const ownerMail = ownerNotification(data);
   const customerMail = customerConfirmation(data);
 
-  const [ownerResult, customerResult] = await Promise.allSettled([
-    resend.emails.send({
+  let ownerResult;
+  try {
+    ownerResult = await resend.emails.send({
       from,
       to: process.env.OWNER_EMAIL,
       replyTo: data.email,
       subject: ownerMail.subject,
       html: ownerMail.html,
-    }),
-    resend.emails.send({
-      from,
-      to: data.email,
-      subject: customerMail.subject,
-      html: customerMail.html,
-    }),
-  ]);
+    });
+  } catch (err) {
+    ownerResult = { error: err };
+  }
 
-  if (ownerResult.status === 'rejected' || ownerResult.value?.error) {
-    // だいきさんへの通知が失敗 = 予約を取りこぼす致命的状態なのでエラーを返す
-    console.error('[mail:owner] failed:', ownerResult.reason || ownerResult.value?.error);
+  if (ownerResult?.error) {
+    // だいきさんへの通知が失敗 = 予約を取りこぼす致命的状態なのでエラーを返す（お客様宛は送らない）
+    console.error('[mail:owner] failed:', ownerResult.error);
     return json(502, {
       ok: false,
       error: '送信処理に失敗しました。時間をおいて再度お試しください。',
     });
   }
-  if (customerResult.status === 'rejected' || customerResult.value?.error) {
-    // お客様への自動返信失敗は記録だけして処理は続行（予約自体は成立）
-    console.error('[mail:customer] failed:', customerResult.reason || customerResult.value?.error);
+
+  try {
+    const customerResult = await resend.emails.send({
+      from,
+      to: data.email,
+      subject: customerMail.subject,
+      html: customerMail.html,
+    });
+    if (customerResult?.error) {
+      // お客様への自動返信失敗は記録だけして処理は続行（予約自体は成立）
+      console.error('[mail:customer] failed:', customerResult.error);
+    }
+  } catch (err) {
+    console.error('[mail:customer] failed:', err);
   }
 
   // 5. Notionへ記録（失敗してもメールは届いているので成功を返す）

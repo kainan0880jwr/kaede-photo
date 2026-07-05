@@ -28,6 +28,18 @@ function text(value = '') {
   return String(value).slice(0, 2000);
 }
 
+// Notionは rich_text 1オブジェクトあたり2000文字までのため、
+// 長文は2000文字ごとに複数オブジェクトに分割する（切り捨てを防ぐ）
+function richText(value = '') {
+  const s = String(value);
+  if (!s) return [];
+  const chunks = [];
+  for (let i = 0; i < s.length && i < 100000; i += 2000) {
+    chunks.push({ text: { content: s.slice(i, i + 2000) } });
+  }
+  return chunks;
+}
+
 export async function createBookingRecord(data) {
   const databaseId = process.env.NOTION_DATABASE_ID;
   if (!databaseId) {
@@ -42,14 +54,10 @@ export async function createBookingRecord(data) {
       email: data.email || null,
     },
     'ご希望日': {
-      rich_text: data.preferredDate
-        ? [{ text: { content: text(data.preferredDate) } }]
-        : [],
+      rich_text: richText(data.preferredDate),
     },
     'ご要望': {
-      rich_text: data.message
-        ? [{ text: { content: text(data.message) } }]
-        : [],
+      rich_text: richText(data.message),
     },
     '受付日時': {
       date: { start: data.receivedAtISO },

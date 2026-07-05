@@ -1072,9 +1072,9 @@ footer{
             <li>撮影データ 100〜150cuts</li>
             <li>撮影時間 約1〜1.5時間</li>
             <li>納期 約1ヶ月半</li>
-            <li style="color:var(--terra);font-weight:600;">お手紙ムービー（1〜2分・音声付き）込み<br><span style="font-weight:400;font-size:11px;">通常¥39,800のオプションが標準付帯</span></li>
+            <li style="color:var(--terra);font-weight:600;">お手紙ムービー（1〜2分・音声付き）込み<br><span style="font-weight:400;font-size:11px;">単体オプション ¥39,800 のお手紙ムービーが標準付帯</span></li>
           </ul>
-          <div style="background:#FDF1EB;border-radius:4px;padding:10px 12px;margin:0 0 8px;font-size:11px;color:var(--terra-dk);line-height:1.6;">special＋お手紙ムービー（¥39,800）相当を、実質¥77,000で。<strong>約¥1,800おトク</strong></div>
+          <div style="background:#FDF1EB;border-radius:4px;padding:10px 12px;margin:0 0 8px;font-size:11px;color:var(--terra-dk);line-height:1.6;">special の撮影内容に、お手紙ムービー（1〜2分・音声付き）をセットにしたプランです。</div>
           <div class="plan-price">¥77,000<span>（税込）</span></div>
           <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('premium');return false;">このプランで予約</a>
         </div>
@@ -1126,7 +1126,7 @@ footer{
         <div class="sim-result">
           <div>
             <div class="sim-result-label">概算料金（税込）</div>
-            <div class="sim-result-sub">※ 実際の料金はご予約確定後にご案内します</div>
+            <div class="sim-result-sub">※ 交通費は撮影場所の確定後に決まります。その他の料金は表示のとおりです。</div>
           </div>
           <div class="sim-total" id="sim-total" aria-live="polite">¥29,000</div>
         </div>
@@ -1150,7 +1150,7 @@ footer{
               <tr><td>ご自身でデータ選択</td><td class="price">＋3,000円</td></tr>
               <tr><td>2箇所での撮影（＋20枚）</td><td class="price">＋10,000円</td></tr>
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
-              <tr><td>SNS割<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を、kaede photoのSNS（Instagram等）に掲載させていただける方が対象です</span></td><td class="price discount">−1,000円</td></tr>
+              <tr><td>SNS割<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。掲載範囲（お顔を含む／含まない）はお選びいただけ、お子さまの掲載は保護者さまの同意をいただいたうえで行います。掲載後もいつでも削除のご依頼が可能です。</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>ご紹介割（紹介者・ご本人）</td><td class="price discount">−3,000円</td></tr>
             </tbody>
           </table>
@@ -1372,7 +1372,8 @@ footer{
       <div class="form-wrap">
         <div style="background:var(--white);border:1px solid var(--beige);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text);line-height:1.9;">
           ご予約確定後に <strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）</strong> をお預かりします。<br>
-          <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。
+          <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
+          <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
         </div>
 
         <form onsubmit="submitForm(event)" novalidate>
@@ -1455,7 +1456,8 @@ footer{
 
           <div class="form-field">
             <label class="form-label" for="f-message">ご要望・ご質問</label>
-            <textarea class="form-input" id="f-message" name="message" placeholder="ご自由にどうぞ"></textarea>
+            <textarea class="form-input" id="f-message" name="message" placeholder="ご自由にどうぞ" maxlength="1500" oninput="updateMsgCount()"></textarea>
+            <div id="f-message-count" style="text-align:right;font-size:11px;color:var(--muted);margin-top:4px;">0 / 1500</div>
           </div>
 
           <div class="privacy-wrap">
@@ -1497,6 +1499,12 @@ footer{
         <strong style="display:block;font-size:16px;color:var(--brown);margin-bottom:10px;">安心保証金とは？</strong>
         万が一キャンセルとなった場合も、<strong>キャンセル料は一律2,000円</strong>（お預かりする安心保証金のみ）です。<br>
         ご予約時にお預かりする <strong>2,000円</strong> の保証金で、直前の無断キャンセルなどを防ぎ、<strong>お客様とカメラマン双方が安心して撮影日を迎えるため</strong>の制度です。<span style="color:var(--terra);">撮影当日に全額そのままお返しします</span>ので、実質的なご負担はありません。
+      </div>
+      <div style="background:#FAEEED;border:1px solid #e7cfc9;border-radius:6px;padding:14px 16px;margin-bottom:24px;font-size:13px;line-height:1.9;color:var(--red-text);">
+        <strong>※ 保証金が返金されない場合があります。</strong><br>
+        撮影日の <strong>4日前以降のお客様都合キャンセル（前日・当日を含む）</strong> および <strong>無断キャンセル</strong> の場合は、お預かりした保証金2,000円をキャンセル料に充当し、返金いたしません。<br>
+        なお、<strong>お子さまの急な体調不良・悪天候の場合は、期日にかかわらず無料で日程変更</strong>いただけます（保証金はそのままお預かりし、変更後の撮影日に返金します）。<br>
+        返金は <strong>PayPay送金または銀行振込</strong> にて行います（振込手数料は当方が負担します）。
       </div>
 
       <div class="grid-3" style="margin-bottom:32px;gap:12px;">
@@ -1733,8 +1741,28 @@ footer{
         <div class="priv-body">法令に基づく場合を除き、お客様の個人情報を第三者に提供することはありません。</div>
       </div>
       <div class="priv-section">
+        <div class="priv-heading">外部サービスの利用・業務委託</div>
+        <div class="priv-body">ご予約の管理・ご連絡のため、以下の外部サービス（いずれも米国の事業者）に個人情報の取り扱いを委託しています。各社は、日本の個人情報保護法に相当する水準の安全管理措置を講じています。<br>
+        ・Resend（Resend, Inc.／米国）：確認・通知メールの送信<br>
+        ・Upstash（Upstash, Inc.／米国）：不正送信・スパム防止<br>
+        ・Notion（Notion Labs, Inc.／米国）：ご予約内容の管理<br>
+        委託先の外国にある事業者に関する情報の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
+      </div>
+      <div class="priv-section">
+        <div class="priv-heading">アクセス解析（Cookie）</div>
+        <div class="priv-body">当サイトでは、サイトの利用状況を把握するため Google Analytics（Google LLC／米国）を利用しています。これに伴いCookieを使用し、匿名の利用データ（アクセス数・閲覧ページ等）を収集します。個人を特定する情報は含まれません。ブラウザの設定でCookieを無効にすることで収集を拒否できます。</div>
+      </div>
+      <div class="priv-section">
+        <div class="priv-heading">保管期間</div>
+        <div class="priv-body">ご予約に関する個人情報は、撮影の完了後1年を目安に、撮影データ（写真・動画）は納品後6ヶ月を目安に保管し、その後は速やかに削除します。</div>
+      </div>
+      <div class="priv-section">
+        <div class="priv-heading">開示・訂正・削除等のご請求</div>
+        <div class="priv-body">お客様ご本人からの、保有個人データの開示・訂正・追加・削除・利用停止のご請求に、法令に従い遅滞なく対応いたします。下記のお問い合わせ窓口までご連絡ください。</div>
+      </div>
+      <div class="priv-section">
         <div class="priv-heading">個人情報の管理</div>
-        <div class="priv-body">個人情報は適切な安全対策を講じて管理します。不要になった個人情報は速やかに削除します。</div>
+        <div class="priv-body">個人情報は適切な安全対策を講じて管理します。不要になった個人情報は速やかに削除します。個人情報の取り扱いに関するご意見・苦情も、下記窓口で承ります。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">お問い合わせ</div>
@@ -1794,6 +1822,31 @@ footer{
       </div>
     </div>
   </section>
+</div>
+
+
+<!-- ════════════════════ 予約内容の最終確認（特商法12条の6） ════════════════════ -->
+<div id="confirm-overlay" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(44,31,26,.55);padding:24px;overflow-y:auto;">
+  <div role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="max-width:560px;margin:24px auto;background:var(--base);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.25);overflow:hidden;">
+    <div style="background:var(--terra);color:#fff;padding:18px 24px;">
+      <div style="font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.85;">Confirm</div>
+      <h2 id="confirm-title" style="margin:2px 0 0;font-size:18px;font-weight:600;">ご予約内容の確認</h2>
+    </div>
+    <div style="padding:20px 24px;">
+      <p style="font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.7;">以下の内容でお申し込みを受け付けます。ご確認のうえ、よろしければ「この内容で申し込む」を押してください。</p>
+      <dl id="confirm-body" style="margin:0;font-size:13px;line-height:1.8;color:var(--text);"></dl>
+      <div style="background:var(--surface);border-radius:6px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:var(--text);line-height:1.85;">
+        <strong>お支払い</strong>：安心保証金2,000円＝ご予約確定後にPayPayまたは銀行振込。撮影料金＝撮影当日に現地で現金またはPayPay。<br>
+        <strong>データ納品時期</strong>：撮影後 約1ヶ月（premiumは約1ヶ月半）にオンライン納品。<br>
+        <strong>キャンセル・返金</strong>：撮影日5日前までのご連絡で保証金を全額返金。4日前以降のお客様都合・無断キャンセルは保証金2,000円をキャンセル料に充当し返金なし（体調不良・悪天候は無料で日程変更）。撮影完了後のキャンセル・返金は不可。
+      </div>
+      <div class="flex-gap" style="margin-top:20px;justify-content:flex-end;">
+        <button type="button" class="btn btn-ghost" onclick="closeConfirm()">修正する</button>
+        <button type="button" class="btn btn-primary" id="confirm-send-btn" onclick="sendBooking()">この内容で申し込む</button>
+      </div>
+      <div class="form-msg" id="confirm-msg" role="status" aria-live="polite" style="display:none;margin-top:14px;padding:12px 14px;border-radius:4px;font-size:13px;line-height:1.7;white-space:pre-line;"></div>
+    </div>
+  </div>
 </div>
 
 
@@ -2106,7 +2159,28 @@ function showFormMsg(type, text){
   }
 }
 
-async function submitForm(e){
+// ご要望欄の文字数カウンター
+function updateMsgCount(){
+  const ta = document.getElementById('f-message');
+  const out = document.getElementById('f-message-count');
+  if(ta && out) out.textContent = `${ta.value.length} / 1500`;
+}
+
+// 確認画面→送信で使う予約データを一時保持
+let pendingBooking = null;
+
+// 概算料金パース（確認画面用）
+function _planYen(label){ const m=(label||'').replace(/,/g,'').match(/¥\s*(\d+)/); return m?parseInt(m[1],10):0; }
+function _optYen(label){
+  const neg=/[−\-]\s*[\d,]+\s*円/.test(label||'');
+  const m=(label||'').replace(/,/g,'').match(/(\d+)\s*円/);
+  if(!m) return 0;
+  return (neg?-1:1)*parseInt(m[1],10);
+}
+function _escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// 送信ボタン押下 → バリデーション後、確認画面（特商法12条の6）を表示
+function submitForm(e){
   e.preventDefault();
   const form = e.target;
 
@@ -2116,7 +2190,6 @@ async function submitForm(e){
     return;
   }
 
-  const btn = form.querySelector('[type="submit"]');
   const msgEl = document.getElementById('form-msg');
   if(msgEl) msgEl.style.display = 'none';
 
@@ -2155,15 +2228,49 @@ async function submitForm(e){
   const userMessage = val('f-message');
   if(userMessage) lines.push(`【ご要望・ご質問】\n${userMessage}`);
 
-  const payload = {
+  const planLabel = val('f-plan');
+  pendingBooking = {
     name: val('f-name'),
     email: val('f-email'),
     preferredDate,
-    plan: val('f-plan'),
+    plan: planLabel,
     message: lines.join('\n'),
     company: (form.querySelector('input[name="company"]')?.value || ''), // honeypot
+    requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)),
   };
 
+  // 概算（プラン＋オプション。交通費は含まない）
+  const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0);
+
+  // 確認画面を描画（特商法12条の6：分量・対価・支払時期方法・提供時期・解約条件）
+  const rows = [];
+  const addRow = (k,v)=> rows.push(`<div style="display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--beige);"><dt style="width:96px;flex:none;color:var(--muted);">${k}</dt><dd style="margin:0;flex:1;">${v}</dd></div>`);
+  addRow('お名前', _escHtml(val('f-name')));
+  addRow('メール', _escHtml(val('f-email')));
+  addRow('ご希望日', _escHtml(preferredDate) || '—');
+  addRow('撮影場所', _escHtml(val('f-location')) || '—');
+  addRow('プラン', _escHtml(planLabel) || '—');
+  if(options.length) addRow('オプション', options.map(_escHtml).join('<br>'));
+  addRow('概算料金', `¥${estimate.toLocaleString()} <span style="font-size:11px;color:var(--muted);">（税込・交通費別途。最終金額はご予約確定時にご案内）</span>`);
+  document.getElementById('confirm-body').innerHTML = rows.join('');
+
+  const cmsg = document.getElementById('confirm-msg');
+  if(cmsg) cmsg.style.display = 'none';
+  document.getElementById('confirm-overlay').style.display = 'block';
+}
+
+// 確認画面を閉じる（修正する）
+function closeConfirm(){
+  const ov = document.getElementById('confirm-overlay');
+  if(ov) ov.style.display = 'none';
+}
+
+// 確認画面「この内容で申し込む」→ 実際に送信
+async function sendBooking(){
+  if(!pendingBooking) return;
+  const btn = document.getElementById('confirm-send-btn');
+  const cmsg = document.getElementById('confirm-msg');
+  if(cmsg) cmsg.style.display = 'none';
   btn.disabled = true;
   btn.textContent = '送信中...';
 
@@ -2171,25 +2278,38 @@ async function submitForm(e){
     const res = await fetch(BOOKING_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(pendingBooking),
     });
     const result = await res.json().catch(() => ({}));
 
     if(res.ok && result.ok){
-      form.reset();
+      const form = document.querySelector('#page-booking form');
+      if(form) form.reset();
       toggleReferral();
       renderKidsFields();
       toggleFormMovie();
+      updateMsgCount();
+      pendingBooking = null;
+      closeConfirm();
       goPage('success');
     } else {
-      showFormMsg('ng', result.error || '送信に失敗しました。時間をおいて再度お試しください。');
+      showConfirmMsg(result.error || '送信に失敗しました。時間をおいて再度お試しください。');
     }
   } catch(err){
-    showFormMsg('ng', '通信エラーが発生しました。ネットワークをご確認のうえ再度お試しください。');
+    showConfirmMsg('通信エラーが発生しました。ネットワークをご確認のうえ再度お試しください。');
   } finally {
     btn.disabled = false;
-    btn.textContent = '予約を申し込む';
+    btn.textContent = 'この内容で申し込む';
   }
+}
+
+function showConfirmMsg(text){
+  const el = document.getElementById('confirm-msg');
+  if(!el) return;
+  el.style.display = 'block';
+  el.textContent = text;
+  el.style.background = '#FAEEED';
+  el.style.color = '#C0392B';
 }
 
 /* ────────────────────────────────
