@@ -63,13 +63,21 @@ function corsHeaders() {
   return headers;
 }
 
-// リクエスト元オリジンの検証（SITE_URL 設定時のみ。他サイトからのPOSTを弾く）
+// リクエスト元オリジンの検証（他サイトからのPOSTを弾く）
+// ホスト名ベースで判定し、末尾スラッシュやドメイン表記の差で正規の予約を誤って弾かないようにする。
+function hostOf(value) {
+  try { return new URL(value).host.toLowerCase(); } catch { return ''; }
+}
 function isAllowedOrigin(event) {
-  const allowed = process.env.SITE_URL;
-  if (!allowed) return true; // 未設定なら従来どおり通す
   const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
   if (!origin) return true; // 同一オリジンfetch等でOriginヘッダが無い場合は通す
-  return origin === allowed;
+  const host = hostOf(origin);
+  if (!host) return true; // 解析できない場合はブロックしない
+  const allowed = new Set(['kaede-photo.com', 'www.kaede-photo.com']);
+  const siteHost = hostOf(process.env.SITE_URL || '');
+  if (siteHost) allowed.add(siteHost);
+  if (host.endsWith('.netlify.app')) return true; // Netlify既定/プレビュードメイン
+  return allowed.has(host);
 }
 
 function json(statusCode, body) {
