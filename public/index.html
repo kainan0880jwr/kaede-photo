@@ -13,7 +13,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-RH2JQL8Y1V');
+  gtag('config', 'G-RH2JQL8Y1V', { send_page_view: false });
 </script>
 <title>kaede photo — 子ども・家族専門出張カメラマン</title>
 <meta name="description" content="関西（大阪・和歌山・兵庫・奈良）を中心に全国対応の子ども・家族専門出張カメラマン。七五三・お宮参り・マタニティ・ニューボーン・家族写真の出張撮影。交通費込みの安心価格、高画質レタッチ、オンラインデータ納品。">
@@ -1897,9 +1897,18 @@ function goPage(name, opts = {}){
   if(descEl && meta.desc) descEl.content = meta.desc;
 
   // History API（戻るボタン対応）
+  const url = name === 'top' ? location.pathname : location.pathname + '#' + name;
   if(opts.updateHistory !== false){
-    const url = name === 'top' ? location.pathname : location.pathname + '#' + name;
     history.pushState({ page: name }, meta.title, url);
+  }
+
+  // GA4 仮想ページビュー（SPAのためページ遷移ごとに手動送信）
+  if(typeof gtag === 'function'){
+    gtag('event', 'page_view', {
+      page_title: meta.title,
+      page_location: location.origin + url,
+      page_path: url,
+    });
   }
 
   // フォーカス管理：コンテンツ先頭へ移動
@@ -1931,6 +1940,21 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (el) el.min = today;
   });
+});
+
+/* ────────────────────────────────
+   GA4 クリック計測（LINE / Instagram 導線）
+   イベント委譲で全リンクを一括計測
+──────────────────────────────── */
+document.addEventListener('click', (e) => {
+  if(typeof gtag !== 'function') return;
+  const a = e.target.closest('a[href]');
+  if(!a) return;
+  if(a.href.includes('lin.ee')){
+    gtag('event', 'line_click', { link_url: a.href, page_path: location.pathname + location.hash });
+  } else if(a.href.includes('instagram.com')){
+    gtag('event', 'instagram_click', { link_url: a.href, page_path: location.pathname + location.hash });
+  }
 });
 
 /* ────────────────────────────────
@@ -2244,6 +2268,7 @@ function submitForm(e){
 
   // 概算（プラン＋オプション。交通費は含まない）
   const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0);
+  pendingBooking.value = estimate;
 
   // 確認画面を描画（特商法12条の6：分量・対価・支払時期方法・提供時期・解約条件）
   const rows = [];
@@ -2286,6 +2311,14 @@ async function sendBooking(){
     const result = await res.json().catch(() => ({}));
 
     if(res.ok && result.ok){
+      // GA4 コンバージョン計測（予約完了）
+      if(typeof gtag === 'function'){
+        gtag('event', 'generate_lead', {
+          currency: 'JPY',
+          value: pendingBooking.value || 0,
+          plan: pendingBooking.plan || '',
+        });
+      }
       const form = document.querySelector('#page-booking form');
       if(form) form.reset();
       toggleReferral();
