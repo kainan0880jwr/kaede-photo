@@ -1438,6 +1438,17 @@ footer{
             </div>
           </div>
           <div class="form-field">
+            <label class="form-label" for="f-genre">撮影ジャンル</label>
+            <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions()">
+              <option value="">指定なし（家族写真など）</option>
+              <option value="newborn">ニューボーン</option>
+              <option value="maternity">マタニティ</option>
+              <option value="omiyamairi">お宮参り</option>
+              <option value="shichigosan">七五三</option>
+              <option value="birthday">ファーストバースデー</option>
+            </select>
+          </div>
+          <div class="form-field">
             <label class="form-label" for="f-location">撮影場所・エリア <span class="req">*</span></label>
             <input class="form-input" id="f-location" name="location" type="text" placeholder="例：自宅" required>
           </div>
@@ -1472,6 +1483,7 @@ footer{
                 <input class="form-input" type="text" placeholder="ご紹介者のお名前">
               </div>
             </div>
+            <div id="genre-options-group" style="display:none;"></div>
           </div>
 
           <div class="form-field">
@@ -1971,6 +1983,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof toggleFormMovie === 'function') toggleFormMovie();
   if (typeof toggleSimMovie === 'function') toggleSimMovie();
   if (typeof renderKidsFields === 'function') renderKidsFields();
+  if (typeof applyGenreFromUrl === 'function') applyGenreFromUrl();
   // 撮影希望日は本日以降のみ選択可（過去日の送信を防止）
   const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD（ローカルTZ）
   ['f-date1', 'f-date2'].forEach(id => {
@@ -2170,6 +2183,49 @@ function toggleReferral(){
 }
 
 /* ────────────────────────────────
+   撮影ジャンル別オプション
+   （LPの「予約する」から ?genre=xxx で遷移してきた場合に自動選択）
+──────────────────────────────── */
+const GENRE_OPTIONS = {
+  newborn: [
+    'ニューボーンフォトセット（ラタンかご・お衣装・レース敷物） ＋2,000円',
+  ],
+  maternity: [],
+  omiyamairi: [],
+  shichigosan: [],
+  birthday: [],
+};
+
+function renderGenreOptions(){
+  const genre = document.getElementById('f-genre')?.value;
+  const container = document.getElementById('genre-options-group');
+  if(!container) return;
+  const items = GENRE_OPTIONS[genre] || [];
+  if(!items.length){
+    container.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+  container.style.display = '';
+  container.innerHTML = '<div class="opt-group" style="margin-top:8px;">'
+    + '<div class="opt-group-title">ジャンル別オプション</div>'
+    + items.map(label => '<label class="check-row"><input type="checkbox"> ' + label + '</label>').join('')
+    + '</div>';
+}
+
+// LPの「予約する」ボタン（?genre=xxx#booking）からの遷移でジャンルを自動選択
+function applyGenreFromUrl(){
+  const genre = new URLSearchParams(location.search).get('genre');
+  const sel = document.getElementById('f-genre');
+  if(!sel || !genre) return;
+  const hasOption = [...sel.options].some(o => o.value === genre);
+  if(hasOption){
+    sel.value = genre;
+    renderGenreOptions();
+  }
+}
+
+/* ────────────────────────────────
    ギャラリーフィルター（aria-pressed + hidden属性）
 ──────────────────────────────── */
 function filterGallery(cat){
@@ -2275,8 +2331,13 @@ function submitForm(e){
     ? (document.querySelector('#referral-name input')?.value || '').trim()
     : '';
 
+  // 撮影ジャンル（選択されていれば表示テキストを取得）
+  const genreSel = document.getElementById('f-genre');
+  const genreLabel = genreSel && genreSel.value ? genreSel.options[genreSel.selectedIndex].textContent : '';
+
   // バックエンドの message 欄に詰める構造化メモ
   const lines = [];
+  if(genreLabel) lines.push(`【撮影ジャンル】${genreLabel}`);
   lines.push(`【撮影場所・エリア】${val('f-location') || '—'}`);
   lines.push(`【お子さまの人数】${val('f-kids-num') || '—'}`);
   const kidNames = [...form.querySelectorAll('.kid-name')];
@@ -2313,6 +2374,7 @@ function submitForm(e){
   addRow('お名前', _escHtml(val('f-name')));
   addRow('メール', _escHtml(val('f-email')));
   addRow('ご希望日', _escHtml(preferredDate) || '—');
+  if(genreLabel) addRow('撮影ジャンル', _escHtml(genreLabel));
   addRow('撮影場所', _escHtml(val('f-location')) || '—');
   addRow('プラン', _escHtml(planLabel) || '—');
   if(options.length) addRow('オプション', options.map(_escHtml).join('<br>'));
