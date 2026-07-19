@@ -440,34 +440,21 @@ ul{list-style:none;}
 /* ══════════════════════════════════════
    GENRE CARDS（撮影ジャンルから選ぶ）
 ══════════════════════════════════════ */
-.genre-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px auto 0;max-width:560px;}
+.genre-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px auto 0;max-width:680px;}
 .genre-card{
-  position:relative;display:flex;align-items:center;justify-content:center;
-  aspect-ratio:3/2;overflow:hidden;border-radius:6px;
-  box-shadow:0 2px 10px rgba(44,31,26,.1);
-  transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+  display:flex;align-items:center;justify-content:center;min-height:60px;
+  background:var(--white);border:1px solid var(--beige);border-radius:6px;
+  font-family:var(--f-ui);font-size:12.5px;font-weight:500;letter-spacing:.02em;
+  color:var(--text);text-align:center;line-height:1.35;padding:10px 6px;
+  transition:all var(--dur) var(--ease);
 }
-.genre-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(44,31,26,.2);}
-.genre-card picture{position:absolute;inset:0;z-index:0;}
-.genre-card img{transition:transform .6s var(--ease);filter:sepia(6%) saturate(.95);}
-.genre-card:hover img{transform:scale(1.08);}
-.genre-card::after{
-  content:'';position:absolute;inset:0;z-index:1;
-  background:rgba(44,31,26,.58);
-  transition:background var(--dur) var(--ease);
-}
-.genre-card:hover::after{background:rgba(181,99,63,.62);}
-.genre-card-label{
-  position:relative;z-index:2;color:#fff;
-  font-family:var(--f-display);font-size:11px;font-weight:400;letter-spacing:.02em;
-  padding:4px 4px;text-align:center;line-height:1.25;
-}
+.genre-card:hover{background:var(--terra);border-color:var(--terra);color:#fff;transform:translateY(-3px);box-shadow:0 8px 20px rgba(181,99,63,.28);}
 @media(max-width:1023px){
-  .genre-grid{grid-template-columns:repeat(3,1fr);max-width:340px;}
+  .genre-grid{grid-template-columns:repeat(3,1fr);max-width:420px;}
 }
 @media(max-width:767px){
-  .genre-grid{grid-template-columns:repeat(2,1fr);gap:8px;max-width:280px;}
-  .genre-card-label{font-size:11px;padding:4px 4px;}
+  .genre-grid{grid-template-columns:repeat(2,1fr);gap:10px;max-width:320px;}
+  .genre-card{font-size:12px;}
 }
 
 /* ══════════════════════════════════════
@@ -952,26 +939,11 @@ footer{
       <div style="margin-bottom:40px;">
         <p class="body-sm text-center" style="margin-bottom:4px;">撮影ジャンルから選ぶ</p>
         <div class="genre-grid">
-          <a href="newborn.html" class="genre-card">
-            <picture><source srcset="images/baby-1.webp" type="image/webp"><img src="images/baby-1.jpg" alt="ニューボーンフォトの出張撮影" loading="lazy" decoding="async"></picture>
-            <span class="genre-card-label">ニューボーン</span>
-          </a>
-          <a href="maternity.html" class="genre-card">
-            <picture><source srcset="images/maternity-1.webp" type="image/webp"><img src="images/maternity-1.jpg" alt="マタニティフォトの出張撮影" loading="lazy" decoding="async"></picture>
-            <span class="genre-card-label">マタニティ</span>
-          </a>
-          <a href="omiyamairi.html" class="genre-card">
-            <picture><source srcset="images/omiyamairi-1.webp" type="image/webp"><img src="images/omiyamairi-1.jpg" alt="お宮参りの出張撮影" loading="lazy" decoding="async"></picture>
-            <span class="genre-card-label">お宮参り</span>
-          </a>
-          <a href="shichigosan.html" class="genre-card">
-            <picture><source srcset="images/shichigosan-1.webp" type="image/webp"><img src="images/shichigosan-1.jpg" alt="七五三の出張撮影" loading="lazy" decoding="async"></picture>
-            <span class="genre-card-label">七五三</span>
-          </a>
-          <a href="birthday.html" class="genre-card">
-            <picture><source srcset="images/sekku-2.webp" type="image/webp"><img src="images/sekku-2.jpg" alt="ファーストバースデーの出張撮影" loading="lazy" decoding="async"></picture>
-            <span class="genre-card-label">ファーストバースデー</span>
-          </a>
+          <a href="newborn.html" class="genre-card">ニューボーン</a>
+          <a href="maternity.html" class="genre-card">マタニティ</a>
+          <a href="omiyamairi.html" class="genre-card">お宮参り</a>
+          <a href="shichigosan.html" class="genre-card">七五三</a>
+          <a href="birthday.html" class="genre-card">ファーストバースデー</a>
         </div>
       </div>
       <div class="grid-4" style="margin-bottom:32px;">
