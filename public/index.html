@@ -1172,13 +1172,14 @@ footer{
               <option value="5000" data-area="京都府南部">京都府南部 ＋5,000円</option>
               <option value="8000" data-area="京都府北部">京都府北部 ＋8,000円</option>
               <option value="5000" data-area="和歌山県南部">和歌山県南部 ＋5,000円</option>
+              <option value="0" data-area="その他">その他（ご相談・料金は変動します）</option>
             </select>
           </div>
         </div>
         <div class="sim-result">
           <div>
             <div class="sim-result-label">概算料金（税込）</div>
-            <div class="sim-result-sub">※ 交通費は撮影場所の確定後に決まります。その他の料金は表示のとおりです。</div>
+            <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
           </div>
           <div class="sim-total" id="sim-total" aria-live="polite">¥29,000</div>
         </div>
@@ -1451,7 +1452,7 @@ footer{
           </div>
           <div class="form-field">
             <label class="form-label" for="f-genre">撮影ジャンル</label>
-            <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions()">
+            <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions();updateBookingTotal()">
               <option value="">指定なし（家族写真など）</option>
               <option value="newborn">ニューボーン</option>
               <option value="maternity">マタニティ</option>
@@ -1461,12 +1462,27 @@ footer{
             </select>
           </div>
           <div class="form-field">
-            <label class="form-label" for="f-location">撮影場所・エリア <span class="req">*</span></label>
-            <input class="form-input" id="f-location" name="location" type="text" placeholder="例：自宅" required>
+            <label class="form-label" for="f-area">エリア（交通費） <span class="req">*</span></label>
+            <select class="form-select" id="f-area" name="area" required onchange="updateBookingTotal()">
+              <option value="">選択してください</option>
+              <option value="0" data-area="大阪府内・和歌山県北部">大阪府内・和歌山県北部（無料）</option>
+              <option value="3000" data-area="奈良県全域">奈良県全域 ＋3,000円</option>
+              <option value="3000" data-area="兵庫県南部">兵庫県南部 ＋3,000円</option>
+              <option value="6000" data-area="兵庫県北部">兵庫県北部 ＋6,000円</option>
+              <option value="5000" data-area="京都府南部">京都府南部 ＋5,000円</option>
+              <option value="8000" data-area="京都府北部">京都府北部 ＋8,000円</option>
+              <option value="5000" data-area="和歌山県南部">和歌山県南部 ＋5,000円</option>
+              <option value="0" data-area="その他">その他（ご相談・料金は変動します）</option>
+            </select>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="f-location">撮影場所 <span class="req">*</span></label>
+            <input class="form-input" id="f-location" name="location" type="text" placeholder="例：自宅、〇〇公園" required>
           </div>
           <div class="form-field">
             <label class="form-label" for="f-plan">ご希望のプラン <span class="req">*</span></label>
-            <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie()">
+            <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie();updateBookingTotal()">
               <option value="">選択してください</option>
               <option>simple ¥19,000</option>
               <option>standard ¥29,000（人気No.1）</option>
@@ -1496,6 +1512,14 @@ footer{
               </div>
             </div>
             <div id="genre-options-group" style="display:none;"></div>
+          </div>
+
+          <div class="sim-result" style="margin-bottom:24px;">
+            <div>
+              <div class="sim-result-label">概算料金（税込）</div>
+              <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
+            </div>
+            <div class="sim-total" id="booking-total" aria-live="polite">¥0</div>
           </div>
 
           <div class="form-field">
@@ -1997,6 +2021,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof renderKidsFields === 'function') renderKidsFields();
   if (typeof renderGenreOptions === 'function') renderGenreOptions();
   if (typeof renderSimGenreOptions === 'function') renderSimGenreOptions();
+  if (typeof updateBookingTotal === 'function') updateBookingTotal();
   if (typeof applyGenreFromUrl === 'function') applyGenreFromUrl();
   // 撮影希望日は本日以降のみ選択可（過去日の送信を防止）
   const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD（ローカルTZ）
@@ -2167,6 +2192,18 @@ function simToBooking(){
   });
   if(typeof toggleReferral === 'function') toggleReferral();
 
+  // エリア（交通費）：シミュレーター側の選択を予約フォームへ引き継ぐ
+  const simAreaSel = document.getElementById('sa');
+  const formAreaSel = document.getElementById('f-area');
+  if(simAreaSel && formAreaSel){
+    const simArea = simAreaSel.options[simAreaSel.selectedIndex]?.dataset.area;
+    for(const opt of formAreaSel.options){
+      if(opt.dataset.area && opt.dataset.area === simArea){ opt.selected = true; break; }
+    }
+  }
+
+  if(typeof updateBookingTotal === 'function') updateBookingTotal();
+
   goPage('booking');
 }
 
@@ -2259,6 +2296,7 @@ function applyGenreFromUrl(){
   if(formSel && [...formSel.options].some(o => o.value === genre)){
     formSel.value = genre;
     renderGenreOptions();
+    updateBookingTotal();
   }
 
   const simSel = document.getElementById('sim-genre');
@@ -2268,6 +2306,29 @@ function applyGenreFromUrl(){
     if(typeof calcSim === 'function') calcSim();
   }
 }
+
+/* ────────────────────────────────
+   予約ページの概算料金（プラン＋オプション＋エリア）
+   選択のたびにリアルタイムで更新
+──────────────────────────────── */
+function updateBookingTotal(){
+  const el = document.getElementById('booking-total');
+  if(!el) return;
+  const planYen = _planYen(document.getElementById('f-plan')?.value || '');
+  const optYen = [...document.querySelectorAll('#page-booking .opt-group .check-row')]
+    .filter(row => row.querySelector('input[type="checkbox"]')?.checked)
+    .reduce((sum, row) => sum + _optYen(row.textContent.trim()), 0);
+  const areaYen = parseInt(document.getElementById('f-area')?.value, 10) || 0;
+  const total = Math.max(0, planYen + optYen + areaYen);
+  el.textContent = '¥' + total.toLocaleString();
+}
+
+// オプション（追加オプション・割引・ジャンル別オプション）のチェック変更をまとめて検知
+document.getElementById('page-booking')?.addEventListener('change', e => {
+  if(e.target.matches('.opt-group input[type="checkbox"]')){
+    updateBookingTotal();
+  }
+});
 
 /* ────────────────────────────────
    ギャラリーフィルター（aria-pressed + hidden属性）
@@ -2379,10 +2440,18 @@ function submitForm(e){
   const genreSel = document.getElementById('f-genre');
   const genreLabel = genreSel && genreSel.value ? genreSel.options[genreSel.selectedIndex].textContent : '';
 
+  // エリア（交通費）
+  const areaSel = document.getElementById('f-area');
+  const areaOpt = areaSel && areaSel.selectedIndex >= 0 ? areaSel.options[areaSel.selectedIndex] : null;
+  const areaLabel = areaOpt ? areaOpt.textContent : '';
+  const areaYen = areaOpt ? (parseInt(areaOpt.value, 10) || 0) : 0;
+  const areaIsOther = areaOpt && areaOpt.dataset.area === 'その他';
+
   // バックエンドの message 欄に詰める構造化メモ
   const lines = [];
   if(genreLabel) lines.push(`【撮影ジャンル】${genreLabel}`);
-  lines.push(`【撮影場所・エリア】${val('f-location') || '—'}`);
+  lines.push(`【エリア（交通費）】${areaLabel || '—'}`);
+  lines.push(`【撮影場所】${val('f-location') || '—'}`);
   lines.push(`【お子さまの人数】${val('f-kids-num') || '—'}`);
   const kidNames = [...form.querySelectorAll('.kid-name')];
   const kidAges = [...form.querySelectorAll('.kid-age')];
@@ -2408,8 +2477,8 @@ function submitForm(e){
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)),
   };
 
-  // 概算（プラン＋オプション。交通費は含まない）
-  const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0);
+  // 概算（プラン＋オプション＋エリアの交通費概算）
+  const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0) + areaYen;
   pendingBooking.value = estimate;
 
   // 確認画面を描画（特商法12条の6：分量・対価・支払時期方法・提供時期・解約条件）
@@ -2419,10 +2488,11 @@ function submitForm(e){
   addRow('メール', _escHtml(val('f-email')));
   addRow('ご希望日', _escHtml(preferredDate) || '—');
   if(genreLabel) addRow('撮影ジャンル', _escHtml(genreLabel));
+  addRow('エリア', _escHtml(areaLabel) || '—');
   addRow('撮影場所', _escHtml(val('f-location')) || '—');
   addRow('プラン', _escHtml(planLabel) || '—');
   if(options.length) addRow('オプション', options.map(_escHtml).join('<br>'));
-  addRow('概算料金', `¥${estimate.toLocaleString()} <span style="font-size:11px;color:var(--muted);">（税込・交通費別途。最終金額はご予約確定時にご案内）</span>`);
+  addRow('概算料金', `¥${estimate.toLocaleString()} <span style="font-size:11px;color:var(--muted);">（税込。${areaIsOther ? 'エリアが「その他」のため交通費は別途ご相談。' : '交通費はエリアによる概算。'}詳細な撮影場所によって変動する場合があります。最終金額はご予約確定時にご案内）</span>`);
   document.getElementById('confirm-body').innerHTML = rows.join('');
 
   const cmsg = document.getElementById('confirm-msg');
