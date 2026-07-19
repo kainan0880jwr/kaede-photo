@@ -1124,6 +1124,17 @@ footer{
       <div class="sim-wrap" style="margin-bottom:48px;">
         <h2 class="sim-title">かんたん料金チェック</h2>
         <div class="sim-sub">プラン・オプション・エリアを選ぶだけで概算料金がわかります。</div>
+        <div class="sim-step" style="margin-bottom:20px;">
+          <div class="sim-label">撮影ジャンル</div>
+          <select class="sim-select" id="sim-genre" onchange="renderSimGenreOptions();calcSim()" aria-label="撮影ジャンルを選ぶ">
+            <option value="">指定なし（家族写真など）</option>
+            <option value="newborn">ニューボーン</option>
+            <option value="maternity">マタニティ</option>
+            <option value="omiyamairi">お宮参り</option>
+            <option value="shichigosan">七五三</option>
+            <option value="birthday">ファーストバースデー</option>
+          </select>
+        </div>
         <div class="sim-grid">
           <div class="sim-step">
             <div class="sim-num">01</div>
@@ -1148,6 +1159,7 @@ footer{
             <label class="sim-check"><input type="checkbox" class="so" value="-1000" onchange="calcSim()"> SNS割 −1,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-3000" onchange="calcSim()"> ご紹介割 −3,000円</label>
             <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります</div>
+            <div id="sim-genre-options"></div>
           </div>
           <div class="sim-step">
             <div class="sim-num">03</div>
@@ -1983,6 +1995,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof toggleFormMovie === 'function') toggleFormMovie();
   if (typeof toggleSimMovie === 'function') toggleSimMovie();
   if (typeof renderKidsFields === 'function') renderKidsFields();
+  if (typeof renderGenreOptions === 'function') renderGenreOptions();
+  if (typeof renderSimGenreOptions === 'function') renderSimGenreOptions();
   if (typeof applyGenreFromUrl === 'function') applyGenreFromUrl();
   // 撮影希望日は本日以降のみ選択可（過去日の送信を防止）
   const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD（ローカルTZ）
@@ -2129,6 +2143,14 @@ function simToBooking(){
   }
   if(typeof toggleFormMovie === 'function') toggleFormMovie();
 
+  // 撮影ジャンル：シミュレーター側の選択を予約フォームへ引き継ぐ
+  const simGenreSel = document.getElementById('sim-genre');
+  const formGenreSel = document.getElementById('f-genre');
+  if(simGenreSel && formGenreSel){
+    formGenreSel.value = simGenreSel.value;
+    if(typeof renderGenreOptions === 'function') renderGenreOptions();
+  }
+
   // オプション：フォーム側をいったん解除し、シミュレーターのチェックをラベル一致で反映
   const norm = t => (t || '').replace(/[\s　]/g, '').replace(/[＋+−\-][\d,]+円/g, '');
   const formRows = [...document.querySelectorAll('#page-booking .opt-group .check-row')];
@@ -2213,15 +2235,37 @@ function renderGenreOptions(){
     + '</div>';
 }
 
-// LPの「予約する」ボタン（?genre=xxx#booking）からの遷移でジャンルを自動選択
+// かんたん料金チェック（シミュレーター）側のジャンル別オプション表示
+function renderSimGenreOptions(){
+  const genre = document.getElementById('sim-genre')?.value;
+  const container = document.getElementById('sim-genre-options');
+  if(!container) return;
+  const items = GENRE_OPTIONS[genre] || [];
+  if(!items.length){
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = items.map(label =>
+    '<label class="sim-check"><input type="checkbox" class="so" value="' + _optYen(label) + '" onchange="calcSim()"> ' + label + '</label>'
+  ).join('');
+}
+
+// LPの「予約する」「撮影プランを見る」ボタン（?genre=xxx）からの遷移でジャンルを自動選択
 function applyGenreFromUrl(){
   const genre = new URLSearchParams(location.search).get('genre');
-  const sel = document.getElementById('f-genre');
-  if(!sel || !genre) return;
-  const hasOption = [...sel.options].some(o => o.value === genre);
-  if(hasOption){
-    sel.value = genre;
+  if(!genre) return;
+
+  const formSel = document.getElementById('f-genre');
+  if(formSel && [...formSel.options].some(o => o.value === genre)){
+    formSel.value = genre;
     renderGenreOptions();
+  }
+
+  const simSel = document.getElementById('sim-genre');
+  if(simSel && [...simSel.options].some(o => o.value === genre)){
+    simSel.value = genre;
+    renderSimGenreOptions();
+    if(typeof calcSim === 'function') calcSim();
   }
 }
 
