@@ -47,8 +47,13 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
   console.error('[ratelimit] 警告: Upstashが未設定のため、レート制限が無効です。環境変数を確認してください。');
 }
 
-// 予約プランのホワイトリスト（先頭一致で判定）
-const ALLOWED_PLAN_PREFIXES = ['simple', 'standard', 'special', 'premium'];
+// 予約プランのホワイトリスト（フォームの選択肢と完全一致で判定）
+const ALLOWED_PLANS = new Set([
+  'simple ¥19,000',
+  'standard ¥29,000（人気No.1）',
+  'special ¥39,000',
+  'premium ¥77,000',
+]);
 
 // --- ヘルパー ------------------------------------------------
 function corsHeaders() {
@@ -121,12 +126,8 @@ function validate(data) {
     errors.push('ご希望日の形式が正しくありません。');
   }
   // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）
-  if (data.plan) {
-    const key = data.plan.toLowerCase();
-    const ok = ALLOWED_PLAN_PREFIXES.some((p) => key.startsWith(p));
-    if (!ok || data.plan.length > 100) {
-      errors.push('ご希望のプランが正しくありません。');
-    }
+  if (data.plan && !ALLOWED_PLANS.has(data.plan)) {
+    errors.push('ご希望のプランが正しくありません。');
   }
 
   return errors;
@@ -160,23 +161,9 @@ export const handler = async (event) => {
     return json(200, { ok: true });
   }
 
-  // 2-a. 冪等性（二重送信対策）：同じ requestId が短時間に再送されたら重複とみなす
-  if (redis) {
-    const reqId = String(payload.requestId || '').slice(0, 64);
-    if (reqId) {
-      try {
-        const set = await redis.set(`booking:req:${reqId}`, '1', { nx: true, ex: 3600 });
-        if (set === null) {
-          // 既に処理済み（再送・戻る操作など）→ 成功扱いで静かに終了
-          return json(200, { ok: true, duplicate: true });
-        }
-      } catch (err) {
-        console.error('[idempotency] failed, continuing:', err);
-      }
-    }
-  }
-
-  // 2-b. レート制限（IPごと ＋ サイト全体）
+  // 2-a. レート制限（IPごと ＋ サイト全体）
+  // ※ 冪等性キーの書き込みより先に行い、レート制限で弾かれるリクエストが
+  //   Redisに書き込みを発生させない（コストDoS対策）ようにする
   if (ratelimit) {
     try {
       const ip = getClientIp(event);
@@ -196,6 +183,32 @@ export const handler = async (event) => {
     }
   }
 
+  // 2-b. 冪等性（二重送信対策）：同じ requestId が短時間に再送されたら重複とみなす
+  //   後続処理（バリデーション・メール送信）が失敗した場合はキーを解放し、
+  //   お客様が再送信したときに誤って「成功扱い（duplicate）」にならないようにする
+  const reqId = String(payload.requestId || '').slice(0, 64);
+  let idempotencyKeySet = false;
+  if (redis && reqId) {
+    try {
+      const set = await redis.set(`booking:req:${reqId}`, '1', { nx: true, ex: 3600 });
+      if (set === null) {
+        // 既に処理済み（再送・戻る操作など）→ 成功扱いで静かに終了
+        return json(200, { ok: true, duplicate: true });
+      }
+      idempotencyKeySet = true;
+    } catch (err) {
+      console.error('[idempotency] failed, continuing:', err);
+    }
+  }
+  async function releaseIdempotencyKey() {
+    if (!redis || !idempotencyKeySet) return;
+    try {
+      await redis.del(`booking:req:${reqId}`);
+    } catch (err) {
+      console.error('[idempotency] release failed:', err);
+    }
+  }
+
   // 3. バリデーション
   const now = new Date();
   const data = {
@@ -211,6 +224,7 @@ export const handler = async (event) => {
 
   const errors = validate(data);
   if (errors.length > 0) {
+    await releaseIdempotencyKey();
     return json(400, { ok: false, error: errors.join('\n') });
   }
 
@@ -237,6 +251,7 @@ export const handler = async (event) => {
   if (ownerResult?.error) {
     // だいきさんへの通知が失敗 = 予約を取りこぼす致命的状態なのでエラーを返す（お客様宛は送らない）
     console.error('[mail:owner] failed:', ownerResult.error);
+    await releaseIdempotencyKey();
     return json(502, {
       ok: false,
       error: '送信処理に失敗しました。時間をおいて再度お試しください。',

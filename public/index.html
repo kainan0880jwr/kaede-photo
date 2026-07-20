@@ -445,10 +445,10 @@ ul{list-style:none;}
   display:flex;align-items:center;justify-content:center;min-height:60px;
   background:var(--terra-lt);border:1px solid var(--terra-lt);border-radius:6px;
   font-family:var(--f-ui);font-size:11px;font-weight:500;letter-spacing:0;
-  color:#fff;text-align:center;line-height:1.35;padding:10px 4px;white-space:nowrap;
+  color:var(--brown);text-align:center;line-height:1.35;padding:10px 4px;white-space:nowrap;
   transition:all var(--dur) var(--ease);
 }
-.genre-card:hover{background:var(--terra);border-color:var(--terra);transform:translateY(-3px);box-shadow:0 8px 20px rgba(181,99,63,.28);}
+.genre-card:hover{background:var(--terra-dk);border-color:var(--terra-dk);color:#fff;transform:translateY(-3px);box-shadow:0 8px 20px rgba(181,99,63,.28);}
 @media(max-width:1023px){
   .genre-grid{grid-template-columns:repeat(3,1fr);max-width:420px;}
 }
@@ -524,8 +524,8 @@ ul{list-style:none;}
   padding:20px 28px;display:flex;
   align-items:center;justify-content:space-between;
 }
-.sim-result-label{font-size:12px;letter-spacing:.08em;opacity:.8;margin-bottom:2px;}
-.sim-result-sub{font-size:10px;opacity:.6;}
+.sim-result-label{font-size:12px;letter-spacing:.08em;opacity:.9;margin-bottom:2px;}
+.sim-result-sub{font-size:11px;opacity:.9;}
 .sim-total{
   font-family:var(--f-display);font-size:38px;
   font-weight:300;letter-spacing:.03em;
@@ -829,6 +829,8 @@ footer{
   .heading-lg{font-size:28px;}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
+  /* iOSでフォーカス時に自動ズームされないよう16px以上を確保 */
+  .form-input,.form-select,.sim-select{font-size:16px;}
   .section{padding:56px 0;}
   .cta-block{padding:56px 20px;}
   body{padding-bottom:64px;}
@@ -939,8 +941,8 @@ footer{
       <div style="margin-bottom:40px;">
         <p class="body-sm text-center" style="margin-bottom:4px;">撮影ジャンルから選ぶ</p>
         <div class="genre-grid">
-          <a href="newborn.html" class="genre-card">ニューボーン</a>
           <a href="maternity.html" class="genre-card">マタニティ</a>
+          <a href="newborn.html" class="genre-card">ニューボーン</a>
           <a href="omiyamairi.html" class="genre-card">お宮参り</a>
           <a href="birthday.html" class="genre-card">ファーストバースデー</a>
           <a href="shichigosan.html" class="genre-card">七五三</a>
@@ -1034,11 +1036,11 @@ footer{
         <li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li>
       </ul>
       <ul class="footer-links">
-        <li><a href="newborn.html">ニューボーンフォトの出張撮影</a></li>
         <li><a href="maternity.html">マタニティフォトの出張撮影</a></li>
+        <li><a href="newborn.html">ニューボーンフォトの出張撮影</a></li>
         <li><a href="omiyamairi.html">お宮参りの出張撮影</a></li>
-        <li><a href="shichigosan.html">七五三の出張撮影</a></li>
         <li><a href="birthday.html">ファーストバースデーの出張撮影</a></li>
+        <li><a href="shichigosan.html">七五三の出張撮影</a></li>
       </ul>
       <div class="footer-social">
         <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
@@ -1128,11 +1130,11 @@ footer{
           <div class="sim-label">撮影ジャンル</div>
           <select class="sim-select" id="sim-genre" onchange="renderSimGenreOptions();calcSim()" aria-label="撮影ジャンルを選ぶ">
             <option value="">指定なし（家族写真など）</option>
-            <option value="newborn">ニューボーン</option>
             <option value="maternity">マタニティ</option>
+            <option value="newborn">ニューボーン</option>
             <option value="omiyamairi">お宮参り</option>
-            <option value="shichigosan">七五三</option>
             <option value="birthday">ファーストバースデー</option>
+            <option value="shichigosan">七五三</option>
           </select>
         </div>
         <div class="sim-grid">
@@ -1179,7 +1181,7 @@ footer{
         <div class="sim-result">
           <div>
             <div class="sim-result-label">概算料金（税込）</div>
-            <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
+            <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定前にメールでご案内し、ご了承いただいたうえで確定します。</div>
           </div>
           <div class="sim-total" id="sim-total" aria-live="polite">¥29,000</div>
         </div>
@@ -1202,6 +1204,7 @@ footer{
               <tr><td>データ追加（10枚単位）</td><td class="price">＋3,000円</td></tr>
               <tr><td>ご自身でデータ選択</td><td class="price">＋3,000円</td></tr>
               <tr><td>2箇所での撮影（＋20枚）</td><td class="price">＋10,000円</td></tr>
+              <tr><td>ニューボーンフォトセット<br><span style="font-size:11px;color:var(--muted);">ラタンかご・お衣装・レース敷物（ニューボーンフォトをご希望の方向け）</span></td><td class="price">＋2,000円</td></tr>
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
               <tr><td>SNS割<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。掲載範囲（お顔を含む／含まない）はお選びいただけ、お子さまの掲載は保護者さまの同意をいただいたうえで行います。掲載後もいつでも削除のご依頼が可能です。</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>ご紹介割（紹介者・ご本人）</td><td class="price discount">−3,000円</td></tr>
@@ -1424,7 +1427,7 @@ footer{
       <!-- Form -->
       <div class="form-wrap">
         <div style="background:var(--white);border:1px solid var(--beige);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text);line-height:1.9;">
-          ご予約確定後に <strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）</strong> をお預かりします。<br>
+          フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）のお支払いをもってご予約確定</strong>となります。<br>
           <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
           <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
         </div>
@@ -1443,7 +1446,7 @@ footer{
           <div class="form-row">
             <div class="form-field">
               <label class="form-label" for="f-date1">撮影希望日 第1希望 <span class="req">*</span></label>
-              <input class="form-input" id="f-date1" name="date1" type="date" required>
+              <input class="form-input" id="f-date1" name="date1" type="date" required onchange="syncWeekendSurcharge()">
             </div>
             <div class="form-field">
               <label class="form-label" for="f-date2">撮影希望日 第2希望</label>
@@ -1454,11 +1457,11 @@ footer{
             <label class="form-label" for="f-genre">撮影ジャンル</label>
             <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions();updateBookingTotal()">
               <option value="">指定なし（家族写真など）</option>
-              <option value="newborn">ニューボーン</option>
               <option value="maternity">マタニティ</option>
+              <option value="newborn">ニューボーン</option>
               <option value="omiyamairi">お宮参り</option>
-              <option value="shichigosan">七五三</option>
               <option value="birthday">ファーストバースデー</option>
+              <option value="shichigosan">七五三</option>
             </select>
           </div>
           <div class="form-field">
@@ -1474,7 +1477,7 @@ footer{
               <option value="5000" data-area="和歌山県南部">和歌山県南部 ＋5,000円</option>
               <option value="0" data-area="その他">その他（ご相談・料金は変動します）</option>
             </select>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定前にメールでご案内し、ご了承いただいたうえで確定します。</div>
           </div>
           <div class="form-field">
             <label class="form-label" for="f-location">撮影場所 <span class="req">*</span></label>
@@ -1495,7 +1498,7 @@ footer{
             <div class="form-label">オプション（複数選択可）</div>
             <div class="opt-group">
               <div class="opt-group-title">追加オプション</div>
-              <label class="check-row"><input type="checkbox"> 土日祝日 ＋3,000円</label>
+              <label class="check-row"><input type="checkbox" id="f-weekend"> 土日祝日 ＋3,000円</label>
               <label class="check-row"><input type="checkbox" data-excl="form-delivery"> 早期納品（7日以内） ＋5,000円</label>
               <label class="check-row"><input type="checkbox" data-excl="form-delivery"> 早期納品（10日以内） ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> データ追加（10枚単位） ＋3,000円</label>
@@ -1517,14 +1520,15 @@ footer{
           <div class="sim-result" style="margin-bottom:24px;">
             <div>
               <div class="sim-result-label">概算料金（税込）</div>
-              <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定時にご案内します。</div>
+              <div class="sim-result-sub">※ 交通費はエリアによる概算です。詳細な撮影場所によって金額が変動する場合があります。正式な金額はご予約確定前にメールでご案内し、ご了承いただいたうえで確定します。</div>
             </div>
             <div class="sim-total" id="booking-total" aria-live="polite">¥0</div>
           </div>
 
           <div class="form-field">
             <label class="form-label" for="f-kids-num">お子さまの人数 <span class="req">*</span></label>
-            <input class="form-input" id="f-kids-num" name="kids_count" type="number" min="1" max="10" placeholder="例：2" required oninput="renderKidsFields()">
+            <input class="form-input" id="f-kids-num" name="kids_count" type="number" min="0" max="10" placeholder="例：2" required oninput="renderKidsFields()">
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">※ すでにお子さまがいらっしゃる場合はその人数を、マタニティ撮影等で最初のお子さまがまだお生まれでない場合は「0」とご入力ください。</div>
           </div>
 
           <!-- 人数に応じて「お名前・年齢」欄を自動生成 -->
@@ -1571,7 +1575,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1585,13 +1589,13 @@ footer{
 
       <div class="policy-intro">
         <strong style="display:block;font-size:16px;color:var(--brown);margin-bottom:10px;">安心保証金とは？</strong>
-        万が一キャンセルとなった場合も、<strong>キャンセル料は一律2,000円</strong>（お預かりする安心保証金のみ）です。<br>
+        万が一、撮影前にキャンセルとなった場合も、<strong>キャンセル料は一律2,000円</strong>（お預かりする安心保証金のみ）です。撮影完了後のキャンセル・返金はお受けできません。<br>
         ご予約時にお預かりする <strong>2,000円</strong> の保証金で、直前の無断キャンセルなどを防ぎ、<strong>お客様とカメラマン双方が安心して撮影日を迎えるため</strong>の制度です。<span style="color:var(--terra);">撮影当日に全額そのままお返しします</span>ので、実質的なご負担はありません。
       </div>
       <div style="background:#FAEEED;border:1px solid #e7cfc9;border-radius:6px;padding:14px 16px;margin-bottom:24px;font-size:13px;line-height:1.9;color:var(--red-text);">
         <strong>※ 保証金が返金されない場合があります。</strong><br>
         撮影日の <strong>4日前以降のお客様都合キャンセル（前日・当日を含む）</strong> および <strong>無断キャンセル</strong> の場合は、お預かりした保証金2,000円をキャンセル料に充当し、返金いたしません。<br>
-        なお、<strong>お子さまの急な体調不良・悪天候の場合は、期日にかかわらず無料で日程変更</strong>いただけます（保証金はそのままお預かりし、変更後の撮影日に返金します）。<br>
+        なお、<strong>お子さまの急な体調不良・悪天候の場合は、期日にかかわらず無料で日程変更</strong>いただけます（保証金はそのままお預かりし、変更後の撮影日に返金します）。日程変更ではなく撮影自体を取りやめたい場合も、体調不良・悪天候などやむを得ないご事情であれば、期日にかかわらず保証金を全額返金いたしますので、その旨をご連絡ください。<br>
         返金は <strong>PayPay送金または銀行振込</strong> にて行います（振込手数料は当方が負担します）。
       </div>
 
@@ -1613,8 +1617,9 @@ footer{
       <div class="policy-block">
         <div class="policy-hd green">✓ お支払いと返金の流れ</div>
         <div class="policy-bd">
-          ① ご予約確定後、安心保証金 2,000円（PayPayまたは振込）をお支払い<br>
-          ② 撮影当日に、お預かりした2,000円を全額そのまま返金
+          ① フォーム送信後、当方より内容確認のご連絡（正式な金額のご案内を含む）<br>
+          ② 安心保証金 2,000円（PayPayまたは振込）のお支払いをもってご予約確定<br>
+          ③ 撮影当日に、お預かりした2,000円を全額そのまま返金
           <div class="policy-positive">実質的なご負担なくご予約いただけます。</div>
         </div>
       </div>
@@ -1738,7 +1743,7 @@ footer{
           <span class="faq-q-inner"><span class="faq-q-mark">Q</span><span>七五三やお宮参り、マタニティ・ニューボーン撮影もお願いできますか？</span></span>
           <span class="faq-icon" aria-hidden="true">＋</span>
         </button>
-        <div class="faq-a">はい。子ども・家族写真のほか、<a href="newborn.html" style="color:var(--terra);text-decoration:underline;">ニューボーン</a>、<a href="maternity.html" style="color:var(--terra);text-decoration:underline;">マタニティフォト</a>、<a href="omiyamairi.html" style="color:var(--terra);text-decoration:underline;">お宮参り</a>、<a href="shichigosan.html" style="color:var(--terra);text-decoration:underline;">七五三</a>、<a href="birthday.html" style="color:var(--terra);text-decoration:underline;">ファーストバースデー</a>など、人生の節目の撮影に幅広く対応しています。ギャラリーでカテゴリー別の作例をご覧いただけます。</div>
+        <div class="faq-a">はい。子ども・家族写真のほか、<a href="maternity.html" style="color:var(--terra);text-decoration:underline;">マタニティフォト</a>、<a href="newborn.html" style="color:var(--terra);text-decoration:underline;">ニューボーン</a>、<a href="omiyamairi.html" style="color:var(--terra);text-decoration:underline;">お宮参り</a>、<a href="birthday.html" style="color:var(--terra);text-decoration:underline;">ファーストバースデー</a>、<a href="shichigosan.html" style="color:var(--terra);text-decoration:underline;">七五三</a>など、人生の節目の撮影に幅広く対応しています。ギャラリーでカテゴリー別の作例をご覧いただけます。</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
@@ -1818,11 +1823,11 @@ footer{
 
       <div class="priv-section">
         <div class="priv-heading">個人情報の収集について</div>
-        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・撮影場所・エリア<br>・お子さまの情報（人数・年齢）　・その他ご入力いただいた情報</div>
+        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・撮影場所・エリア<br>・お子さまの情報（お名前・ニックネーム、人数・年齢）　・その他ご入力いただいた情報</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">利用目的</div>
-        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡<br>・撮影データの納品<br>・お問い合わせへの回答</div>
+        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡<br>・撮影データの納品<br>・お問い合わせへの回答<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例としてポートフォリオ・SNS（Instagram等）に掲載<br><br>SNS等への掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">第三者提供</div>
@@ -1838,7 +1843,7 @@ footer{
       </div>
       <div class="priv-section">
         <div class="priv-heading">アクセス解析（Cookie）</div>
-        <div class="priv-body">当サイトでは、サイトの利用状況を把握するため Google Analytics（Google LLC／米国）を利用しています。これに伴いCookieを使用し、匿名の利用データ（アクセス数・閲覧ページ等）を収集します。個人を特定する情報は含まれません。ブラウザの設定でCookieを無効にすることで収集を拒否できます。</div>
+        <div class="priv-body">当サイトでは、サイトの利用状況を把握するため Google Analytics（Google LLC／米国）を利用しています。これに伴いCookieを使用し、匿名の利用データ（アクセス数・閲覧ページ等）を収集します。当方がこれらの情報からお客様個人を特定することはありません。ブラウザの設定でCookieを無効にすることで収集を拒否できます。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">保管期間</div>
@@ -1879,9 +1884,9 @@ footer{
           <tr><td style="color:var(--brown);">メールアドレス</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">kaepafu1995@gmail.com</td></tr>
           <tr><td style="color:var(--brown);">販売価格</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">各撮影プランに表示（¥19,000〜¥77,000・税込）。オプション・交通費は別途。詳細は<a href="#" onclick="goPage('plan');return false;" style="color:var(--terra);text-decoration:underline;">撮影プラン</a>をご確認ください。</td></tr>
           <tr><td style="color:var(--brown);">商品代金以外の必要料金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">交通費（エリア別・プランページ参照）、各種オプション料金、お振込の場合の振込手数料</td></tr>
-          <tr><td style="color:var(--brown);">安心保証金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約確定後に2,000円（PayPayまたは振込）をお預かりし、撮影当日に全額返金します。詳細は<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a>。</td></tr>
+          <tr><td style="color:var(--brown);">安心保証金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">2,000円（PayPayまたは振込）のお支払いをもってご予約確定となり、撮影当日に全額返金します。詳細は<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a>。</td></tr>
           <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">PayPay／銀行振込</td></tr>
-          <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：ご予約確定後。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。</td></tr>
+          <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：フォーム送信後の内容確認のご連絡を経て、お支払いをもってご予約確定。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。</td></tr>
           <tr><td style="color:var(--brown);">役務の提供時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約時に確定した撮影日に撮影を行います。撮影データは撮影後約1ヶ月（premiumプランは約1ヶ月半）でオンライン納品します。</td></tr>
           <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。</td></tr>
         </tbody>
@@ -1924,9 +1929,10 @@ footer{
       <p style="font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.7;">以下の内容でお申し込みを受け付けます。ご確認のうえ、よろしければ「この内容で申し込む」を押してください。</p>
       <dl id="confirm-body" style="margin:0;font-size:13px;line-height:1.8;color:var(--text);"></dl>
       <div style="background:var(--surface);border-radius:6px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:var(--text);line-height:1.85;">
-        <strong>お支払い</strong>：安心保証金2,000円＝ご予約確定後にPayPayまたは銀行振込。撮影料金＝撮影当日に現地で現金またはPayPay。<br>
+        <strong>お支払い</strong>：安心保証金2,000円（PayPayまたは銀行振込）のお支払いをもってご予約確定となります。撮影料金＝撮影当日に現地で現金またはPayPay。<br>
         <strong>データ納品時期</strong>：撮影後 約1ヶ月（premiumは約1ヶ月半）にオンライン納品。<br>
-        <strong>キャンセル・返金</strong>：撮影日5日前までのご連絡で保証金を全額返金。4日前以降のお客様都合・無断キャンセルは保証金2,000円をキャンセル料に充当し返金なし（体調不良・悪天候は無料で日程変更）。撮影完了後のキャンセル・返金は不可。
+        <strong>キャンセル・返金</strong>：撮影日5日前までのご連絡で保証金を全額返金。4日前以降のお客様都合・無断キャンセルは保証金2,000円をキャンセル料に充当し返金なし（体調不良・悪天候は無料で日程変更）。撮影完了後のキャンセル・返金は不可。<br>
+        詳しくは<a href="#" onclick="goPage('tokusho');return false;" style="color:var(--terra);text-decoration:underline;">特定商取引法に基づく表記</a>をご確認ください。
       </div>
       <div class="flex-gap" style="margin-top:20px;justify-content:flex-end;">
         <button type="button" class="btn btn-ghost" onclick="closeConfirm()">修正する</button>
@@ -2015,6 +2021,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const hash = location.hash.replace('#', '');
   const initialPage = (hash && document.getElementById('page-' + hash)) ? hash : 'top';
   goPage(initialPage, { updateHistory: false });
+  // 初期状態をhistoryに記録し、直後の戻る操作でtopへ誤遷移しないようにする
+  history.replaceState({ page: initialPage }, '', location.href);
   // ブラウザの復元・オートフィルに備え、フォームの動的表示を初期同期
   if (typeof toggleFormMovie === 'function') toggleFormMovie();
   if (typeof toggleSimMovie === 'function') toggleSimMovie();
@@ -2153,6 +2161,7 @@ function selectPlanAndBook(planKey){
     }
     if(typeof toggleFormMovie === 'function') toggleFormMovie();
   }
+  if(typeof updateBookingTotal === 'function') updateBookingTotal();
   goPage('booking');
 }
 
@@ -2209,13 +2218,15 @@ function simToBooking(){
 
 function calcSim(){
   const plan = parseInt(document.getElementById('sp').value) || 0;
-  const area = parseInt(document.getElementById('sa').value) || 0;
+  const areaSel = document.getElementById('sa');
+  const area = parseInt(areaSel.value) || 0;
+  const areaIsOther = areaSel.options[areaSel.selectedIndex]?.dataset.area === 'その他';
   let opts = 0;
   document.querySelectorAll('.so').forEach(c => {
     if(c.checked) opts += parseInt(c.value) || 0;
   });
   const total = Math.max(0, plan + area + opts);
-  document.getElementById('sim-total').textContent = '¥' + total.toLocaleString();
+  document.getElementById('sim-total').textContent = '¥' + total.toLocaleString() + (areaIsOther ? '＋交通費別途' : '');
 }
 
 /* ────────────────────────────────
@@ -2230,6 +2241,7 @@ document.addEventListener('change', e => {
       if (other !== el) other.checked = false;
     });
     if (typeof calcSim === 'function') calcSim();
+    if (typeof updateBookingTotal === 'function') updateBookingTotal();
   }
 });
 
@@ -2314,13 +2326,31 @@ function applyGenreFromUrl(){
 function updateBookingTotal(){
   const el = document.getElementById('booking-total');
   if(!el) return;
-  const planYen = _planYen(document.getElementById('f-plan')?.value || '');
+  const planSel = document.getElementById('f-plan');
+  if(!planSel?.value){
+    el.textContent = '—';
+    return;
+  }
+  const planYen = _planYen(planSel.value);
   const optYen = [...document.querySelectorAll('#page-booking .opt-group .check-row')]
     .filter(row => row.querySelector('input[type="checkbox"]')?.checked)
     .reduce((sum, row) => sum + _optYen(row.textContent.trim()), 0);
-  const areaYen = parseInt(document.getElementById('f-area')?.value, 10) || 0;
+  const areaSel = document.getElementById('f-area');
+  const areaYen = parseInt(areaSel?.value, 10) || 0;
+  const areaIsOther = areaSel && areaSel.options[areaSel.selectedIndex]?.dataset.area === 'その他';
   const total = Math.max(0, planYen + optYen + areaYen);
-  el.textContent = '¥' + total.toLocaleString();
+  el.textContent = '¥' + total.toLocaleString() + (areaIsOther ? '＋交通費別途' : '');
+}
+
+// 撮影希望日（第1希望）が土日の場合、土日祝日オプションを自動チェック
+// ※ 祝日は日付だけでは判定できないため対象外（該当する場合は手動でご確認ください）
+function syncWeekendSurcharge(){
+  const dateEl = document.getElementById('f-date1');
+  const cb = document.getElementById('f-weekend');
+  if(!dateEl || !cb || !dateEl.value) return;
+  const day = new Date(dateEl.value + 'T00:00:00').getDay();
+  cb.checked = (day === 0 || day === 6);
+  updateBookingTotal();
 }
 
 // オプション（追加オプション・割引・ジャンル別オプション）のチェック変更をまとめて検知
@@ -2402,7 +2432,7 @@ function _optYen(label){
   if(!m) return 0;
   return (neg?-1:1)*parseInt(m[1],10);
 }
-function _escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function _escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 // 送信ボタン押下 → バリデーション後、確認画面（特商法12条の6）を表示
 function submitForm(e){
@@ -2492,7 +2522,7 @@ function submitForm(e){
   addRow('撮影場所', _escHtml(val('f-location')) || '—');
   addRow('プラン', _escHtml(planLabel) || '—');
   if(options.length) addRow('オプション', options.map(_escHtml).join('<br>'));
-  addRow('概算料金', `¥${estimate.toLocaleString()} <span style="font-size:11px;color:var(--muted);">（税込。${areaIsOther ? 'エリアが「その他」のため交通費は別途ご相談。' : '交通費はエリアによる概算。'}詳細な撮影場所によって変動する場合があります。最終金額はご予約確定時にご案内）</span>`);
+  addRow('概算料金', `¥${estimate.toLocaleString()}${areaIsOther ? '＋交通費別途' : ''} <span style="font-size:11px;color:var(--muted);">（税込。${areaIsOther ? 'エリアが「その他」のため交通費は別途ご相談のうえ確定します。' : '交通費はエリアによる概算。'}詳細な撮影場所によって変動する場合があります。最終金額はご予約確定時にご案内）</span>`);
   document.getElementById('confirm-body').innerHTML = rows.join('');
 
   const cmsg = document.getElementById('confirm-msg');
@@ -2537,6 +2567,8 @@ async function sendBooking(){
       toggleReferral();
       renderKidsFields();
       toggleFormMovie();
+      renderGenreOptions();
+      updateBookingTotal();
       updateMsgCount();
       pendingBooking = null;
       closeConfirm();
@@ -2562,9 +2594,9 @@ function showConfirmMsg(text){
 }
 
 /* ────────────────────────────────
-   ロゴクリック
+   ハンバーガーメニュー起動
 ──────────────────────────────── */
-document.querySelector('.nav-logo').addEventListener('click', () => goPage('top'));
+document.getElementById('hamburger').addEventListener('click', () => toggleMenu());
 </script>
 
 </body>
