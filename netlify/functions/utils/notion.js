@@ -10,6 +10,10 @@
 //   ご要望      … Rich text
 //   ステータス  … Status または Select（既定値「新規」）
 //   受付日時    … Date
+//
+// 任意プロパティ（作成すると自動的に記録されるようになる。未作成でもエラーにはならない）:
+//   撮影ジャンル … Select
+//   エリア      … Rich text
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -21,6 +25,22 @@ function getClient() {
     cachedClient = new Client({ auth: process.env.NOTION_API_KEY });
   }
   return cachedClient;
+}
+
+// データベースのプロパティ名一覧（コールド起動ごとに1回だけ取得してキャッシュ）
+// 「撮影ジャンル」「エリア」など、まだ作成されていない可能性のある任意プロパティを
+// 安全に送るかどうかの判定に使う（未作成のプロパティを送るとNotion APIがエラーになるため）
+let cachedPropertyNames = null;
+async function getDatabasePropertyNames(databaseId) {
+  if (cachedPropertyNames) return cachedPropertyNames;
+  try {
+    const db = await getClient().databases.retrieve({ database_id: databaseId });
+    cachedPropertyNames = new Set(Object.keys(db.properties || {}));
+  } catch (err) {
+    console.error('[notion] databases.retrieve failed, skipping optional properties:', err);
+    cachedPropertyNames = new Set();
+  }
+  return cachedPropertyNames;
 }
 
 // Notionのrich_text/title用に長すぎる文字列を安全な長さに丸める
@@ -71,6 +91,16 @@ export async function createBookingRecord(data) {
   if (data.plan) {
     // Notionのセレクト名はカンマ不可のため除去（例: ¥29,000 → ¥29000）
     properties['プラン'] = { select: { name: text(data.plan).replace(/,/g, '') } };
+  }
+
+  // 「撮影ジャンル」「エリア」は、データベース側にプロパティが作成されている場合のみ送信
+  // （未作成の状態で送るとNotion APIがエラーを返し、予約記録全体が失敗してしまうため）
+  const existingProps = await getDatabasePropertyNames(databaseId);
+  if (data.genre && existingProps.has('撮影ジャンル')) {
+    properties['撮影ジャンル'] = { select: { name: text(data.genre).replace(/,/g, '') } };
+  }
+  if (data.area && existingProps.has('エリア')) {
+    properties['エリア'] = { rich_text: richText(data.area) };
   }
 
   return getClient().pages.create({

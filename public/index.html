@@ -1988,7 +1988,9 @@ function goPage(name, opts = {}){
   if(descEl && meta.desc) descEl.content = meta.desc;
 
   // History API（戻るボタン対応）
-  const url = name === 'top' ? location.pathname : location.pathname + '#' + name;
+  // location.searchも保持し、LPから引き継いだ ?genre=xxx がページ遷移で消えないようにする
+  const basePath = location.pathname + location.search;
+  const url = name === 'top' ? basePath : basePath + '#' + name;
   if(opts.updateHistory !== false){
     history.pushState({ page: name }, meta.title, url);
   }
@@ -2317,6 +2319,20 @@ function applyGenreFromUrl(){
     renderSimGenreOptions();
     if(typeof calcSim === 'function') calcSim();
   }
+
+  // ギャラリーページに ?genre=xxx で着地した場合、該当カテゴリタブを自動選択
+  const GENRE_TO_GALLERY_FILTER = {
+    newborn: 'baby',
+    maternity: 'maternity',
+    omiyamairi: 'omiyamairi',
+    shichigosan: 'shichigosan',
+    birthday: 'sekku',
+  };
+  const galleryFilter = GENRE_TO_GALLERY_FILTER[genre];
+  const galleryPage = document.getElementById('page-gallery');
+  if(galleryFilter && galleryPage && galleryPage.classList.contains('active') && typeof filterGallery === 'function'){
+    filterGallery(galleryFilter);
+  }
 }
 
 /* ────────────────────────────────
@@ -2502,6 +2518,8 @@ function submitForm(e){
     email: val('f-email'),
     preferredDate,
     plan: planLabel,
+    genre: genreLabel,
+    area: areaLabel,
     message: lines.join('\n'),
     company: (form.querySelector('input[name="company"]')?.value || ''), // honeypot
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)),
@@ -2528,12 +2546,50 @@ function submitForm(e){
   const cmsg = document.getElementById('confirm-msg');
   if(cmsg) cmsg.style.display = 'none';
   document.getElementById('confirm-overlay').style.display = 'block';
+  openConfirmFocusTrap();
+}
+
+/* ────────────────────────────────
+   確認ダイアログのフォーカス管理
+   （表示中はダイアログ内でTabを循環させ、Escapeで閉じ、
+   閉じたら元のフォーカス位置に戻す）
+──────────────────────────────── */
+let _confirmTriggerEl = null;
+function _confirmFocusableEls(){
+  const dialog = document.querySelector('#confirm-overlay [role="dialog"]');
+  if(!dialog) return [];
+  return [...dialog.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => !el.disabled && el.offsetParent !== null);
+}
+function _confirmKeydownHandler(e){
+  const overlay = document.getElementById('confirm-overlay');
+  if(!overlay || overlay.style.display === 'none') return;
+  if(e.key === 'Escape'){ closeConfirm(); return; }
+  if(e.key !== 'Tab') return;
+  const focusable = _confirmFocusableEls();
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(e.shiftKey && document.activeElement === first){
+    e.preventDefault(); last.focus();
+  } else if(!e.shiftKey && document.activeElement === last){
+    e.preventDefault(); first.focus();
+  }
+}
+function openConfirmFocusTrap(){
+  _confirmTriggerEl = document.activeElement;
+  const focusable = _confirmFocusableEls();
+  if(focusable.length) focusable[0].focus();
+  document.addEventListener('keydown', _confirmKeydownHandler);
 }
 
 // 確認画面を閉じる（修正する）
 function closeConfirm(){
   const ov = document.getElementById('confirm-overlay');
   if(ov) ov.style.display = 'none';
+  document.removeEventListener('keydown', _confirmKeydownHandler);
+  if(_confirmTriggerEl && typeof _confirmTriggerEl.focus === 'function') _confirmTriggerEl.focus();
+  _confirmTriggerEl = null;
 }
 
 // 確認画面「この内容で申し込む」→ 実際に送信

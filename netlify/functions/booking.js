@@ -129,6 +129,12 @@ function validate(data) {
   if (data.plan && !ALLOWED_PLANS.has(data.plan)) {
     errors.push('ご希望のプランが正しくありません。');
   }
+  if (data.genre && data.genre.length > 50) {
+    errors.push('撮影ジャンルの形式が正しくありません。');
+  }
+  if (data.area && data.area.length > 100) {
+    errors.push('エリアの形式が正しくありません。');
+  }
 
   return errors;
 }
@@ -217,6 +223,8 @@ export const handler = async (event) => {
     phone: (payload.phone || '').trim(),
     preferredDate: (payload.preferredDate || '').trim(),
     plan: (payload.plan || '').trim(),
+    genre: (payload.genre || '').trim(),
+    area: (payload.area || '').trim(),
     message: (payload.message || '').trim(),
     receivedAt: now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
     receivedAtISO: now.toISOString(),
