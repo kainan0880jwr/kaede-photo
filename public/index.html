@@ -1159,7 +1159,8 @@ footer{
             <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> ご自身でデータ選択 ＋3,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="10000" onchange="calcSim()"> 2箇所での撮影（＋20枚） ＋10,000円</label>
             <label class="sim-check" id="sim-movie-row"><input type="checkbox" class="so" id="sim-movie" value="39800" onchange="calcSim()"> お手紙ムービー ＋39,800円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="-1000" onchange="calcSim()"> SNS割 −1,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="-1000" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含む） −1,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" value="-500" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含まない） −500円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-3000" onchange="calcSim()"> ご紹介割 −3,000円</label>
             <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります</div>
             <div id="sim-genre-options"></div>
@@ -1207,7 +1208,8 @@ footer{
               <tr><td>2箇所での撮影（＋20枚）</td><td class="price">＋10,000円</td></tr>
               <tr><td>ニューボーンフォトセット<br><span style="font-size:11px;color:var(--muted);">ラタンかご・お衣装・レース敷物（ニューボーンフォトをご希望の方向け）</span></td><td class="price">＋2,000円</td></tr>
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
-              <tr><td>SNS割<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。掲載範囲（お顔を含む／含まない）はお選びいただけ、お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
+              <tr><td>SNS割（お顔を含む）<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
+              <tr><td>SNS割（お顔を含まない・パーツショットのみ）</td><td class="price discount">−500円</td></tr>
               <tr><td>ご紹介割（紹介者・ご本人）</td><td class="price discount">−3,000円</td></tr>
             </tbody>
           </table>
@@ -1509,7 +1511,8 @@ footer{
             </div>
             <div class="opt-group" style="margin-top:8px;">
               <div class="opt-group-title">割引</div>
-              <label class="check-row"><input type="checkbox"> SNS割（撮影写真をkaede photoのSNSに掲載可の方） −1,000円</label>
+              <label class="check-row"><input type="checkbox" data-excl="form-sns"> SNS割（顔を含む） −1,000円</label>
+              <label class="check-row"><input type="checkbox" data-excl="form-sns"> SNS割（顔を含まない） −500円</label>
               <label class="check-row"><input type="checkbox" id="referral-check" onchange="toggleReferral()"> ご紹介割 −3,000円（紹介者・ご本人どちらも）</label>
               <div id="referral-name" style="display:none;margin-top:8px;">
                 <input class="form-input" type="text" placeholder="ご紹介者のお名前">
