@@ -16,7 +16,7 @@
   gtag('config', 'G-RH2JQL8Y1V', { send_page_view: false });
 </script>
 <title>kaede photo — 子ども・家族専門出張カメラマン</title>
-<meta name="description" content="関西（大阪・和歌山・兵庫・奈良・京都）を中心に全国対応の子ども・家族専門出張カメラマン。七五三・お宮参り・マタニティ・ニューボーン・家族写真の出張撮影。交通費込みの安心価格、高画質レタッチ、オンラインデータ納品。">
+<meta name="description" content="関西（大阪・和歌山・兵庫・奈良・京都）を中心に全国対応の子ども・家族専門出張カメラマン。七五三・お宮参り・マタニティ・ニューボーン・家族写真の出張撮影。大阪府内・和歌山県北部は交通費無料、高画質レタッチ、オンラインデータ納品。">
 <meta name="keywords" content="関西 出張カメラマン,大阪 出張撮影,和歌山 カメラマン,子ども 写真,家族写真,七五三,お宮参り,マタニティフォト,ニューボーンフォト,出張撮影">
 
 <!-- 正規URL（独自ドメイン kaede-photo.com） -->
@@ -32,7 +32,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kaede-photo.com/">
 <meta property="og:title" content="kaede photo — 子ども・家族専門出張カメラマン">
-<meta property="og:description" content="関西（大阪・和歌山中心）から全国対応。七五三・お宮参り・マタニティ・ニューボーンも。交通費込みの安心価格で、公園・お家・どこへでも出張します。">
+<meta property="og:description" content="関西（大阪・和歌山中心）から全国対応。七五三・お宮参り・マタニティ・ニューボーンも。大阪府内・和歌山県北部は交通費無料、公園・お家・どこへでも出張します。">
 <meta property="og:image" content="https://kaede-photo.com/images/family-1.jpg">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
@@ -530,6 +530,12 @@ ul{list-style:none;}
 .sim-total{
   font-family:var(--f-display);font-size:38px;
   font-weight:300;letter-spacing:.03em;
+  white-space:nowrap;
+}
+/* 金額に幅（min〜max）がある場合は文字数が増えるためフォントを縮小 */
+.sim-total.is-range{font-size:24px;}
+@media(max-width:480px){
+  .sim-total.is-range{font-size:19px;}
 }
 
 /* ══════════════════════════════════════
@@ -957,7 +963,7 @@ footer{
           <div class="plan-price">¥19,000<span>（税込）</span></div>
         </div>
         <div class="plan-card featured">
-          <div class="plan-badge">人気 No.1</div>
+          <div class="plan-badge">おすすめ</div>
           <div class="plan-name">standard</div>
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 65cuts</div>
@@ -1067,7 +1073,7 @@ footer{
         <div style="font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;">全プラン共通</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px;color:var(--text);">
           <span>✓ 高画質レタッチ</span>
-          <span>✓ 交通費込み</span>
+          <span>✓ 対象エリア内 交通費込み</span>
           <span>✓ オンラインデータ納品</span>
           <span>✓ ご家族写真込み</span>
         </div>
@@ -1086,7 +1092,7 @@ footer{
           <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('simple');return false;">このプランで予約</a>
         </div>
         <div class="plan-card featured">
-          <div class="plan-badge">人気 No.1</div>
+          <div class="plan-badge">おすすめ</div>
           <div class="plan-name">standard</div>
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
           <ul class="plan-specs">
@@ -1158,11 +1164,12 @@ footer{
             <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> データ追加（10枚単位） ＋3,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="3000" onchange="calcSim()"> ご自身でデータ選択 ＋3,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="10000" onchange="calcSim()"> 2箇所での撮影（＋20枚） ＋10,000円</label>
+            <label class="sim-check"><input type="checkbox" class="so" data-min="6500" data-max="8000" onchange="calcSim()"> スタジオ撮影（目安） ＋6,500〜8,000円</label>
             <label class="sim-check" id="sim-movie-row"><input type="checkbox" class="so" id="sim-movie" value="39800" onchange="calcSim()"> お手紙ムービー ＋39,800円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-1000" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含む） −1,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-500" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含まない） −500円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-3000" onchange="calcSim()"> ご紹介割 −3,000円</label>
-            <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります。スタジオ撮影はスタジオにより料金が異なるため目安（幅）で表示しています。</div>
             <div id="sim-genre-options"></div>
           </div>
           <div class="sim-step">
@@ -1210,7 +1217,7 @@ footer{
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
               <tr><td>SNS割（お顔を含む）<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>SNS割（お顔を含まない・パーツショットのみ）</td><td class="price discount">−500円</td></tr>
-              <tr><td>ご紹介割（紹介者・ご本人）<br><span style="font-size:11px;color:var(--muted);">ご本人様（紹介された方）は次回のご予約時に3,000円引きが適用されます。</span></td><td class="price discount">−3,000円</td></tr>
+              <tr><td>ご紹介割（紹介者・ご本人）<br><span style="font-size:11px;color:var(--muted);">ご紹介された方はご予約時に3,000円引き。ご紹介いただいた方（紹介者）も、ご自身が次回ご予約される際に3,000円引きが適用されます。</span></td><td class="price discount">−3,000円</td></tr>
             </tbody>
           </table>
         </div>
@@ -1231,7 +1238,7 @@ footer{
           <p class="body-sm" style="margin-top:12px;">全国出張可能です。その他遠方エリアはご相談ください。</p>
 
           <h2 class="heading-md" style="margin-top:28px;">スタジオ撮影について</h2>
-          <p class="body-sm">お好みの雰囲気のレンタルスタジオを手配しての撮影も可能です。ご相談ください。<br><br>所要時間：約1.5時間<br>追加料金：約6,500〜8,000円（スタジオにより異なります）</p>
+          <p class="body-sm">お好みの雰囲気のレンタルスタジオを手配しての撮影も可能です。ご相談ください。<br><br>所要時間：約1.5時間<br>追加料金：約6,500〜8,000円（スタジオにより異なります）<br><br>上記の料金シミュレーター・予約フォームの「スタジオ撮影」オプションからも概算に含めていただけます。</p>
         </div>
       </div>
     </div>
@@ -1420,7 +1427,7 @@ footer{
         <div class="flow-arrow">→</div>
         <div class="flow-step"><div class="flow-num">03</div><div class="flow-label">予約確定</div></div>
         <div class="flow-arrow">→</div>
-        <div class="flow-step"><div class="flow-num">04</div><div class="flow-label">撮影当日</div></div>
+        <div class="flow-step"><div class="flow-num">04</div><div class="flow-label">撮影当日</div><div class="flow-note">プラン料金の残額を現地でお支払い</div></div>
         <div class="flow-arrow">→</div>
         <div class="flow-step hl"><div class="flow-num">05</div><div class="flow-label">2,000円<br><strong>全額返金</strong></div></div>
         <div class="flow-arrow">→</div>
@@ -1432,7 +1439,8 @@ footer{
         <div style="background:var(--white);border:1px solid var(--beige);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text);line-height:1.9;">
           フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）のお支払いをもってご予約確定</strong>となります。<br>
           <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
-          <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
+          <strong>これとは別に、プラン料金・オプション料金・交通費の合計（残額）は、撮影当日に現地で現金またはPayPayでお支払いいただきます。</strong><br>
+          <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は安心保証金は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
         </div>
 
         <form onsubmit="submitForm(event)" novalidate>
@@ -1491,7 +1499,7 @@ footer{
             <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie();updateBookingTotal()">
               <option value="">選択してください</option>
               <option>simple ¥19,000</option>
-              <option>standard ¥29,000（人気No.1）</option>
+              <option>standard ¥29,000（おすすめ）</option>
               <option>special ¥39,000</option>
               <option>premium ¥77,000</option>
             </select>
@@ -1507,8 +1515,10 @@ footer{
               <label class="check-row"><input type="checkbox"> データ追加（10枚単位） ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> ご自身でデータ選択 ＋3,000円</label>
               <label class="check-row"><input type="checkbox"> 2箇所での撮影（＋20枚） ＋10,000円</label>
+              <label class="check-row"><input type="checkbox" data-min="6500" data-max="8000"> スタジオ撮影（目安） ＋6,500〜8,000円</label>
               <label class="check-row" id="form-movie-row"><input type="checkbox" id="form-movie"> お手紙ムービー ＋39,800円</label>
             </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:-2px;margin-bottom:8px;">※ スタジオ撮影の料金はスタジオにより異なるため目安（幅）でのご案内です。正式な金額は内容確認時にご案内します。</div>
             <div class="opt-group" style="margin-top:8px;">
               <div class="opt-group-title">割引</div>
               <label class="check-row"><input type="checkbox" data-excl="form-sns"> SNS割（顔を含む） −1,000円</label>
@@ -1594,7 +1604,9 @@ footer{
       <div class="policy-intro">
         <strong style="display:block;font-size:16px;color:var(--brown);margin-bottom:10px;">安心保証金とは？</strong>
         万が一、撮影前にキャンセルとなった場合も、<strong>キャンセル料は一律2,000円</strong>（お預かりする安心保証金のみ）です。撮影完了後のキャンセル・返金はお受けできません。<br>
-        ご予約時にお預かりする <strong>2,000円</strong> の保証金で、直前の無断キャンセルなどを防ぎ、<strong>お客様とカメラマン双方が安心して撮影日を迎えるため</strong>の制度です。<span style="color:var(--terra);">撮影当日に全額そのままお返しします</span>ので、実質的なご負担はありません。
+        <span style="font-size:11px;">※ 飛行機・新幹線等の事前手配が必要な遠方エリアの場合のみ例外があります。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>をご覧ください。</span><br>
+        ご予約時にお預かりする <strong>2,000円</strong> の保証金で、直前の無断キャンセルなどを防ぎ、<strong>お客様とカメラマン双方が安心して撮影日を迎えるため</strong>の制度です。<span style="color:var(--terra);">撮影当日に全額そのままお返しします</span>ので、この保証金自体に実質的なご負担はありません。<br>
+        <strong>ご注意：</strong>この保証金は撮影プラン料金とは別のお預かり金です。プラン料金・オプション料金・交通費の合計（残額）は、これとは別に<strong>撮影当日に現地で現金またはPayPayでお支払い</strong>いただきます。
       </div>
       <div style="background:#FAEEED;border:1px solid #e7cfc9;border-radius:6px;padding:14px 16px;margin-bottom:24px;font-size:13px;line-height:1.9;color:var(--red-text);">
         <strong>※ 保証金が返金されない場合があります。</strong><br>
@@ -1617,25 +1629,27 @@ footer{
           <div style="font-family:var(--f-display);font-size:19px;color:var(--terra);">撮影当日に全額</div>
         </div>
       </div>
+      <p class="body-sm" style="margin-top:-16px;margin-bottom:24px;">※ 上記は安心保証金2,000円についての金額・お支払い方法・返金の案内です。撮影プラン料金・オプション料金・交通費の合計（残額）は、これとは別に撮影当日に現地で現金またはPayPayでお支払いいただきます。</p>
 
       <div class="policy-block">
         <div class="policy-hd green">✓ お支払いと返金の流れ</div>
         <div class="policy-bd">
           ① フォーム送信後、当方より内容確認のご連絡（正式な金額のご案内を含む）<br>
           ② 安心保証金 2,000円（PayPayまたは振込）のお支払いをもってご予約確定<br>
-          ③ 撮影当日に、お預かりした2,000円を全額そのまま返金
-          <div class="policy-positive">実質的なご負担なくご予約いただけます。</div>
+          ③ 撮影当日、プラン料金・オプション料金・交通費の合計（残額）を現地で現金またはPayPayでお支払い<br>
+          ④ 同じく撮影当日に、お預かりした保証金2,000円を全額そのまま返金
+          <div class="policy-positive">保証金2,000円について、実質的なご負担なくご予約いただけます（プラン料金等は別途撮影当日にお支払いが必要です）。</div>
         </div>
       </div>
 
       <div class="policy-block">
         <div class="policy-hd green">お客様にとってのメリット</div>
         <div class="policy-bd">
-          ・撮影当日に<strong>全額返金</strong>。実質的なご負担はありません<br>
+          ・撮影当日に保証金<strong>全額返金</strong>。保証金自体の実質的なご負担はありません<br>
           ・人気の日程も、<strong>確実に予約枠を確保</strong>できます<br>
           ・ご家族の急な発熱・悪天候は<strong>無料で日程変更</strong><br>
-          ・万が一キャンセルになっても、<strong>キャンセル料は分かりやすく一律2,000円</strong>（お預かりした保証金のみ）。高額・複雑なキャンセル料は一切かかりません
-          <div class="policy-positive">「もしも」に備えながら、安心して当日を迎えていただくための制度です。</div>
+          ・万が一キャンセルになっても、<strong>キャンセル料は分かりやすく一律2,000円</strong>（お預かりした保証金のみ）。高額・複雑なキャンセル料は一切かかりません（飛行機・新幹線等の事前手配が必要な遠方エリアの場合のみ例外あり）
+          <div class="policy-positive">「もしも」に備えながら、安心して当日を迎えていただくための制度です。なお、プラン料金・オプション料金・交通費の合計は、この保証金とは別に撮影当日にお支払いいただきます。</div>
         </div>
       </div>
 
@@ -1663,7 +1677,8 @@ footer{
 
       <div class="policy-intro">
         ご予約時にお預かりする <strong>安心保証金（2,000円）</strong> の、キャンセル・日程変更・返金についてのご案内です。<br>
-        安心保証金そのものについては <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a> をご覧ください。
+        安心保証金そのものについては <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a> をご覧ください。<br>
+        なお、撮影プラン料金・オプション料金・交通費の合計（残額）は、安心保証金とは別に<strong>撮影当日に現地で現金またはPayPay</strong>でお支払いいただきます。
       </div>
 
       <h2 class="heading-md" style="margin-top:8px;">撮影前のキャンセル・日程変更</h2>
@@ -1689,6 +1704,14 @@ footer{
           ・無断キャンセル<br>
           ・撮影日の4日前以降のお客様都合によるキャンセル（前日・当日を含む）<br><br>
           キャンセル・日程変更のご連絡は、できる限りお早めにお願いいたします。
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd blue">✈ 遠方エリア（飛行機・新幹線等の事前手配が必要な場合）について</div>
+        <div class="policy-bd" style="font-size:12px;color:var(--muted);">
+          交通費参考表に記載のエリア（関西中心の各エリア）については、キャンセル料は常に一律2,000円（安心保証金のみ）です。<br><br>
+          交通費表に無い遠方エリア（「その他」・全国からのご依頼）で、当方が飛行機・新幹線の指定席等、キャンセル・払い戻しができない交通手段を事前に手配する必要がある場合に限り、例外的に、その実費相当額を安心保証金とは別にご負担いただく場合があります。該当する可能性がある場合は、安心保証金のお支払い（ご予約確定）前に、当該予約についてメール等で個別にご案内し、ご了承いただいたうえで確定します。事前にご案内のない実費請求を後から行うことはありません。
         </div>
       </div>
 
@@ -1796,7 +1819,7 @@ footer{
           <span class="faq-q-inner"><span class="faq-q-mark">Q</span><span>予約から撮影までの流れを教えてください。</span></span>
           <span class="faq-icon" aria-hidden="true">＋</span>
         </button>
-        <div class="faq-a">① フォームを送信 → ② メールにてご確認のご連絡（2営業日以内）→ ③ <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a> 2,000円（PayPayまたは振込）をお支払い → 予約確定 → ④ 撮影当日 → ⑤ 撮影終了後、安心保証金 2,000円を全額返金 → ⑥ 約1ヶ月後にデータ納品</div>
+        <div class="faq-a">① フォームを送信 → ② メールにてご確認のご連絡（2営業日以内）→ ③ <a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a> 2,000円（PayPayまたは振込）をお支払い → 予約確定 → ④ 撮影当日、プラン料金・オプション料金・交通費の合計（残額）を現地で現金またはPayPayでお支払い → ⑤ 同じく撮影当日に、安心保証金 2,000円を全額返金 → ⑥ 約1ヶ月後にデータ納品</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false">
@@ -1827,11 +1850,11 @@ footer{
 
       <div class="priv-section">
         <div class="priv-heading">個人情報の収集について</div>
-        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・撮影場所・エリア<br>・お子さまの情報（お名前・ニックネーム、人数・年齢）　・その他ご入力いただいた情報</div>
+        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・撮影場所・エリア<br>・お子さまの情報（お名前・ニックネーム、人数・年齢）<br>・「ご紹介割」ご利用時にご入力いただくご紹介者のお名前　・その他ご入力いただいた情報<br><br>ご紹介者のお名前は、お客様（被紹介者）からのご入力によりお預かりするものであり、ご紹介者ご本人からの直接のご提供ではありません。ご予約の確認・ご紹介割の適用確認の目的にのみ使用し、それ以外の目的では利用しません。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">利用目的</div>
-        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡<br>・撮影データの納品<br>・お問い合わせへの回答<br>・次回以降のご予約を円滑にするための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例としてポートフォリオ・SNS（Instagram等）に掲載<br><br>SNS等への掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします。</div>
+        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡<br>・撮影データの納品<br>・お問い合わせへの回答<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影を長期的にご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例としてポートフォリオ・SNS（Instagram等）に掲載<br><br>SNS等への掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。この同意はあくまで任意であり、SNS割をご利用いただかない場合でも他のご予約内容に影響はありません。ご同意いただいた後も、いつでも同意を撤回し、掲載の停止・削除をご請求いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（すでに公開された投稿が第三者に閲覧・保存・転載されている場合、当方の削除対応後もそれらを完全に消去できない可能性がある点にはあらかじめご留意ください）。<br><br>なお、掲載中の撮影データについては、上記の「撮影データ（写真・動画）の保管期間」とは別に、削除をご請求いただくまで掲載を継続します。お子さまが成長された後、お子さまご本人のご意思で開示・削除等をご希望される場合も、下記お問い合わせ窓口にて対応いたします。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">第三者提供</div>
@@ -1839,11 +1862,12 @@ footer{
       </div>
       <div class="priv-section">
         <div class="priv-heading">外部サービスの利用・業務委託</div>
-        <div class="priv-body">ご予約の管理・ご連絡のため、以下の外部サービス（いずれも米国の事業者）に個人情報の取り扱いを委託しています。各社は、日本の個人情報保護法に相当する水準の安全管理措置を講じています。<br>
+        <div class="priv-body">ご予約の管理・ご連絡・撮影データの納品のため、以下の外部サービスに個人情報（撮影データを含む）の取り扱いを委託しています。<br>
         ・Resend（Resend, Inc.／米国）：確認・通知メールの送信<br>
         ・Upstash（Upstash, Inc.／米国）：不正送信・スパム防止<br>
         ・Notion（Notion Labs, Inc.／米国）：ご予約内容の管理<br>
-        委託先の外国にある事業者に関する情報の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
+        ・ギガファイル便／SELECT PHOTO：撮影データ（写真・動画）のオンライン納品<br>
+        米国に所在する事業者（Resend・Upstash・Notion）については、各社が日本の個人情報保護法に相当する水準の安全管理措置を講じています。委託先の外国にある事業者に関する情報の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">アクセス解析（Cookie）</div>
@@ -1851,7 +1875,7 @@ footer{
       </div>
       <div class="priv-section">
         <div class="priv-heading">保管期間</div>
-        <div class="priv-body">ご予約に関する個人情報（お名前・ご連絡先など）は、次回以降のご予約対応やお問い合わせ対応など、上記の利用目的の範囲内で必要な期間、顧客管理システムにて保管します。撮影データ（写真・動画）は、納品後6ヶ月を目安に保管し、その後は速やかに削除します。個人情報の削除をご希望の場合は、下記のお問い合わせ窓口までご連絡ください。</div>
+        <div class="priv-body">ご予約に関する個人情報（お名前・ご連絡先など）は、次回以降のご予約対応やお問い合わせ対応、お子さまの成長記録として将来の節目（七五三・成人式など）の撮影をご案内する目的のため、最後にご利用・お問い合わせいただいた日から<strong>10年間</strong>を目安に顧客管理システムにて保管し、その後は速やかに削除します。撮影データ（写真・動画）は、納品後6ヶ月を目安に保管し、その後は速やかに削除します。ただし、お客様の同意を得てポートフォリオ・SNS（Instagram等）に掲載した撮影データについては、この6ヶ月の目安とは別に、削除をご請求いただくまで掲載を継続します。個人情報の削除をご希望の場合は、下記のお問い合わせ窓口までご連絡ください（保管期間中であっても、お客様からのご請求があれば遅滞なく削除いたします）。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">開示・訂正・削除等のご請求</div>
@@ -1883,14 +1907,14 @@ footer{
         <tbody>
           <tr><td style="width:38%;color:var(--brown);font-weight:400;">販売事業者</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">Kaede Photo</td></tr>
           <tr><td style="color:var(--brown);">運営統括責任者</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">池端 楓</td></tr>
-          <tr><td style="color:var(--brown);">所在地</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します</td></tr>
-          <tr><td style="color:var(--brown);">電話番号</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します</td></tr>
+          <tr><td style="color:var(--brown);">所在地</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します（下記メールアドレスまでご請求ください）</td></tr>
+          <tr><td style="color:var(--brown);">電話番号</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">請求があれば遅滞なく開示します（下記メールアドレスまでご請求ください）</td></tr>
           <tr><td style="color:var(--brown);">メールアドレス</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">kaepafu1995@gmail.com</td></tr>
           <tr><td style="color:var(--brown);">販売価格</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">各撮影プランに表示（¥19,000〜¥77,000・税込）。オプション・交通費は別途。詳細は<a href="#" onclick="goPage('plan');return false;" style="color:var(--terra);text-decoration:underline;">撮影プラン</a>をご確認ください。</td></tr>
           <tr><td style="color:var(--brown);">商品代金以外の必要料金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">交通費（エリア別・プランページ参照）、各種オプション料金、お振込の場合の振込手数料</td></tr>
           <tr><td style="color:var(--brown);">安心保証金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">2,000円（PayPayまたは振込）のお支払いをもってご予約確定となり、撮影当日に全額返金します。詳細は<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金について</a>。</td></tr>
-          <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">PayPay／銀行振込</td></tr>
-          <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：フォーム送信後の内容確認のご連絡を経て、お支払いをもってご予約確定。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。</td></tr>
+          <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：PayPayまたは銀行振込。撮影プラン料金・オプション料金・交通費（残額）：現金またはPayPay（撮影当日に現地でお支払い）。</td></tr>
+          <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：フォーム送信後の内容確認のご連絡を経て、お支払いをもってご予約確定。撮影プラン料金・オプション料金・交通費（残額）：撮影当日に現地でお支払い（現金またはPayPay）。</td></tr>
           <tr><td style="color:var(--brown);">役務の提供時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約時に確定した撮影日に撮影を行います。撮影データは撮影後約1ヶ月（premiumプランは約1ヶ月半）でオンライン納品します。</td></tr>
           <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。</td></tr>
         </tbody>
@@ -2222,17 +2246,41 @@ function simToBooking(){
   goPage('booking');
 }
 
+// チェックボックスの金額幅を取得（data-min/data-max があればその幅、無ければ value を上下限とも同額で扱う）
+function _checkboxRange(c){
+  if(c.dataset.min !== undefined){
+    return [parseInt(c.dataset.min, 10) || 0, parseInt(c.dataset.max, 10) || 0];
+  }
+  const v = parseInt(c.value) || 0;
+  return [v, v];
+}
+// 概算金額を表示用テキストに整形（幅がある場合は「¥min〜¥max」、無ければ単一金額）
+function _formatEstimate(min, max, suffix){
+  suffix = suffix || '';
+  if(min === max) return '¥' + min.toLocaleString() + suffix;
+  return '¥' + min.toLocaleString() + '〜¥' + max.toLocaleString() + suffix;
+}
+// 概算金額を要素にセット（幅表示の場合は文字数が増えるため is-range クラスでフォントを縮小）
+function _setEstimateText(el, min, max, suffix){
+  if(!el) return;
+  el.textContent = _formatEstimate(min, max, suffix);
+  el.classList.toggle('is-range', min !== max);
+}
+
 function calcSim(){
   const plan = parseInt(document.getElementById('sp').value) || 0;
   const areaSel = document.getElementById('sa');
   const area = parseInt(areaSel.value) || 0;
   const areaIsOther = areaSel.options[areaSel.selectedIndex]?.dataset.area === 'その他';
-  let opts = 0;
+  let minOpts = 0, maxOpts = 0;
   document.querySelectorAll('.so').forEach(c => {
-    if(c.checked) opts += parseInt(c.value) || 0;
+    if(!c.checked) return;
+    const [min, max] = _checkboxRange(c);
+    minOpts += min; maxOpts += max;
   });
-  const total = Math.max(0, plan + area + opts);
-  document.getElementById('sim-total').textContent = '¥' + total.toLocaleString() + (areaIsOther ? '＋交通費別途' : '');
+  const minTotal = Math.max(0, plan + area + minOpts);
+  const maxTotal = Math.max(0, plan + area + maxOpts);
+  _setEstimateText(document.getElementById('sim-total'), minTotal, maxTotal, areaIsOther ? '＋交通費別途' : '');
 }
 
 /* ────────────────────────────────
@@ -2343,33 +2391,119 @@ function applyGenreFromUrl(){
    予約ページの概算料金（プラン＋オプション＋エリア）
    選択のたびにリアルタイムで更新
 ──────────────────────────────── */
+// 予約フォームのオプション行1件分の金額幅を取得（data-min/data-max があればその幅、無ければテキストから金額をパース）
+function _rowRange(row){
+  const cb = row.querySelector('input[type="checkbox"]');
+  if(cb && cb.dataset.min !== undefined){
+    return [parseInt(cb.dataset.min, 10) || 0, parseInt(cb.dataset.max, 10) || 0];
+  }
+  const v = _optYen(row.textContent.trim());
+  return [v, v];
+}
+
 function updateBookingTotal(){
   const el = document.getElementById('booking-total');
   if(!el) return;
   const planSel = document.getElementById('f-plan');
   if(!planSel?.value){
     el.textContent = '—';
+    el.classList.remove('is-range');
     return;
   }
   const planYen = _planYen(planSel.value);
-  const optYen = [...document.querySelectorAll('#page-booking .opt-group .check-row')]
+  let minOpts = 0, maxOpts = 0;
+  [...document.querySelectorAll('#page-booking .opt-group .check-row')]
     .filter(row => row.querySelector('input[type="checkbox"]')?.checked)
-    .reduce((sum, row) => sum + _optYen(row.textContent.trim()), 0);
+    .forEach(row => { const [min, max] = _rowRange(row); minOpts += min; maxOpts += max; });
   const areaSel = document.getElementById('f-area');
   const areaYen = parseInt(areaSel?.value, 10) || 0;
   const areaIsOther = areaSel && areaSel.options[areaSel.selectedIndex]?.dataset.area === 'その他';
-  const total = Math.max(0, planYen + optYen + areaYen);
-  el.textContent = '¥' + total.toLocaleString() + (areaIsOther ? '＋交通費別途' : '');
+  const minTotal = Math.max(0, planYen + minOpts + areaYen);
+  const maxTotal = Math.max(0, planYen + maxOpts + areaYen);
+  _setEstimateText(el, minTotal, maxTotal, areaIsOther ? '＋交通費別途' : '');
 }
 
-// 撮影希望日（第1希望）が土日の場合、土日祝日オプションを自動チェック
-// ※ 祝日は日付だけでは判定できないため対象外（該当する場合は手動でご確認ください）
+/* ────────────────────────────────
+   日本の祝日判定（簡易実装）
+   ハッピーマンデー・振替休日・国民の休日を含む。
+   春分の日・秋分の日は近似式（1980〜2099年で有効）を使用。
+   ※ 祝日法の改正等があった場合は別途メンテナンスが必要です。
+──────────────────────────────── */
+function _ymd(date){ return date.toLocaleDateString('sv-SE'); }
+function _nthMonday(year, month, n){
+  const d = new Date(year, month - 1, 1);
+  let count = 0;
+  while(true){
+    if(d.getDay() === 1){
+      count++;
+      if(count === n) return new Date(d);
+    }
+    d.setDate(d.getDate() + 1);
+  }
+}
+function _equinoxDay(year, isSpring){
+  const base = isSpring ? 20.8431 : 23.2488;
+  return Math.floor(base + 0.242194 * (year - 1980) - Math.floor((year - 1980) / 4));
+}
+function getJapaneseHolidays(year){
+  const holidays = new Map(); // 'YYYY-MM-DD' -> 祝日名
+  const add = (m, d, name) => holidays.set(_ymd(new Date(year, m - 1, d)), name);
+  add(1, 1, '元日');
+  holidays.set(_ymd(_nthMonday(year, 1, 2)), '成人の日');
+  add(2, 11, '建国記念の日');
+  add(2, 23, '天皇誕生日');
+  add(3, _equinoxDay(year, true), '春分の日');
+  add(4, 29, '昭和の日');
+  add(5, 3, '憲法記念日');
+  add(5, 4, 'みどりの日');
+  add(5, 5, 'こどもの日');
+  holidays.set(_ymd(_nthMonday(year, 7, 3)), '海の日');
+  add(8, 11, '山の日');
+  holidays.set(_ymd(_nthMonday(year, 9, 3)), '敬老の日');
+  add(9, _equinoxDay(year, false), '秋分の日');
+  holidays.set(_ymd(_nthMonday(year, 10, 2)), 'スポーツの日');
+  add(11, 3, '文化の日');
+  add(11, 23, '勤労感謝の日');
+
+  // 振替休日：祝日が日曜の場合、直後の平日（祝日でない日）を振替休日とする
+  [...holidays.entries()].forEach(([key]) => {
+    const dt = new Date(key + 'T00:00:00');
+    if(dt.getDay() === 0){
+      const next = new Date(dt);
+      do { next.setDate(next.getDate() + 1); } while(holidays.has(_ymd(next)));
+      holidays.set(_ymd(next), '振替休日');
+    }
+  });
+
+  // 国民の休日：前後を祝日に挟まれた、祝日でも日曜でもない平日
+  for(let m = 1; m <= 12; m++){
+    const daysInMonth = new Date(year, m, 0).getDate();
+    for(let d = 1; d <= daysInMonth; d++){
+      const dt = new Date(year, m - 1, d);
+      const key = _ymd(dt);
+      if(holidays.has(key) || dt.getDay() === 0) continue;
+      const prev = new Date(dt); prev.setDate(prev.getDate() - 1);
+      const next = new Date(dt); next.setDate(next.getDate() + 1);
+      if(holidays.has(_ymd(prev)) && holidays.has(_ymd(next))){
+        holidays.set(key, '国民の休日');
+      }
+    }
+  }
+  return holidays;
+}
+function isJapaneseHoliday(dateStr){
+  if(!dateStr) return false;
+  const year = parseInt(dateStr.slice(0, 4), 10);
+  return getJapaneseHolidays(year).has(dateStr);
+}
+
+// 撮影希望日（第1希望）が土日または祝日の場合、土日祝日オプションを自動チェック
 function syncWeekendSurcharge(){
   const dateEl = document.getElementById('f-date1');
   const cb = document.getElementById('f-weekend');
   if(!dateEl || !cb || !dateEl.value) return;
   const day = new Date(dateEl.value + 'T00:00:00').getDay();
-  cb.checked = (day === 0 || day === 6);
+  cb.checked = (day === 0 || day === 6 || isJapaneseHoliday(dateEl.value));
   updateBookingTotal();
 }
 
@@ -2475,10 +2609,10 @@ function submitForm(e){
   const date2 = val('f-date2');
   const preferredDate = date2 ? `${date1}（第1希望） / ${date2}（第2希望）` : date1;
 
-  // 選択されたオプション・割引（ラベル文言を収集）
-  const options = [...form.querySelectorAll('.opt-group .check-row')]
-    .filter(row => row.querySelector('input[type="checkbox"]')?.checked)
-    .map(row => row.textContent.trim().replace(/\s+/g, ' '));
+  // 選択されたオプション・割引（行要素とラベル文言の両方を保持）
+  const optionRows = [...form.querySelectorAll('.opt-group .check-row')]
+    .filter(row => row.querySelector('input[type="checkbox"]')?.checked);
+  const options = optionRows.map(row => row.textContent.trim().replace(/\s+/g, ' '));
 
   // 紹介者名（ご紹介割にチェックがある場合）
   const referralChecked = document.getElementById('referral-check')?.checked;
@@ -2529,9 +2663,12 @@ function submitForm(e){
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)),
   };
 
-  // 概算（プラン＋オプション＋エリアの交通費概算）
-  const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0) + areaYen;
-  pendingBooking.value = estimate;
+  // 概算（プラン＋オプション＋エリアの交通費概算）。スタジオ撮影など金額に幅があるオプションは min/max を合算
+  let minOptSum = 0, maxOptSum = 0;
+  optionRows.forEach(row => { const [min, max] = _rowRange(row); minOptSum += min; maxOptSum += max; });
+  const minEstimate = _planYen(planLabel) + minOptSum + areaYen;
+  const maxEstimate = _planYen(planLabel) + maxOptSum + areaYen;
+  pendingBooking.value = Math.round((minEstimate + maxEstimate) / 2);
 
   // 確認画面を描画（特商法12条の6：分量・対価・支払時期方法・提供時期・解約条件）
   const rows = [];
@@ -2544,7 +2681,7 @@ function submitForm(e){
   addRow('撮影場所', _escHtml(val('f-location')) || '—');
   addRow('プラン', _escHtml(planLabel) || '—');
   if(options.length) addRow('オプション', options.map(_escHtml).join('<br>'));
-  addRow('概算料金', `¥${estimate.toLocaleString()}${areaIsOther ? '＋交通費別途' : ''} <span style="font-size:11px;color:var(--muted);">（税込。${areaIsOther ? 'エリアが「その他」のため交通費は別途ご相談のうえ確定します。' : '交通費はエリアによる概算。'}詳細な撮影場所によって変動する場合があります。最終金額はご予約確定時にご案内）</span>`);
+  addRow('概算料金', `${_formatEstimate(minEstimate, maxEstimate, areaIsOther ? '＋交通費別途' : '')} <span style="font-size:11px;color:var(--muted);">（税込。${areaIsOther ? 'エリアが「その他」のため交通費は別途ご相談のうえ確定します。' : '交通費はエリアによる概算。'}詳細な撮影場所によって変動する場合があります。最終金額はご予約確定時にご案内）</span>`);
   document.getElementById('confirm-body').innerHTML = rows.join('');
 
   const cmsg = document.getElementById('confirm-msg');
