@@ -1419,6 +1419,11 @@ footer{
               <input class="form-input" id="f-email" name="email" type="email" placeholder="例：example@gmail.com" autocomplete="email" required>
             </div>
           </div>
+          <div class="form-field">
+            <label class="form-label" for="f-phone">電話番号</label>
+            <input class="form-input" id="f-phone" name="phone" type="tel" placeholder="例：090-1234-5678" autocomplete="tel">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">※ 撮影当日のご連絡（到着時間の調整など）に使用する場合があります</div>
+          </div>
           <div class="form-row">
             <div class="form-field">
               <label class="form-label" for="f-date1">撮影希望日 第1希望 <span class="req">*</span></label>
@@ -1909,7 +1914,7 @@ footer{
 
 
 <!-- ════════════════════ 予約内容の最終確認（特商法12条の6） ════════════════════ -->
-<div id="confirm-overlay" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(44,31,26,.55);padding:24px;overflow-y:auto;">
+<div id="confirm-overlay" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(44,31,26,.55);padding:24px;overflow-y:auto;" onclick="if(event.target===this)closeConfirm();">
   <div role="dialog" aria-modal="true" aria-labelledby="confirm-title" style="max-width:560px;margin:24px auto;background:var(--base);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.25);overflow:hidden;">
     <div style="background:var(--terra);color:#fff;padding:18px 24px;">
       <div style="font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.85;">Confirm</div>
@@ -2580,6 +2585,7 @@ function submitForm(e){
   pendingBooking = {
     name: val('f-name'),
     email: val('f-email'),
+    phone: val('f-phone'),
     preferredDate,
     plan: planLabel,
     genre: genreLabel,
@@ -2598,6 +2604,7 @@ function submitForm(e){
   const addRow = (k,v)=> rows.push(`<div style="display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--beige);"><dt style="width:96px;flex:none;color:var(--muted);">${k}</dt><dd style="margin:0;flex:1;">${v}</dd></div>`);
   addRow('お名前', _escHtml(val('f-name')));
   addRow('メール', _escHtml(val('f-email')));
+  if(val('f-phone')) addRow('電話番号', _escHtml(val('f-phone')));
   addRow('ご希望日', _escHtml(preferredDate) || '—');
   if(genreLabel) addRow('撮影ジャンル', _escHtml(genreLabel));
   addRow('エリア', _escHtml(areaLabel) || '—');
