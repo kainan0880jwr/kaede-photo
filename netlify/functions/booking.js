@@ -50,7 +50,7 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
 // 予約プランのホワイトリスト（フォームの選択肢と完全一致で判定）
 const ALLOWED_PLANS = new Set([
   'simple ¥19,000',
-  'standard ¥29,000（人気No.1）',
+  'standard ¥29,000（おすすめ）',
   'special ¥39,000',
   'premium ¥77,000',
 ]);
