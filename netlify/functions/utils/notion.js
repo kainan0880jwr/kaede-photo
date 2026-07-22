@@ -27,18 +27,24 @@ function getClient() {
   return cachedClient;
 }
 
-// データベースのプロパティ名一覧（コールド起動ごとに1回だけ取得してキャッシュ）
+// データベースのプロパティ名一覧（TTL付きでキャッシュ。ウォームなFunctionインスタンスが
+// 古いプロパティ一覧を使い続け、運用者が後からプロパティを追加しても反映されない事態を防ぐ）
 // 「撮影ジャンル」「エリア」など、まだ作成されていない可能性のある任意プロパティを
 // 安全に送るかどうかの判定に使う（未作成のプロパティを送るとNotion APIがエラーになるため）
+const PROPERTY_CACHE_TTL_MS = 10 * 60 * 1000; // 10分
 let cachedPropertyNames = null;
+let cachedPropertyNamesAt = 0;
 async function getDatabasePropertyNames(databaseId) {
-  if (cachedPropertyNames) return cachedPropertyNames;
+  if (cachedPropertyNames && Date.now() - cachedPropertyNamesAt < PROPERTY_CACHE_TTL_MS) {
+    return cachedPropertyNames;
+  }
   try {
     const db = await getClient().databases.retrieve({ database_id: databaseId });
     cachedPropertyNames = new Set(Object.keys(db.properties || {}));
+    cachedPropertyNamesAt = Date.now();
   } catch (err) {
     console.error('[notion] databases.retrieve failed, skipping optional properties:', err);
-    cachedPropertyNames = new Set();
+    cachedPropertyNames = cachedPropertyNames || new Set();
   }
   return cachedPropertyNames;
 }

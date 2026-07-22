@@ -1,0 +1,26 @@
+:root {
+  --base:       #FAF8F5;
+  --surface:    #F3EDE4;
+  --beige:      #E8DDD0;
+  --terra:      #B5633F;
+  --terra-lt:   #D4895F;
+  --terra-dk:   #8C3E1F;
+  --brown:      #2C1F1A;
+  --text:       #4A3728;
+  --muted:      #6B5744;
+  --white:      #FFFFFF;
+  --line-green: #06C755;
+  --green-bg:   #EEF6EF;
+  --green-text: #2D6A30;
+  --blue-bg:    #EEF3FF;
+  --blue-text:  #2D4499;
+  --red-bg:     #FAEEED;
+  --red-text:   #C0392B;
+
+  --f-display: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  --f-body:    'Noto Serif JP', serif;
+  --f-ui:      'Noto Sans JP', sans-serif;
+
+  --ease: cubic-bezier(.4,0,.2,1);
+  --dur:  260ms;
+}
