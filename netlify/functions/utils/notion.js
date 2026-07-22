@@ -43,7 +43,7 @@ async function getDatabasePropertyNames(databaseId) {
     cachedPropertyNames = new Set(Object.keys(db.properties || {}));
     cachedPropertyNamesAt = Date.now();
   } catch (err) {
-    console.error('[notion] databases.retrieve failed, skipping optional properties:', err);
+    console.error('[notion] databases.retrieve failed, skipping optional properties:', err?.message || err);
     cachedPropertyNames = cachedPropertyNames || new Set();
   }
   return cachedPropertyNames;

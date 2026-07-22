@@ -55,6 +55,15 @@ const ALLOWED_PLANS = new Set([
   'premium ¥77,000',
 ]);
 
+// 撮影ジャンルのホワイトリスト（フォームの選択肢と完全一致で判定。空文字＝指定なしは別途許可）
+const ALLOWED_GENRES = new Set([
+  'maternity',
+  'newborn',
+  'omiyamairi',
+  'birthday',
+  'shichigosan',
+]);
+
 // --- ヘルパー ------------------------------------------------
 function corsHeaders() {
   const origin = process.env.SITE_URL || '';
@@ -75,13 +84,20 @@ function hostOf(value) {
 }
 function isAllowedOrigin(event) {
   const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
-  if (!origin) return true; // 同一オリジンfetch等でOriginヘッダが無い場合は通す
+  // ブラウザから送信されるPOST（Content-Type: application/json）には必ずOriginが付与されるため、
+  // 未送信の直接POST（curl等）は許可しない
+  if (!origin) return false;
   const host = hostOf(origin);
-  if (!host) return true; // 解析できない場合はブロックしない
+  if (!host) return false;
   const allowed = new Set(['kaede-photo.com', 'www.kaede-photo.com']);
   const siteHost = hostOf(process.env.SITE_URL || '');
   if (siteHost) allowed.add(siteHost);
-  if (host.endsWith('.netlify.app')) return true; // Netlify既定/プレビュードメイン
+  // このプロジェクト自身のNetlify URL（本番・プレビュー/ブランチデプロイ）のみ許可。
+  // ※ *.netlify.app 全体を許可すると、第三者が無料で作成した別サイトも信頼してしまうため使わない
+  [process.env.URL, process.env.DEPLOY_URL, process.env.DEPLOY_PRIME_URL].forEach(u => {
+    const h = hostOf(u || '');
+    if (h) allowed.add(h);
+  });
   return allowed.has(host);
 }
 
@@ -129,7 +145,8 @@ function validate(data) {
   if (data.plan && !ALLOWED_PLANS.has(data.plan)) {
     errors.push('ご希望のプランが正しくありません。');
   }
-  if (data.genre && data.genre.length > 50) {
+  // ジャンルはホワイトリスト照合（空文字＝指定なしは許可）
+  if (data.genre && !ALLOWED_GENRES.has(data.genre)) {
     errors.push('撮影ジャンルの形式が正しくありません。');
   }
   if (data.area && data.area.length > 100) {
@@ -185,7 +202,7 @@ export const handler = async (event) => {
       }
     } catch (err) {
       // レート制限基盤の障害で予約をブロックしないよう、ログのみで続行
-      console.error('[ratelimit] failed, continuing:', err);
+      console.error('[ratelimit] failed, continuing:', err?.message || err);
     }
   }
 
@@ -203,7 +220,7 @@ export const handler = async (event) => {
       }
       idempotencyKeySet = true;
     } catch (err) {
-      console.error('[idempotency] failed, continuing:', err);
+      console.error('[idempotency] failed, continuing:', err?.message || err);
     }
   }
   async function releaseIdempotencyKey() {
@@ -211,7 +228,7 @@ export const handler = async (event) => {
     try {
       await redis.del(`booking:req:${reqId}`);
     } catch (err) {
-      console.error('[idempotency] release failed:', err);
+      console.error('[idempotency] release failed:', err?.message || err);
     }
   }
 
@@ -258,7 +275,7 @@ export const handler = async (event) => {
 
   if (ownerResult?.error) {
     // だいきさんへの通知が失敗 = 予約を取りこぼす致命的状態なのでエラーを返す（お客様宛は送らない）
-    console.error('[mail:owner] failed:', ownerResult.error);
+    console.error('[mail:owner] failed:', ownerResult.error?.message || ownerResult.error);
     await releaseIdempotencyKey();
     return json(502, {
       ok: false,
@@ -275,17 +292,17 @@ export const handler = async (event) => {
     });
     if (customerResult?.error) {
       // お客様への自動返信失敗は記録だけして処理は続行（予約自体は成立）
-      console.error('[mail:customer] failed:', customerResult.error);
+      console.error('[mail:customer] failed:', customerResult.error?.message || customerResult.error);
     }
   } catch (err) {
-    console.error('[mail:customer] failed:', err);
+    console.error('[mail:customer] failed:', err?.message || err);
   }
 
   // 5. Notionへ記録（失敗してもメールは届いているので成功を返す）
   try {
     await createBookingRecord(data);
   } catch (err) {
-    console.error('[notion] failed:', err);
+    console.error('[notion] failed:', err?.message || err);
     // だいきさんへアラート（手動で台帳に追記してもらう）
     try {
       const alert = notionFailureAlert(data, err?.message || String(err));
@@ -296,7 +313,7 @@ export const handler = async (event) => {
         html: alert.html,
       });
     } catch (alertErr) {
-      console.error('[mail:notion-alert] failed:', alertErr);
+      console.error('[mail:notion-alert] failed:', alertErr?.message || alertErr);
     }
   }
 
