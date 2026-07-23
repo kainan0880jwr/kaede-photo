@@ -55,15 +55,26 @@ const ALLOWED_PLANS = new Set([
   'premium ¥77,000',
 ]);
 
-// 撮影ジャンルのホワイトリスト（フォームは選択肢の表示ラベル＝日本語を送信するため、
-// それと完全一致で判定する。空文字＝指定なしは別途許可）
+// 撮影ジャンルのホワイトリスト（表示ラベルではなく安定キーで判定する。
+// キーは public/index.html の GENRE_LIST と一致させること。
+// 表示ラベルを変更してもここは変更不要 ← 表示文言変更時の検証漏れによる
+// 予約失敗を防ぐための設計。空文字＝指定なしは別途許可）
 const ALLOWED_GENRES = new Set([
-  'マタニティ',
-  'ニューボーン',
-  'お宮参り',
-  'ファーストバースデー',
-  '七五三',
+  'maternity',
+  'newborn',
+  'omiyamairi',
+  'birthday',
+  'shichigosan',
 ]);
+
+// Notion記録・メール表示用の日本語ラベル変換（キー→表示名）
+const GENRE_LABELS = {
+  maternity: 'マタニティ',
+  newborn: 'ニューボーン',
+  omiyamairi: 'お宮参り',
+  birthday: 'ファーストバースデー',
+  shichigosan: '七五三',
+};
 
 // --- ヘルパー ------------------------------------------------
 function corsHeaders() {
@@ -252,6 +263,11 @@ export const handler = async (event) => {
   if (errors.length > 0) {
     await releaseIdempotencyKey();
     return json(400, { ok: false, error: errors.join('\n') });
+  }
+
+  // 検証（安定キーでの照合）が済んだ後、メール本文・Notion記録用に日本語ラベルへ変換する
+  if (data.genre) {
+    data.genre = GENRE_LABELS[data.genre] || data.genre;
   }
 
   // 4. メール送信（直列）

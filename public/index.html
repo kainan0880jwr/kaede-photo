@@ -605,6 +605,13 @@ ul{list-style:none;}
 /* ══════════════════════════════════════
    BOOKING FORM
 ══════════════════════════════════════ */
+.flow-row-wrap{position:relative;}
+.flow-row-wrap::after{
+  content:'';position:absolute;top:0;right:0;bottom:8px;width:36px;
+  background:linear-gradient(to right, transparent, var(--base) 70%);
+  pointer-events:none;
+}
+@media (min-width:900px){.flow-row-wrap::after{display:none;}}
 .flow-row{
   display:flex;align-items:stretch;gap:0;
   overflow-x:auto;padding-bottom:8px;margin-bottom:40px;
@@ -771,7 +778,7 @@ footer{
 }
 .footer-links a{
   font-size:11px;letter-spacing:.08em;
-  color:rgba(255,255,255,.35);
+  color:rgba(255,255,255,.6);
   transition:color var(--dur) var(--ease);
 }
 .footer-links a:hover{color:rgba(255,255,255,.8);}
@@ -783,7 +790,7 @@ footer{
 .social-line{background:var(--line-green);color:#fff;}
 .social-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;}
 .footer-copy{
-  font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.06em;
+  font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;
   border-top:1px solid rgba(255,255,255,.08);padding-top:24px;
 }
 
@@ -1105,14 +1112,7 @@ footer{
         <div class="sim-sub">プラン・オプション・エリアを選ぶだけで概算料金がわかります。</div>
         <div class="sim-step" style="margin-bottom:20px;">
           <div class="sim-label">撮影ジャンル</div>
-          <select class="sim-select" id="sim-genre" onchange="renderSimGenreOptions();calcSim()" aria-label="撮影ジャンルを選ぶ">
-            <option value="">指定なし（家族写真など）</option>
-            <option value="maternity">マタニティ</option>
-            <option value="newborn">ニューボーン</option>
-            <option value="omiyamairi">お宮参り</option>
-            <option value="birthday">ファーストバースデー</option>
-            <option value="shichigosan">七五三</option>
-          </select>
+          <select class="sim-select" id="sim-genre" onchange="renderSimGenreOptions();calcSim()" aria-label="撮影ジャンルを選ぶ"></select>
         </div>
         <div class="sim-grid">
           <div class="sim-step">
@@ -1389,6 +1389,7 @@ footer{
       <h2 class="heading-lg">撮影のご予約</h2>
 
       <!-- Flow -->
+      <div class="flow-row-wrap">
       <div class="flow-row">
         <div class="flow-step"><div class="flow-num">01</div><div class="flow-label">フォーム送信</div></div>
         <div class="flow-arrow">→</div>
@@ -1401,6 +1402,7 @@ footer{
         <div class="flow-step hl"><div class="flow-num">05</div><div class="flow-label">2,000円<br><strong>全額返金</strong></div></div>
         <div class="flow-arrow">→</div>
         <div class="flow-step"><div class="flow-num">06</div><div class="flow-label">データ納品<br>約1ヶ月後</div><div class="flow-note">※premiumは約1ヶ月半</div></div>
+      </div>
       </div>
 
       <!-- Form -->
@@ -1440,14 +1442,7 @@ footer{
           </div>
           <div class="form-field">
             <label class="form-label" for="f-genre">撮影ジャンル</label>
-            <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions();updateBookingTotal()">
-              <option value="">指定なし（家族写真など）</option>
-              <option value="maternity">マタニティ</option>
-              <option value="newborn">ニューボーン</option>
-              <option value="omiyamairi">お宮参り</option>
-              <option value="birthday">ファーストバースデー</option>
-              <option value="shichigosan">七五三</option>
-            </select>
+            <select class="form-select" id="f-genre" name="genre" onchange="renderGenreOptions();updateBookingTotal()"></select>
           </div>
           <div class="form-field">
             <label class="form-label" for="f-area">エリア（交通費） <span class="req">*</span></label>
@@ -1498,7 +1493,8 @@ footer{
               <label class="check-row"><input type="checkbox" data-excl="form-sns"> SNS割（顔を含まない） −500円</label>
               <label class="check-row"><input type="checkbox" id="referral-check" onchange="toggleReferral()"> ご紹介割 −3,000円（紹介者・ご本人どちらも）</label>
               <div id="referral-name" style="display:none;margin-top:8px;">
-                <input class="form-input" type="text" placeholder="ご紹介者のお名前">
+                <label class="form-label" for="f-referral-name" style="font-size:11px;">ご紹介者のお名前</label>
+                <input class="form-input" id="f-referral-name" type="text" placeholder="例：山田 花子">
               </div>
             </div>
             <div id="genre-options-group" style="display:none;"></div>
@@ -2019,6 +2015,7 @@ window.addEventListener('popstate', e => {
 
 // 初回ロード：ハッシュからページ復元
 window.addEventListener('DOMContentLoaded', () => {
+  populateGenreSelects();
   const hash = location.hash.replace('#', '');
   const initialPage = (hash && document.getElementById('page-' + hash)) ? hash : 'top';
   goPage(initialPage, { updateHistory: false });
@@ -2106,27 +2103,37 @@ document.addEventListener('keydown', e => {
    料金シミュレーター
 ──────────────────────────────── */
 // 予約フォーム：お子さまの人数に応じて「お名前・年齢」欄を自動生成
+// 人数を減らしても入力済みの値を保持し、再度増やしたときに復元する
+// （減らした瞬間に無警告でデータが消えるとの指摘への対応）
+let _kidsFieldCache = [];
 function renderKidsFields(){
   const countEl = document.getElementById('f-kids-num');
   const container = document.getElementById('kids-fields');
   if(!countEl || !container) return;
+  // 再生成前に、今表示されている値をキャッシュへ退避
+  [...container.querySelectorAll('.kid-name')].forEach((el, i) => {
+    _kidsFieldCache[i] = _kidsFieldCache[i] || {};
+    _kidsFieldCache[i].name = el.value;
+  });
+  [...container.querySelectorAll('.kid-age')].forEach((el, i) => {
+    _kidsFieldCache[i] = _kidsFieldCache[i] || {};
+    _kidsFieldCache[i].age = el.value;
+  });
   let n = parseInt(countEl.value, 10);
   if(isNaN(n) || n < 1){ container.innerHTML = ''; return; }
   if(n > 10) n = 10;
-  // 既存の入力値を保持してから再生成
-  const prevNames = [...container.querySelectorAll('.kid-name')].map(el => el.value);
-  const prevAges  = [...container.querySelectorAll('.kid-age')].map(el => el.value);
   const esc = s => (s || '')
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   let html = '';
   for(let i = 0; i < n; i++){
     const no = i + 1;
+    const cached = _kidsFieldCache[i] || {};
     html += `
       <div class="form-field">
         <div class="form-label">お子さま ${no}人目 <span class="req">*</span></div>
         <div class="form-row">
-          <input class="form-input kid-name" type="text" name="kid_name_${no}" aria-label="お子さま${no}人目 お名前" placeholder="お名前・ニックネーム" value="${esc(prevNames[i])}" required>
-          <input class="form-input kid-age" type="text" name="kid_age_${no}" aria-label="お子さま${no}人目 年齢" placeholder="例：2歳" value="${esc(prevAges[i])}" required>
+          <input class="form-input kid-name" type="text" name="kid_name_${no}" aria-label="お子さま${no}人目 お名前" placeholder="お名前・ニックネーム" value="${esc(cached.name)}" required>
+          <input class="form-input kid-age" type="text" name="kid_age_${no}" aria-label="お子さま${no}人目 年齢" placeholder="例：2歳" value="${esc(cached.age)}" required>
         </div>
       </div>`;
   }
@@ -2253,6 +2260,29 @@ document.addEventListener('change', e => {
 function toggleReferral(){
   const checked = document.getElementById('referral-check').checked;
   document.getElementById('referral-name').style.display = checked ? 'block' : 'none';
+}
+
+/* ────────────────────────────────
+   撮影ジャンルの選択肢（唯一の定義元）
+   #f-genre（予約フォーム）・#sim-genre（かんたん料金チェック）の
+   両方をこの配列から生成する。表示ラベルを変更する場合はここだけ直せばよい。
+   ※ value はバックエンド（netlify/functions/booking.js の ALLOWED_GENRES）
+   とも一致させる必要がある安定キー。表示ラベルとは独立して管理する。
+──────────────────────────────── */
+const GENRE_LIST = [
+  { value: '', label: '指定なし（家族写真など）' },
+  { value: 'maternity', label: 'マタニティ' },
+  { value: 'newborn', label: 'ニューボーン' },
+  { value: 'omiyamairi', label: 'お宮参り' },
+  { value: 'birthday', label: 'ファーストバースデー' },
+  { value: 'shichigosan', label: '七五三' },
+];
+function populateGenreSelects(){
+  const optionsHtml = GENRE_LIST.map(g => `<option value="${g.value}">${g.label}</option>`).join('');
+  const fGenre = document.getElementById('f-genre');
+  const simGenre = document.getElementById('sim-genre');
+  if(fGenre) fGenre.innerHTML = optionsHtml;
+  if(simGenre) simGenre.innerHTML = optionsHtml;
 }
 
 /* ────────────────────────────────
@@ -2555,14 +2585,16 @@ function submitForm(e){
     ? (document.querySelector('#referral-name input')?.value || '').trim()
     : '';
 
-  // 撮影ジャンル（選択されていれば表示テキストを取得）
+  // 撮影ジャンル（表示ラベルは案内文・メール用、genreKeyは送信・バックエンド検証用の安定値）
   const genreSel = document.getElementById('f-genre');
+  const genreKey = genreSel ? genreSel.value : '';
   const genreLabel = genreSel && genreSel.value ? genreSel.options[genreSel.selectedIndex].textContent : '';
 
   // エリア（交通費）
   const areaSel = document.getElementById('f-area');
   const areaOpt = areaSel && areaSel.selectedIndex >= 0 ? areaSel.options[areaSel.selectedIndex] : null;
-  const areaLabel = areaOpt ? areaOpt.textContent : '';
+  const areaLabel = areaOpt ? areaOpt.textContent : ''; // 表示・メール用（交通費表記込み）
+  const areaName = areaOpt ? (areaOpt.dataset.area || '') : ''; // Notion記録用（地名のみのクリーンな値）
   const areaYen = areaOpt ? (parseInt(areaOpt.value, 10) || 0) : 0;
   const areaIsOther = areaOpt && areaOpt.dataset.area === 'その他';
 
@@ -2592,8 +2624,8 @@ function submitForm(e){
     phone: val('f-phone'),
     preferredDate,
     plan: planLabel,
-    genre: genreLabel,
-    area: areaLabel,
+    genre: genreKey,
+    area: areaName,
     message: lines.join('\n'),
     company: (form.querySelector('input[name="company"]')?.value || ''), // honeypot
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)+'-'+Math.random().toString(16).slice(2)),
