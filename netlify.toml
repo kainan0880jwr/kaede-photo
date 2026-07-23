@@ -33,12 +33,10 @@
 # Netlifyの既定動作では拡張子なしURLも200でそのまま配信されてしまい、
 # 同一ページがGA4上で複数のパスに分裂して計測される問題があったため、
 # canonicalタグと一致する正規URLへ301リダイレクトする。
-[[redirects]]
-  from = "/index.html"
-  to = "/"
-  status = 301
-  force = true
-
+# ※ /index.html → / は、Netlify側で「/」が内部的にindex.htmlを解決する
+#   際に本ルールと衝突し、無限リダイレクトで500エラーを起こしたため撤去。
+#   canonicalタグ（<link rel="canonical" href="https://kaede-photo.com/">）
+#   で正規URLは既に明示できているため、重複コンテンツ上の実害は無い。
 [[redirects]]
   from = "/newborn"
   to = "/newborn.html"
