@@ -149,11 +149,11 @@ Netlify Functions（booking.js）
 
 ---
 
-## 公開後にやること（残タスク）
+## 公開後にやること（完了）
 
-- [ ] **実写真への差し替え**：`public/index.html` 内の `https://res.cloudinary.com/demo/...` を、Cloudinaryにアップロードした本番写真のURLに置き換える（hero背景・about・gallery 6枚）。
-- [ ] **独自ドメインの接続**：Netlify → Domain management から設定。
-- [ ] **プラン・料金・対応エリア・お客様の声**を実際の内容に更新。
+- [x] **実写真への差し替え**：hero背景・about・gallery とも本番写真に差し替え済み。
+- [x] **独自ドメインの接続**：kaede-photo.com で稼働中。
+- [x] **プラン・料金・対応エリア・お客様の声**を実際の内容に更新済み。
 
 ---
 
