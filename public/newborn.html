@@ -7,8 +7,12 @@
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RH2JQL8Y1V"></script>
 <script>
+  // ボット・クローラー（GPTBot等のAIクローラーを含む）のアクセスはGA4計測から除外する。
+  // robots.txtでのアクセス許可（AIおすすめ対策/GEO）には影響しない。ページ自体は通常通り配信される。
+  var _botUA = /bot|crawl|spider|slurp|GPTBot|ClaudeBot|PerplexityBot|OAI-SearchBot|ChatGPT-User|Google-Extended|Applebot|Bingbot|facebookexternalhit|HeadlessChrome|Puppeteer|Playwright|Lighthouse|PhantomJS/i;
+  var _isBotVisit = _botUA.test(navigator.userAgent);
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){ if(!_isBotVisit){ dataLayer.push(arguments); } }
   gtag('js', new Date());
   gtag('config', 'G-RH2JQL8Y1V', { send_page_view: false });
 </script>
