@@ -28,3 +28,43 @@
   from = "/api/booking"
   to = "/.netlify/functions/booking"
   status = 200
+
+# --- URL正規化（拡張子なしURL・index.htmlへの直接アクセスを301で統一） ---
+# Netlifyの既定動作では拡張子なしURLも200でそのまま配信されてしまい、
+# 同一ページがGA4上で複数のパスに分裂して計測される問題があったため、
+# canonicalタグと一致する正規URLへ301リダイレクトする。
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/newborn"
+  to = "/newborn.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/maternity"
+  to = "/maternity.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/omiyamairi"
+  to = "/omiyamairi.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/shichigosan"
+  to = "/shichigosan.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/birthday"
+  to = "/birthday.html"
+  status = 301
+  force = true
