@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RH2JQL8Y1V"></script>
+<script>
+  // ボット・クローラー（GPTBot等のAIクローラーを含む）のアクセスはGA4計測から除外する。
+  // robots.txtでのアクセス許可（AIおすすめ対策/GEO）には影響しない。ページ自体は通常通り配信される。
+  var _botUA = /bot|crawl|spider|slurp|GPTBot|ClaudeBot|PerplexityBot|OAI-SearchBot|ChatGPT-User|Google-Extended|Applebot|Bingbot|facebookexternalhit|HeadlessChrome|Puppeteer|Playwright|Lighthouse|PhantomJS/i;
+  var _isBotVisit = _botUA.test(navigator.userAgent);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ if(!_isBotVisit){ dataLayer.push(arguments); } }
+  gtag('js', new Date());
+  gtag('config', 'G-RH2JQL8Y1V', { send_page_view: false });
+</script>
+<title>kaede.｜カメラマン自己紹介 | kaede photo</title>
+<meta name="description" content="子ども・家族専門の出張カメラマン「kaede.」の自己紹介。カメラマンになったきっかけや、撮影で大切にしていることをご紹介します。">
+<link rel="canonical" href="https://kaede-photo.com/photographer.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23B5633F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23ffffff' text-anchor='middle'%3Ek%3C/text%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaede-photo.com/photographer.html">
+<meta property="og:title" content="kaede.｜カメラマン自己紹介 | kaede photo">
+<meta property="og:description" content="子ども・家族専門の出張カメラマン「kaede.」の自己紹介。カメラマンになったきっかけや、撮影で大切にしていることをご紹介します。">
+<meta property="og:image" content="https://kaede-photo.com/images/photographer-portrait.jpg">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="kaede.｜カメラマン自己紹介 | kaede photo">
+<meta name="twitter:description" content="子ども・家族専門の出張カメラマン「kaede.」の自己紹介。カメラマンになったきっかけや、撮影で大切にしていることをご紹介します。">
+<meta name="twitter:image" content="https://kaede-photo.com/images/photographer-portrait.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Noto+Sans+JP:wght@300;400&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Noto+Sans+JP:wght@300;400&display=swap"></noscript>
+
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--f-ui);color:var(--text);background:var(--base);
+  line-height:1.7;-webkit-font-smoothing:antialiased;
+}
+img{display:block;width:100%;height:100%;object-fit:cover;}
+picture{display:block;width:100%;height:100%;}
+a{text-decoration:none;color:inherit;}
+button{font-family:var(--f-ui);cursor:pointer;border:none;background:none;}
+ul{list-style:none;}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;height:64px;
+  background:rgba(250,248,245,.96);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--beige);display:flex;align-items:center;padding:0 40px;
+  transition:background var(--dur) var(--ease);
+}
+.nav.scrolled{background:rgba(250,248,245,1);}
+.nav-logo{
+  font-family:var(--f-display);font-size:22px;font-weight:300;letter-spacing:.22em;
+  color:var(--brown);cursor:pointer;margin-right:auto;display:flex;align-items:center;
+}
+.nav-tag{
+  font-family:var(--f-ui);font-size:10px;letter-spacing:.03em;color:var(--terra);
+  background:var(--surface);padding:4px 10px;border-radius:20px;margin-left:10px;white-space:nowrap;
+}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color var(--dur) var(--ease);}
+.nav-links a:hover{color:var(--brown);}
+.btn-reserve-nav{
+  border:1px solid var(--terra);color:var(--terra);font-size:11px;letter-spacing:.08em;
+  padding:7px 18px;border-radius:20px;transition:all var(--dur) var(--ease);margin-left:32px;
+}
+.btn-reserve-nav:hover{background:var(--terra);color:#fff;}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;margin-left:auto;}
+.hamburger span{width:22px;height:1.5px;background:var(--brown);transition:all var(--dur) var(--ease);}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:800;background:var(--base);
+  flex-direction:column;align-items:center;justify-content:center;gap:32px;padding:80px 40px 120px;
+}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:var(--f-display);font-size:28px;font-weight:300;letter-spacing:.1em;color:var(--brown);}
+.mobile-menu-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:16px;}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-ui);letter-spacing:.1em;
+  border-radius:999px;border:none;cursor:pointer;font-size:13px;white-space:nowrap;
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease);
+}
+.btn-primary{background:var(--terra);color:#fff;padding:14px 36px;box-shadow:0 8px 24px rgba(181,99,63,.25);}
+.btn-primary:hover{background:var(--terra-dk);transform:translateY(-2px);}
+.btn-ghost{background:transparent;color:var(--text);padding:13px 35px;border:1px solid var(--beige);}
+.btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px);}
+.btn-line{background:var(--line-green);color:#fff;padding:13px 28px;display:inline-flex;align-items:center;gap:8px;}
+.btn-line:hover{background:#05a849;transform:translateY(-2px);}
+.btn-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:13px 28px;display:inline-flex;align-items:center;gap:8px;}
+.btn-ig:hover{filter:brightness(.94);transform:translateY(-2px);}
+.btn-sm{padding:9px 20px;font-size:11px;}
+a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offset:3px;}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:0 auto;padding:0 40px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;}
+.text-center{text-align:center;}
+.section{padding:96px 0;}
+.section-alt{background:var(--surface);}
+.eyebrow{font-family:var(--f-display);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;}
+.heading-lg{font-family:var(--f-display);font-size:38px;font-weight:300;letter-spacing:.06em;color:var(--brown);line-height:1.3;margin-bottom:24px;}
+.lead{font-family:var(--f-body);font-size:17px;font-weight:300;color:var(--text);line-height:1.9;margin-bottom:24px;}
+.body-sm{font-size:13px;color:var(--muted);line-height:1.9;}
+
+/* 装飾ナンバリング */
+.section-head{position:relative;margin-bottom:8px;}
+.section-num{
+  position:absolute;top:-52px;left:50%;transform:translateX(-50%);
+  font-family:var(--f-display);font-size:180px;font-weight:300;color:var(--beige);
+  opacity:.55;line-height:1;z-index:0;user-select:none;pointer-events:none;white-space:nowrap;
+}
+.section-head > *{position:relative;z-index:1;}
+.text-col{position:relative;}
+.text-col .col-num{
+  position:absolute;top:-36px;left:-6px;font-family:var(--f-display);font-size:120px;font-weight:300;
+  color:var(--beige);opacity:.55;line-height:1;z-index:0;user-select:none;pointer-events:none;
+}
+.text-col > *{position:relative;z-index:1;}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.12s;}
+.reveal-d2{transition-delay:.24s;}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+/* HERO */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:660px;padding-top:64px;}
+.hero-text-col{display:flex;flex-direction:column;justify-content:center;padding:56px clamp(24px,6vw,80px);}
+.hero-eyebrow{font-family:var(--f-display);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--terra);margin-bottom:20px;}
+.hero-title{font-family:var(--f-display);font-size:clamp(34px,4.8vw,56px);font-weight:300;color:var(--brown);line-height:1.25;letter-spacing:.02em;margin-bottom:20px;}
+.hero-name-sig{display:inline-block;font-family:var(--f-display);font-style:italic;font-weight:400;font-size:clamp(34px,4.8vw,56px);color:var(--terra);letter-spacing:.03em;margin-bottom:6px;line-height:1.25;}
+.hero-title-connector{font-size:.5em;}
+.hero-sub{font-family:var(--f-body);font-size:15.5px;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:28px;max-width:440px;}
+.hero-img-col{position:relative;overflow:hidden;margin:24px 24px 24px 0;border-radius:20px;}
+
+/* Genre badges */
+.genre-badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:8px;}
+.genre-badge{
+  display:inline-flex;align-items:center;background:var(--white);color:var(--brown);
+  font-size:13px;letter-spacing:.04em;padding:12px 26px;border-radius:999px;
+  box-shadow:0 4px 16px rgba(44,31,26,.06);
+}
+
+/* Approach cards */
+.approach-card{
+  background:var(--white);border-radius:16px;padding:32px 24px;
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
+}
+.approach-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(44,31,26,.1);}
+.approach-icon{width:44px;height:44px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--terra);}
+.approach-title{font-family:var(--f-body);font-size:16px;color:var(--brown);margin-bottom:10px;}
+.approach-body{font-size:13px;color:var(--muted);line-height:1.85;}
+
+/* Snapshot gallery */
+.snap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.snap-item{aspect-ratio:4/5;}
+
+/* CTA */
+.cta-block{text-align:center;padding:96px 40px;background:var(--surface);}
+.cta-title{font-family:var(--f-display);font-size:32px;font-weight:300;color:var(--brown);letter-spacing:.06em;margin-bottom:16px;}
+.cta-sub{font-size:14px;color:var(--muted);line-height:1.9;max-width:480px;margin:0 auto 32px;}
+
+/* FOOTER */
+footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
+.footer-logo{font-family:var(--f-display);font-size:30px;font-weight:300;letter-spacing:.28em;color:rgba(255,255,255,.9);margin-bottom:12px;}
+.footer-tagline{font-size:13px;margin-bottom:32px;}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px;}
+.footer-links a{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.6);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.06em;border-top:1px solid rgba(255,255,255,.08);padding-top:24px;}
+
+@media(max-width:1023px){
+  .snap-grid{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .section-num{font-size:120px;top:-30px;}
+}
+@media(max-width:767px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .container{padding:0 20px;}
+  .heading-lg{font-size:26px;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+  .section{padding:56px 0;}
+  .cta-block{padding:56px 20px;}
+  .hero-grid{grid-template-columns:1fr;min-height:auto;}
+  .hero-text-col{padding:16px 20px 32px;}
+  .hero-img-col{aspect-ratio:4/5;margin:0 20px 32px;}
+  .section-num,.col-num{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-logo" onclick="location.href='index.html'">kaede photo <span class="nav-tag">Photographer</span></div>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#snapshots">Snapshots</a></li>
+  </ul>
+  <a href="index.html#booking" class="btn-reserve-nav">予約する</a>
+  <button class="hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu">
+    <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="navigation" aria-label="モバイルナビゲーション">
+  <a href="#story">Story</a>
+  <a href="#approach">Approach</a>
+  <a href="#snapshots">Snapshots</a>
+  <div class="mobile-menu-actions">
+    <a href="index.html#booking" class="btn btn-primary btn-sm">予約する</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero-grid">
+  <div class="hero-text-col">
+    <div class="hero-eyebrow">Photographer</div>
+    <h1 class="hero-title"><span class="hero-name-sig">kaede.</span><br><span class="hero-title-connector">が撮る、</span><br>ありのままの家族。</h1>
+    <p class="hero-sub">写真は、忘れてしまうはずだった大切な記憶をそっと届けてくれる、未来の自分への手紙のようなものだと思っています。</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="index.html#booking" class="btn btn-primary">予約する</a>
+      <a href="#approach" class="btn btn-ghost">想いを見る</a>
+    </div>
+  </div>
+  <div class="hero-img-col reveal">
+    <picture><source srcset="images/photographer-portrait.webp" type="image/webp"><img src="images/photographer-portrait.jpg" width="1400" height="933" alt="子どもたちを笑顔で抱きしめるkaede." fetchpriority="high" decoding="async"></picture>
+  </div>
+</div>
+
+<!-- Story -->
+<section class="section" id="story">
+  <div class="container">
+    <div class="grid-2" style="align-items:center;gap:64px;">
+      <div class="text-col reveal">
+        <div class="col-num">01</div>
+        <div class="eyebrow">Story</div>
+        <h2 class="heading-lg">カメラマンになった<br>きっかけ。</h2>
+        <p class="lead">写真には、忘れてしまったはずの記憶を思い出させてくれる力があります。子どもが生まれてから、その想いはさらに強くなりました。毎日一緒にいても、初めての笑顔や小さな手を握られた瞬間は、気づけば記憶から薄れていく——。家族の"今"を残すことの大切さを実感し、カメラマンの道を歩み始めました。</p>
+        <p class="body-sm">何年後かに見返したとき、「ああ、この頃こんな毎日だったな」と思い出せる一枚を。写真は、忘れてしまうはずだった大切な記憶をそっと届けてくれる、未来の自分への手紙のようなものだと思っています。</p>
+      </div>
+      <div class="reveal reveal-d1" style="aspect-ratio:4/5;overflow:hidden;border-radius:16px;">
+        <picture><source srcset="images/photographer-story-snap.webp" type="image/webp"><img src="images/photographer-story-snap.jpg" width="800" height="1200" loading="lazy" decoding="async" alt="スマッシュケーキを食べさせてもらう赤ちゃんとその兄"></picture>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Approach -->
+<section class="section section-alt" id="approach">
+  <div class="container">
+    <div class="section-head text-center">
+      <div class="section-num">02</div>
+      <div class="eyebrow">Approach</div>
+      <h2 class="heading-lg">撮影で大切にしていること</h2>
+    </div>
+    <div class="grid-3">
+      <div class="approach-card reveal">
+        <div class="approach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h3l2-2h6l2 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <div class="approach-title">ありのままを、未来へ残す。</div>
+        <div class="approach-body">何年後に見返しても、その日の空気や家族のぬくもりまで思い出せる写真を大切にしています。</div>
+      </div>
+      <div class="approach-card reveal reveal-d1">
+        <div class="approach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a4.8 4.8 0 0 0-6.8 0L12 6.6l-2-2a4.8 4.8 0 1 0-6.8 6.8L12 20l8.8-8.6a4.8 4.8 0 0 0 0-6.8Z"/></svg></div>
+        <div class="approach-title">主役は、飾らない笑顔。</div>
+        <div class="approach-body">つくった表情ではなく、その子らしさや家族らしさが自然にあふれる瞬間を写します。</div>
+      </div>
+      <div class="approach-card reveal reveal-d2">
+        <div class="approach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <div class="approach-title">写真以上の、思い出を届けたい。</div>
+        <div class="approach-body">撮影の時間そのものが、家族にとって幸せな思い出になるよう、一つひとつ心を込めて寄り添います。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Genres -->
+<section class="section">
+  <div class="container">
+    <div class="section-head text-center">
+      <div class="section-num">03</div>
+      <div class="eyebrow">Genres</div>
+      <h2 class="heading-lg">対応している撮影ジャンル</h2>
+    </div>
+    <div class="genre-badge-row">
+      <span class="genre-badge reveal">マタニティ</span>
+      <span class="genre-badge reveal reveal-d1">ニューボーン</span>
+      <span class="genre-badge reveal reveal-d1">お宮参り</span>
+      <span class="genre-badge reveal reveal-d2">七五三</span>
+      <span class="genre-badge reveal reveal-d2">ファーストバースデー</span>
+    </div>
+  </div>
+</section>
+
+<!-- Snapshots -->
+<section class="section section-alt" id="snapshots">
+  <div class="container">
+    <div class="section-head text-center">
+      <div class="section-num">04</div>
+      <div class="eyebrow">Snapshots</div>
+      <h2 class="heading-lg">撮影のようす</h2>
+    </div>
+    <p class="lead text-center" style="max-width:560px;margin:0 auto 32px;">現場では、いつもこんな距離感で家族と向き合っています。</p>
+    <div class="snap-grid">
+      <div class="snap-item reveal" style="overflow:hidden;border-radius:12px;"><picture><source srcset="images/photographer-snap-1.webp" type="image/webp"><img src="images/photographer-snap-1.jpg" width="675" height="900" loading="lazy" decoding="async" alt="花とベビーバスケットで新生児を撮影するkaede."></picture></div>
+      <div class="snap-item reveal reveal-d1" style="overflow:hidden;border-radius:12px;"><picture><source srcset="images/photographer-snap-2.webp" type="image/webp"><img src="images/photographer-snap-2.jpg" width="1000" height="749" loading="lazy" decoding="async" alt="花を手に子どもとおもちゃで遊びながら撮影するkaede."></picture></div>
+      <div class="snap-item reveal reveal-d2" style="overflow:hidden;border-radius:12px;"><picture><source srcset="images/photographer-snap-3.webp" type="image/webp"><img src="images/photographer-snap-3.jpg" width="538" height="900" loading="lazy" decoding="async" alt="うさぎの衣装を着た新生児にそっと触れるkaede."></picture></div>
+      <div class="snap-item reveal reveal-d2" style="overflow:hidden;border-radius:12px;"><picture><source srcset="images/photographer-snap-4.webp" type="image/webp"><img src="images/photographer-snap-4.jpg" width="511" height="900" loading="lazy" decoding="async" alt="撮影前にご家族の衣装を整えるkaede."></picture></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-block">
+  <div class="container">
+    <div class="cta-title">まずはお気軽にご予約を</div>
+    <div class="cta-sub">ご不明な点はLINE・Instagramからお気軽にどうぞ。</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <a href="index.html#booking" class="btn btn-primary">予約フォームへ</a>
+      <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+      <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig" target="_blank" rel="noopener noreferrer">Instagramで相談する</a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">kaede photo</div>
+    <div class="footer-tagline">子ども・家族専門出張カメラマン｜関西（大阪・和歌山・兵庫・奈良・京都）中心、全国対応</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#privacy">プライバシーポリシー</a></li>
+      <li><a href="index.html#tokusho">特定商取引法に基づく表記</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ハンバーガーメニュー
+function toggleMenu(forceClose){
+  const h = document.getElementById('hamburger');
+  const m = document.getElementById('mobile-menu');
+  const isOpen = forceClose ? false : !m.classList.contains('open');
+  h.classList.toggle('open', isOpen);
+  m.classList.toggle('open', isOpen);
+  h.setAttribute('aria-expanded', isOpen);
+  m.setAttribute('aria-hidden', !isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+document.getElementById('hamburger').addEventListener('click', () => toggleMenu());
+document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => toggleMenu(true)));
+
+// スクロールでnav背景切り替え
+let _scrollTick = false;
+window.addEventListener('scroll', () => {
+  if(!_scrollTick){
+    requestAnimationFrame(() => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+      _scrollTick = false;
+    });
+    _scrollTick = true;
+  }
+}, { passive: true });
+
+// スクロールリビール
+(function(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

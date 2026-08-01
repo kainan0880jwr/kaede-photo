@@ -66,3 +66,15 @@
   to = "/birthday.html"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/birthday-collab"
+  to = "/birthday-collab.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/photographer"
+  to = "/photographer.html"
+  status = 301
+  force = true

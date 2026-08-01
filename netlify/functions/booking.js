@@ -53,6 +53,9 @@ const ALLOWED_PLANS = new Set([
   'standard ¥29,000（おすすめ）',
   'special ¥39,000',
   'premium ¥77,000',
+  // 期間限定コラボ企画「1st BIRTHDAY smash cake photo」（mémoire×kaede photo）専用プラン
+  'smash cake photo 40cuts ¥35,000',
+  'smash cake photo 50cuts ¥38,000',
 ]);
 
 // 撮影ジャンルのホワイトリスト（表示ラベルではなく安定キーで判定する。
