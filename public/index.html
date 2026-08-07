@@ -1126,7 +1126,7 @@ footer{
 
       <!-- Simulator -->
       <div class="sim-wrap" style="margin-bottom:48px;">
-        <h2 class="sim-title">かんたん料金チェック</h2>
+        <h3 class="sim-title">かんたん料金チェック</h3>
         <div class="sim-sub">プラン・オプション・エリアを選ぶだけで概算料金がわかります。</div>
         <div class="sim-step" style="margin-bottom:20px;">
           <div class="sim-label">撮影ジャンル</div>
@@ -1190,7 +1190,7 @@ footer{
       <!-- Options table -->
       <div class="grid-2" style="gap:40px;margin-bottom:48px;">
         <div>
-          <h2 class="heading-md">オプション</h2>
+          <h3 class="heading-md">オプション</h3>
           <table class="option-table">
             <thead><tr><th>内容</th><th>料金</th></tr></thead>
             <tbody>
@@ -1209,7 +1209,7 @@ footer{
           </table>
         </div>
         <div>
-          <h2 class="heading-md">交通費参考表</h2>
+          <h3 class="heading-md">交通費参考表</h3>
           <table class="area-table">
             <thead><tr><th>エリア</th><th>交通費</th></tr></thead>
             <tbody>
@@ -1224,9 +1224,23 @@ footer{
           </table>
           <p class="body-sm" style="margin-top:12px;">全国出張可能です。その他遠方エリアはご相談ください。</p>
 
-          <h2 class="heading-md" style="margin-top:28px;">スタジオ撮影について</h2>
-          <p class="body-sm">お好みの雰囲気のレンタルスタジオを手配しての撮影も可能です。ご相談ください。<br><br>所要時間：約1.5時間<br>追加料金：スタジオにより異なります（目安：5,500〜8,000円程度）<br>お支払い：安心保証金と合わせて事前にお支払いいただきます<br>キャンセル：スタジオ利用料は各スタジオのキャンセル規定に従います</p>
+          <h3 class="heading-md" style="margin-top:28px;">スタジオ撮影について</h3>
+          <p class="body-sm" style="margin-bottom:12px;">お好みの雰囲気のレンタルスタジオを手配しての撮影も可能です。ご相談ください。</p>
+          <table class="area-table" style="margin-bottom:10px;">
+            <tbody>
+              <tr><td style="width:34%;color:var(--brown);font-weight:400;">所要時間</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">約1.5時間</td></tr>
+              <tr><td style="width:34%;color:var(--brown);font-weight:400;">追加料金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">スタジオにより異なります（目安：5,500〜8,000円程度）</td></tr>
+              <tr><td style="width:34%;color:var(--brown);font-weight:400;">お支払い</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金とあわせて<strong>事前にお支払い</strong>いただきます</td></tr>
+            </tbody>
+          </table>
+          <div style="background:#FAEEED;border:1px solid #e7cfc9;border-radius:6px;padding:12px 14px;font-size:12px;line-height:1.8;color:var(--red-text);">
+            <strong>※ スタジオ利用料は、撮影当日に全額返金される安心保証金とは性質が異なり、原則返金されません。</strong>キャンセル・返金の条件は各スタジオの規定に従います。スタジオが確定次第、規定を事前にご案内いたします。
+          </div>
         </div>
+      </div>
+
+      <div style="text-align:center;margin-top:8px;">
+        <a href="#" class="btn btn-primary" onclick="goPage('booking');return false;">この内容で予約に進む</a>
       </div>
     </div>
   </section>
@@ -1429,7 +1443,7 @@ footer{
           フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）のお支払いをもってご予約確定</strong>となります。<br>
           <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
           <span style="font-size:11px;color:var(--muted);">※ 撮影料金（プラン代金・オプション・交通費）は上記の安心保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
-          <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて事前にお支払いいただきます（金額・キャンセル規定はスタジオにより異なります）。</span><br>
+          <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり原則返金されません</strong>（金額・キャンセル規定はスタジオにより異なります）。</span><br>
           <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
         </div>
 
@@ -1625,7 +1639,7 @@ footer{
           ③ 撮影当日に、撮影料金（プラン代金・オプション・交通費）を現地で現金またはPayPayにてお支払い<br>
           ④ 撮影終了後、お預かりした保証金2,000円を全額そのまま返金
           <div class="policy-positive">保証金は実質的なご負担なくご予約いただけます。</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:8px;">※ スタジオ撮影の場合、スタジオ利用料（金額はスタジオにより異なります）は安心保証金と合わせて事前にお支払いいただきます。スタジオ利用料のキャンセル・返金は、各スタジオの規定に従います。</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px;">※ スタジオ撮影の場合、スタジオ利用料（金額はスタジオにより異なります）は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金は撮影当日に全額返金されますが、スタジオ利用料は性質が異なり原則返金されません。</strong>キャンセル・返金は各スタジオの規定に従います。</div>
         </div>
       </div>
 
@@ -1698,6 +1712,14 @@ footer{
         <div class="policy-bd" style="font-size:12px;color:var(--muted);">
           上記の「キャンセル料一律2,000円」は、対象エリア（大阪府内・和歌山県北部〜和歌山県南部の各エリア）でのご予約に適用されます。<br>
           遠方エリア（「その他」）でのご予約をキャンセルされる場合は、手配状況により交通費等の実費をお客様にご負担いただく場合があります。詳細はご予約時に個別にご案内・ご相談いたします。
+        </div>
+      </div>
+
+      <div class="policy-block">
+        <div class="policy-hd red">◆ スタジオ撮影のスタジオ利用料について</div>
+        <div class="policy-bd" style="font-size:12px;color:var(--muted);">
+          スタジオ利用料は、安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり、原則返金されません。</strong><br>
+          キャンセル・返金の条件は、ご利用いただく各スタジオの規定に従います。詳細はスタジオが確定次第、個別にご案内いたします。
         </div>
       </div>
 
@@ -1903,7 +1925,7 @@ footer{
           <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：PayPayまたは銀行振込。撮影料金：現金またはPayPay（撮影当日）。スタジオ利用料（スタジオ撮影の場合）：安心保証金と合わせて事前にお支払い。</td></tr>
           <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：フォーム送信後の内容確認のご連絡を経て、お支払いをもってご予約確定。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。スタジオ利用料（スタジオ撮影の場合）：安心保証金と合わせて事前にお支払い。</td></tr>
           <tr><td style="color:var(--brown);">役務の提供時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約時に確定した撮影日に撮影を行います。撮影データは撮影後約1ヶ月（premiumプランは約1ヶ月半）でオンライン納品します。</td></tr>
-          <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。スタジオ利用料のキャンセル・返金は、各スタジオの規定に従います。</td></tr>
+          <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。スタジオ利用料は安心保証金とは異なり<strong>原則返金されません</strong>。キャンセル・返金の条件は各スタジオの規定に従います。</td></tr>
         </tbody>
       </table>
 
