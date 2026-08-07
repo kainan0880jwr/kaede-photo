@@ -1,11 +1,12 @@
 {
   "version": "0.0.1",
+  "autoPort": false,
   "configurations": [
     {
       "name": "kaede-static",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "public"],
-      "port": 8765
+      "runtimeArgs": ["-m", "http.server", "8770", "--directory", "public"],
+      "port": 8770
     }
   ]
 }
