@@ -1563,6 +1563,12 @@ footer{
           </div>
 
           <div class="form-field">
+            <label class="form-label" for="f-instagram">Instagramアカウント</label>
+            <input class="form-input" id="f-instagram" name="instagram" type="text" placeholder="例：@kaede_photo" autocomplete="off">
+            <div style="font-size:10px;color:var(--muted);margin-top:4px;">※ 任意。撮影後の投稿タグ付けなどでご連絡する場合があります</div>
+          </div>
+
+          <div class="form-field">
             <label class="form-label" for="f-message">ご要望・ご質問</label>
             <textarea class="form-input" id="f-message" name="message" placeholder="ご自由にどうぞ" maxlength="1500" oninput="updateMsgCount()"></textarea>
             <div id="f-message-count" style="text-align:right;font-size:11px;color:var(--muted);margin-top:4px;">0 / 1500</div>
@@ -2656,6 +2662,7 @@ function submitForm(e){
   if(options.length) lines.push(`【オプション/割引】${options.join(' / ')}`);
   if(referralName) lines.push(`【ご紹介者】${referralName}`);
   if(val('f-source')) lines.push(`【流入経路】${val('f-source')}`);
+  if(val('f-instagram')) lines.push(`【Instagramアカウント】${val('f-instagram')}`);
   const userMessage = val('f-message');
   if(userMessage) lines.push(`【ご要望・ご質問】\n${userMessage}`);
 
@@ -2683,6 +2690,7 @@ function submitForm(e){
   addRow('お名前', _escHtml(val('f-name')));
   addRow('メール', _escHtml(val('f-email')));
   if(val('f-phone')) addRow('電話番号', _escHtml(val('f-phone')));
+  if(val('f-instagram')) addRow('Instagram', _escHtml(val('f-instagram')));
   addRow('ご希望日', _escHtml(preferredDate) || '—');
   if(genreLabel) addRow('撮影ジャンル', _escHtml(genreLabel));
   addRow('エリア', _escHtml(areaLabel) || '—');
