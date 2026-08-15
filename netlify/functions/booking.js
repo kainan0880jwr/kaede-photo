@@ -18,6 +18,7 @@ import {
   ownerNotification,
   customerConfirmation,
   notionFailureAlert,
+  globalLimitAlert,
 } from './utils/email-templates.js';
 import { createBookingRecord } from './utils/notion.js';
 
@@ -25,6 +26,10 @@ import { createBookingRecord } from './utils/notion.js';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Upstash の環境変数が揃っているときだけレート制限を有効化
+// サイト全体の上限。上限に達している間は正規のお客様も送信できなくなるため、
+// 到達時はオーナーへ通知する（notifyGlobalLimit）。
+const GLOBAL_LIMIT_PER_DAY = 40;
+
 let redis = null;
 let ratelimit = null;         // IPごと：1時間に5件
 let globalRatelimit = null;   // サイト全体：1日40件（メール爆撃・送信ドメイン汚染の頭打ち）
@@ -38,7 +43,7 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
   });
   globalRatelimit = new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(40, '1 d'),
+    limiter: Ratelimit.slidingWindow(GLOBAL_LIMIT_PER_DAY, '1 d'),
     prefix: 'ratelimit:booking:global',
     analytics: false,
   });
@@ -79,6 +84,75 @@ const GENRE_LABELS = {
   shichigosan: '七五三',
 };
 
+// --- 料金の再計算 --------------------------------------------
+// フロントエンドが表示した概算金額をそのまま信用せず、サーバー側でも独立に計算する。
+// 目的は「安く見せかけた注文を通さない」ことではなく（決済は当日オフラインのため改ざん動機は薄い）、
+// 特商法12条の6でお客様に提示した対価と、事業者側の記録を一致させ、後日の齟齬を防ぐこと。
+// フォームは金額そのものではなく安定キー（optionKeys）を送り、単価はここだけで管理する。
+// キーは public/index.html の data-opt / data-area 属性と一致させること。
+const OPTION_PRICES = {
+  weekend: 3000,        // 土日祝日
+  early7: 5000,         // 早期納品（7日以内）
+  early10: 3000,        // 早期納品（10日以内）
+  data10: 3000,         // データ追加（10枚単位）
+  selfselect: 3000,     // ご自身でデータ選択
+  twoplaces: 10000,     // 2箇所での撮影
+  movie: 39800,         // お手紙ムービー
+  newborn_set: 2000,    // ニューボーンフォトセット
+  sns_face: -1000,      // SNS割（顔を含む）
+  sns_noface: -500,     // SNS割（顔を含まない）
+  referral: -3000,      // ご紹介割
+};
+
+const AREA_PRICES = {
+  '大阪府内・和歌山県北部': 0,
+  '奈良県全域': 3000,
+  '兵庫県南部': 3000,
+  '兵庫県北部': 6000,
+  '京都府南部': 5000,
+  '京都府北部': 8000,
+  '和歌山県南部': 5000,
+  'その他': 0, // 交通費は別途見積り
+};
+
+const YEN = n => `¥${n.toLocaleString('ja-JP')}`;
+
+// プラン単価はホワイトリスト済みラベルから抽出する（単価表の二重管理による食い違いを避ける）
+function planYen(plan) {
+  const m = String(plan || '').replace(/,/g, '').match(/¥(\d+)/);
+  return m ? parseInt(m[1], 10) : 0;
+}
+
+function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
+  const keys = Array.isArray(optionKeys) ? optionKeys.slice(0, 30) : [];
+  let total = planYen(plan);
+  const unknown = [];
+  for (const k of keys) {
+    const price = OPTION_PRICES[String(k)];
+    if (price === undefined) unknown.push(String(k).slice(0, 40));
+    else total += price;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(AREA_PRICES, areaKey)) {
+    total += AREA_PRICES[areaKey];
+  }
+
+  const notes = [];
+  if (areaKey === 'その他') notes.push('交通費別途');
+  // 想定外のキーが混ざったときは金額を黙って過少表示せず、必ず注記する
+  if (unknown.length) notes.push(`未計上のオプション: ${unknown.join(', ')}`);
+  // フォーム表示額との不一致は、改ざんか単価表のズレのどちらか。どちらも人が見て気づけるようにする
+  const cv = Number(clientValue);
+  const mismatch = Number.isFinite(cv) && cv !== total;
+  if (mismatch) notes.push(`フォーム表示額 ${YEN(cv)} と不一致`);
+
+  return {
+    total,
+    text: `${YEN(total)}（税込）${notes.length ? `　※ ${notes.join(' / ')}` : ''}`,
+    mismatch,
+  };
+}
+
 // --- ヘルパー ------------------------------------------------
 function corsHeaders() {
   const origin = process.env.SITE_URL || '';
@@ -100,7 +174,10 @@ function hostOf(value) {
 function isAllowedOrigin(event) {
   const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
   // ブラウザから送信されるPOST（Content-Type: application/json）には必ずOriginが付与されるため、
-  // 未送信の直接POST（curl等）は許可しない
+  // Originが無いリクエストは弾ける。
+  // ただしこれは「他サイトのページからのCSRF」を防ぐ仕組みであって、スパム対策ではない。
+  // curl等は -H "Origin: https://kaede-photo.com" を付ければ通過するため、
+  // 機械的な連投への防御はレート制限とhoneypotが担っている。
   if (!origin) return false;
   const host = hostOf(origin);
   if (!host) return false;
@@ -117,16 +194,51 @@ function isAllowedOrigin(event) {
 }
 
 function json(statusCode, body) {
-  return { statusCode, headers: corsHeaders(), body: JSON.stringify(body) };
+  // 予約内容を含むレスポンスが共有端末のキャッシュや中間キャッシュに残らないようにする
+  const headers = { ...corsHeaders(), 'Cache-Control': 'no-store' };
+  return { statusCode, headers, body: JSON.stringify(body) };
 }
 
 function getClientIp(event) {
   const headers = event.headers || {};
+  // Netlifyが付与する x-nf-client-connection-ip を最優先（クライアントからは詐称できない）。
+  // x-forwarded-for はクライアントが任意の値を「先頭に」付けて送れるヘッダで、
+  // 実際の接続元は経路上のプロキシによって「末尾に」追記される。
+  // したがって先頭要素を採ると、攻撃者が毎回別のIPを名乗ってレート制限を回避できてしまうため末尾を採る。
+  const xff = (headers['x-forwarded-for'] || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
   return (
     headers['x-nf-client-connection-ip'] ||
-    (headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+    xff[xff.length - 1] ||
     'unknown'
   );
+}
+
+// サイト全体の上限に達したことをオーナーへ通知する（Redisのキーで1日1回に制限）。
+// アラート自体が連投されて受信箱を埋めるのを防ぐのが目的。
+async function notifyGlobalLimit(lastIp) {
+  if (!redis) return;
+  try {
+    const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+    const first = await redis.set(`booking:global-alert:${day}`, '1', { nx: true, ex: 86400 });
+    if (first === null) return; // 本日は通知済み
+    const alert = globalLimitAlert({
+      limit: GLOBAL_LIMIT_PER_DAY,
+      windowLabel: '1日',
+      lastIp,
+      at: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
+    });
+    await resend.emails.send({
+      from: process.env.MAIL_FROM,
+      to: process.env.OWNER_EMAIL,
+      subject: alert.subject,
+      html: alert.html,
+    });
+  } catch (err) {
+    console.error('[ratelimit] global alert failed:', err?.message || err);
+  }
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -154,7 +266,17 @@ function validate(data) {
     errors.push('入力内容が長すぎます。ご要望を短くしてお試しください。');
   }
   if (data.preferredDate && data.preferredDate.length > 200) {
-    errors.push('ご希望日の形式が正しくありません。');
+    errors.push('ご希望日が長すぎます。');
+  } else if (data.preferredDate) {
+    // フォームは <input type="date"> の値（YYYY-MM-DD）を含む文字列を送る。
+    // min属性による過去日の抑止はブラウザ側だけの制約なので、サーバーでも同じ判定を行う。
+    // ※ コラボ企画のフォームは「2026年9月4日（金）」形式で送るため、
+    //   YYYY-MM-DD が含まれる場合にだけ検査する（含まれない形式は従来どおり通す）
+    const iso = data.preferredDate.match(/\d{4}-\d{2}-\d{2}/g) || [];
+    const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+    if (iso.some(d => d < today)) {
+      errors.push('撮影希望日に過去の日付が含まれています。');
+    }
   }
   // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）
   if (data.plan && !ALLOWED_PLANS.has(data.plan)) {
@@ -195,7 +317,17 @@ export const handler = async (event) => {
   }
 
   // honeypot（botが埋めがちな隠しフィールド。値が入っていたら静かに成功扱い）
-  if (payload.company) {
+  // 誤検知は「お客様には予約完了と表示されるのに予約が消える」サイレントな取りこぼしになるため、
+  // 必ずログを残して誤検知率を監視できるようにする（Netlify → Functions → booking → Logs）。
+  // company は旧フィールド名。キャッシュされた古いページからの送信を取りこぼさないため当面受理する
+  const honeypot = payload.hp_token || payload.company;
+  if (honeypot) {
+    console.warn('[honeypot] triggered:', {
+      ip: getClientIp(event),
+      len: String(honeypot).length,
+      hasName: Boolean(payload.name),
+      hasEmail: Boolean(payload.email),
+    });
     return json(200, { ok: true });
   }
 
@@ -210,6 +342,9 @@ export const handler = async (event) => {
         globalRatelimit ? globalRatelimit.limit('global') : Promise.resolve({ success: true }),
       ]);
       if (!perIp.success || !global.success) {
+        // サイト全体の上限に達している間は、正規のお客様も一律で予約できなくなる。
+        // 気づかないまま丸一日フォームが死ぬのを避けるため、1日1回だけオーナーへ通知する。
+        if (!global.success) await notifyGlobalLimit(ip);
         return json(429, {
           ok: false,
           error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください。',
@@ -271,6 +406,26 @@ export const handler = async (event) => {
   // 検証（安定キーでの照合）が済んだ後、メール本文・Notion記録用に日本語ラベルへ変換する
   if (data.genre) {
     data.genre = GENRE_LABELS[data.genre] || data.genre;
+  }
+
+  // 概算金額はフォームから受け取った値をそのまま使わず、サーバー側で再計算する。
+  // area には data-area 属性の値（地名のみの安定値）が入るため、そのままキーとして使える。
+  const estimate = computeEstimate({
+    plan: data.plan,
+    areaKey: data.area,
+    optionKeys: payload.optionKeys,
+    clientValue: payload.value,
+  });
+  data.estimateText = estimate.text;
+  data.estimateYen = estimate.total;
+  if (estimate.mismatch) {
+    // 単価表のズレ（＝表示と請求の食い違い）を早期に発見するためのログ
+    console.warn('[estimate] client/server mismatch:', {
+      client: payload.value,
+      server: estimate.total,
+      plan: data.plan,
+      area: data.area,
+    });
   }
 
   // 4. メール送信（直列）

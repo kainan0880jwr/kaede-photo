@@ -747,7 +747,8 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <div class="deposit-note">
         通常の撮影予約と同じく、<strong>2,000円の安心保証金</strong>（PayPayまたは振込）のお支払いをもってご予約確定となります。<span style="color:var(--terra);">撮影当日に全額お返しします。</span><br>
         <span style="font-size:11px;color:var(--muted);">※ プラン代金（ケーキ代込み）は保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
-        <span style="font-size:11px;color:var(--muted);">※ 本企画は日程が9/4・9/5に固定されており、通常のキャンセルポリシーにある日程変更（体調不良・悪天候時の無料振替）が実施できない場合があります。詳細はご予約後に個別にご案内します。</span>
+        <span style="font-size:11px;color:var(--muted);">※ 本企画は日程が9/4・9/5に固定されているため、通常のキャンセルポリシーにある無料の日程変更（体調不良・悪天候時）を承れない場合があります。</span><br>
+        <span style="font-size:11px;color:var(--muted);">※ キャンセル料は通常のご予約と同じく<strong>安心保証金2,000円のみ</strong>です。撮影日の5日前までにご連絡いただければ全額返金し、4日前以降のお客様都合キャンセル（前日・当日、無断キャンセルを含む）は保証金をキャンセル料に充当します。詳しくは<a href="index.html#policy" target="_blank" rel="noopener noreferrer" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>をご覧ください。</span>
       </div>
 
       <form id="collab-form" onsubmit="submitCollabForm(event)" novalidate>
@@ -841,13 +842,14 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
         <div class="privacy-wrap">
           <label class="check-row">
             <input type="checkbox" id="c-privacy" required>
-            <span style="font-size:12px;"><a href="index.html#privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>に同意します <span style="color:var(--terra)">*</span></span>
+            <span style="font-size:12px;"><a href="index.html#privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>、および本企画の実施のため<strong>mémoireとの間で予約内容を共同利用すること</strong>に同意します <span style="color:var(--terra)">*</span></span>
           </label>
         </div>
 
-        <!-- honeypot -->
+        <!-- honeypot: ラベルを持たせない（「会社名」等の実在ラベルだと自動入力が値を入れてしまい、
+             正規のお客様の予約が「送信できたように見えて破棄される」事故になるため） -->
         <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
-          <label>会社名<input type="text" id="c-company" tabindex="-1" autocomplete="off"></label>
+          <input type="text" id="c-hp-token" name="hp_token" tabindex="-1" autocomplete="off" aria-hidden="true">
         </div>
 
         <button type="submit" class="btn btn-primary form-submit">この内容で予約を申し込む →</button>
@@ -884,6 +886,17 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     <div class="dialog-bd">
       <p style="font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.7;">以下の内容でお申し込みを受け付けます。ご確認のうえ、よろしければ「この内容で申し込む」を押してください。</p>
       <dl id="confirm-body"></dl>
+      <!-- 特定商取引法12条の6が求める「最終確認画面」の記載事項。
+           分量・対価・支払時期と方法・役務の提供時期・申込みの撤回/解除の条件を表示する。
+           条件を変更したときは、フォーム上部の deposit-note と
+           index.html のキャンセルポリシーも合わせて更新すること。 -->
+      <div style="background:var(--surface);border-radius:6px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:var(--text);line-height:1.85;">
+        <strong>お支払い</strong>：安心保証金2,000円（PayPayまたは銀行振込）のお支払いをもってご予約確定となります。プラン代金（ケーキ代込み）は、保証金とは別に撮影当日に現地で現金またはPayPayでお支払いください。<br>
+        <strong>撮影日時</strong>：2026年9月4日（金）・5日（土）のうち、ご予約時に確定した時間枠（全6組限定）。<br>
+        <strong>データ納品時期</strong>：撮影後 約1ヶ月にオンライン納品。<br>
+        <strong>キャンセル・返金</strong>：キャンセル料は通常のご予約と同じく<strong>安心保証金2,000円のみ</strong>です。撮影日の5日前までのご連絡で保証金を全額返金し、4日前以降のお客様都合キャンセル（前日・当日、無断キャンセルを含む）は保証金2,000円をキャンセル料に充当します。ただし本企画は日程が固定のため、通常のキャンセルポリシーにある無料の日程変更（ご家族の体調不良・悪天候時）を承れない場合があります。キャンセルのご連絡は、できる限りお早めに下記メールまでお願いいたします。<br>
+        詳しくは<a href="index.html#tokusho" target="_blank" rel="noopener noreferrer">特定商取引法に基づく表記</a>・<a href="index.html#policy" target="_blank" rel="noopener noreferrer">キャンセルポリシー</a>をご確認ください。（お問い合わせ：kaepafu1995@gmail.com）
+      </div>
       <div class="flex-gap" style="margin-top:20px;justify-content:flex-end;">
         <button type="button" class="btn btn-ghost" onclick="closeCollabConfirm()">修正する</button>
         <button type="button" class="btn btn-primary" id="confirm-send-btn" onclick="sendCollabBooking()">この内容で申し込む</button>
@@ -977,7 +990,7 @@ function submitCollabForm(e){
     genre: '',
     area: 'mémoireスタジオ（大阪市福島区大開）',
     message: lines.join('\n'),
-    company: _cval('c-company'),
+    hp_token: _cval('c-hp-token'),
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)+'-'+Math.random().toString(16).slice(2)),
   };
 

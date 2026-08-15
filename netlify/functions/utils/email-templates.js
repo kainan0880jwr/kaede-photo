@@ -25,6 +25,18 @@ function subj(value = '') {
   return String(value).replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120);
 }
 
+// URL無害化。
+// お客様宛の自動返信は「フォームに入力された任意のアドレス」宛に、認証済みの独自ドメインから届く。
+// 入力内容をそのまま反射すると、予約フォームがフィッシングメールの配信経路になってしまう
+// （＝送信ドメインの評判が落ち、正規の予約確認メールまで届かなくなる）。
+// HTMLとしての無害化は esc が担うが、メールクライアントは素のURL文字列を自動リンク化するため別途必要。
+// ※ オーナー宛には適用しない（本人が状況を把握したうえで全文を読む必要があるため）
+function deLink(value = '') {
+  return String(value)
+    .replace(/https?:\/\/\S+/gi, '［URLは自動返信では省略されます］')
+    .replace(/\bwww\.\S+/gi, '［URLは自動返信では省略されます］');
+}
+
 const BRAND = '#b07d62';
 const BG = '#faf7f4';
 
@@ -60,14 +72,22 @@ function row(label, value) {
   </tr>`;
 }
 
-function detailsTable(data) {
+// opts.forCustomer = true のときは、お客様宛自動返信向けにURLを無害化し本文を切り詰める。
+// （オーナー宛・アラート宛は全文をそのまま表示する）
+function detailsTable(data, opts = {}) {
+  const forCustomer = opts.forCustomer === true;
+  const name = forCustomer ? deLink(data.name) : data.name;
+  const message = forCustomer
+    ? deLink(String(data.message || '').slice(0, 1000))
+    : data.message;
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-    ${row('お名前', esc(data.name))}
+    ${row('お名前', esc(name))}
     ${row('メール', esc(data.email))}
     ${row('電話番号', esc(data.phone) || '—')}
     ${row('ご希望日', esc(data.preferredDate) || '—')}
     ${row('プラン', esc(data.plan) || '—')}
-    ${row('ご要望', nl2br(data.message) || '—')}
+    ${data.estimateText ? row('概算金額', esc(data.estimateText)) : ''}
+    ${row('ご要望', nl2br(message) || '—')}
   </table>`;
 }
 
@@ -86,16 +106,37 @@ export function ownerNotification(data) {
 // お客様宛：自動返信
 export function customerConfirmation(data) {
   const inner = `
-    <p style="margin:0 0 16px;font-size:14px;line-height:1.8;">${esc(data.name)} 様<br><br>
+    <p style="margin:0 0 16px;font-size:14px;line-height:1.8;">${esc(deLink(data.name))} 様<br><br>
     この度は kaede photo へご予約リクエストをいただき、誠にありがとうございます。<br>
     以下の内容で承りました。担当より改めてご連絡いたしますので、今しばらくお待ちくださいませ。</p>
-    ${detailsTable(data)}
+    ${detailsTable(data, { forCustomer: true })}
     <p style="margin:24px 0 0;font-size:13px;line-height:1.8;color:#6b645c;">
     ※このメールは自動送信です。ご返信いただいてもお答えできない場合がございます。<br>
     お急ぎの場合は、このメールへの返信ではなく公式の連絡先までお問い合わせください。</p>`;
   return {
     subject: 'ご予約リクエストを受け付けました｜kaede photo',
     html: wrap('ご予約ありがとうございます', inner),
+  };
+}
+
+// だいきさん宛：サイト全体のレート制限に達したときのアラート
+// （この状態では正規のお客様も予約フォームを送信できないため、放置すると機会損失に直結する）
+export function globalLimitAlert({ limit, windowLabel, lastIp, at }) {
+  const inner = `
+    <p style="margin:0 0 16px;font-size:14px;line-height:1.8;color:#c0392b;">
+    ⚠️ 予約フォームの送信が、サイト全体の上限（${esc(windowLabel)}あたり${esc(String(limit))}件）に達しました。<br>
+    <strong>この間、正規のお客様も予約を送信できません。</strong></p>
+    <p style="margin:0 0 16px;font-size:14px;line-height:1.8;">
+    心当たりのない場合はいたずら送信の可能性があります。Netlify → Functions → booking → Logs で
+    送信元をご確認ください。上限の引き上げが必要な場合は booking.js の globalRatelimit を調整します。</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+      ${row('検知時刻', esc(at))}
+      ${row('直近の送信元', esc(lastIp))}
+    </table>
+    <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">このアラートは1日1回のみ送信されます。</p>`;
+  return {
+    subject: '【要対応】予約フォームが送信上限に達しています｜kaede photo',
+    html: wrap('予約フォームが一時的に停止しています', inner),
   };
 }
 

@@ -65,7 +65,11 @@ Netlify Functions（booking.js）
    - `UPSTASH_REDIS_REST_URL`
    - `UPSTASH_REDIS_REST_TOKEN`
 
-> ※ Upstashを設定しなくてもサイトは動きます（その場合スパム連投の制限だけ無効になります）。
+> ⚠️ **この2つは実質必須です。** 未設定でもサイトは動きますが、その場合はレート制限
+> （1IPあたり1時間5件・サイト全体1日40件）と二重送信の防止が**まるごと無効**になります。
+> 予約フォームは認証済みドメインからメールを送るため、無制限に連投されると送信ドメインの
+> 評判が落ち、正規の予約確認メールまで届かなくなる恐れがあります。
+> 未設定の場合、Functionのログに `[ratelimit] 警告: Upstashが未設定` が出力されます。
 
 ✅ ゴール：URLとTOKENの2つが手元にあればOK。
 
@@ -101,6 +105,10 @@ Netlify Functions（booking.js）
    |---|---|
    | 撮影ジャンル | セレクト |
    | エリア | テキスト |
+   | 概算金額 | 数値 |
+
+   ※「概算金額」は、お客様の確認画面に表示した概算料金をサーバー側で計算し直した値です。
+   作成しておくと、あとから「いくらでご案内した予約か」を台帳だけで確認できます。
 
 3. データベース右上 **「•••」→ コネクト → 連携 →** Step 5で作った `kaede-photo` を選んで接続。
 4. データベースの **ID** を取得：
@@ -124,7 +132,7 @@ Netlify Functions（booking.js）
    | `UPSTASH_REDIS_REST_TOKEN` | Step 4 のTOKEN |
    | `NOTION_API_KEY` | Step 5 のシークレット |
    | `NOTION_DATABASE_ID` | Step 6 のID |
-   | `SITE_URL` | Step 2 で発行された `https://〇〇.netlify.app` |
+   | `SITE_URL` | 公開中の正規URL（独自ドメイン運用中は `https://kaede-photo.com`。未取得の間は Step 2 の `https://〇〇.netlify.app`） |
 
 3. 登録後、**Deploys → Trigger deploy → Deploy site** で再デプロイ（環境変数を反映させるため必須）。
 

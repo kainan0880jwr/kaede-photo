@@ -14,6 +14,7 @@
 // 任意プロパティ（作成すると自動的に記録されるようになる。未作成でもエラーにはならない）:
 //   撮影ジャンル … Select
 //   エリア      … Rich text
+//   概算金額    … Number（お客様に提示した概算をサーバー側で再計算した値）
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -107,6 +108,11 @@ export async function createBookingRecord(data) {
   }
   if (data.area && existingProps.has('エリア')) {
     properties['エリア'] = { rich_text: richText(data.area) };
+  }
+  // 概算金額（booking.js の computeEstimate がサーバー側で再計算した値）。
+  // 特商法12条の6の最終確認画面でお客様に提示した対価を、台帳側にも残すためのもの。
+  if (typeof data.estimateYen === 'number' && existingProps.has('概算金額')) {
+    properties['概算金額'] = { number: data.estimateYen };
   }
 
   return getClient().pages.create({
