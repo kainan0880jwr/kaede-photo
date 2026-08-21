@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "netlify dev",
-    "build": "echo 'No build step (static site)'"
+    "build": "echo 'No build step (static site)'",
+    "check:prices": "node scripts/check-prices.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",

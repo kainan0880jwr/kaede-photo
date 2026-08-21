@@ -11,8 +11,9 @@ The git repo root is this `kaede-photo/` directory (the parent folder `kaede pho
 ## Commands
 
 ```bash
-npm run dev     # netlify dev — serves public/ + functions together, closest to production
-npm run build   # no-op ("No build step (static site)")
+npm run dev           # netlify dev — serves public/ + functions together, closest to production
+npm run build         # no-op ("No build step (static site)")
+npm run check:prices  # diff index.html's displayed prices against booking.js's price tables (run after any pricing edit)
 ```
 
 There is also a plain-static-only launch config at `.claude/launch.json` (`python3 -m http.server 8770 --directory public`) for when you just need to preview HTML/CSS without the booking API working.
@@ -47,8 +48,10 @@ netlify.toml                  Security headers (CSP etc.), the /api/booking redi
 
 This is the only piece of backend logic in the project, and it's dense — read the file's own comments before changing it, they explain a lot of non-obvious decisions. Key things to know:
 
-- **Pricing is recomputed server-side, never trusted from the client.** `computeEstimate()` in `booking.js` maintains `OPTION_PRICES` and `AREA_PRICES` tables independently of what the form displayed. If you add a new paid option or change a price in `index.html`'s form, you **must** update the matching table in `booking.js` — the stable keys (`data-opt`, `data-area` attributes in the HTML) are what tie the two together, not the display labels.
-- **Genre/plan values are validated against whitelists** (`ALLOWED_GENRES`, `ALLOWED_PLANS`) matched against stable keys (e.g. `newborn`, not `ニューボーン`). The `GENRE_LIST` in `index.html` and `ALLOWED_GENRES`/`GENRE_LABELS` in `booking.js` must stay in sync.
+- **Pricing is recomputed server-side, never trusted from the client.** `computeEstimate()` in `booking.js` maintains `OPTION_PRICES` and `AREA_PRICES` tables independently of what the form displayed. If you add a new paid option or change a price in `index.html`'s form, you **must** update the matching table in `booking.js` — the stable keys (`data-opt`, `data-area` attributes in the HTML) are what tie the two together, not the display labels. Run `npm run check:prices` after any price/plan edit — it statically diffs `index.html`'s displayed prices against `booking.js`'s `OPTION_PRICES`/`AREA_PRICES`/`ALLOWED_PLANS` and fails if they've drifted (there's no CI, so this is a manual pre-deploy step, not automatic).
+- **Genre/plan values are validated against whitelists** (`ALLOWED_GENRES`, `ALLOWED_PLANS`) matched against stable keys (e.g. `newborn`, not `ニューボーン`). The `GENRE_LIST` in `index.html` and `ALLOWED_GENRES`/`GENRE_LABELS` in `booking.js` must stay in sync. `ALLOWED_PLANS` matching ignores a trailing `（...）` annotation (`normalizePlanForMatch`), so cosmetic badge text like `（おすすめ）` can change without breaking bookings — but the price-bearing prefix (e.g. `standard ¥29,000`) must still match exactly.
+- **Time-limited campaign plans need an explicit deadline.** `SMASH_CAKE_PLANS`/`SMASH_CAKE_PLAN_DEADLINE` in `booking.js` reject the mémoire×kaede photo collab plans after the event date, even though the plan strings remain in `ALLOWED_PLANS` — otherwise anyone who finds the old plan string (page source, web archive) could book the expired campaign price indefinitely. Any future time-limited plan needs the same treatment.
+- **The referral discount (`referral`) applies to a future booking, not the current one.** `OPTION_PRICES.referral` is `0` on purpose — the checkbox/UI text says the ¥3,000 discount is for each side's *next* booking, so it must not reduce today's estimate. The discount itself is tracked via the referrer's name (typed into the form) and redeemed manually by the photographer at that future booking; there's no automated redemption.
 - **Origin checking** (`isAllowedOrigin`) is CSRF protection, not spam protection — it only allows `kaede-photo.com` + this project's own Netlify URLs, deliberately not `*.netlify.app` broadly.
 - **Rate limiting** (Upstash Redis) is optional infra — the function still works without it, but logs a warning and runs fully open. Two limits: per-IP (5/hour) and site-wide (40/day, to protect the sending domain's reputation), each independently.
 - **Mail is sent serially, not in parallel**: owner notification first, then customer auto-reply only if that succeeds — so a failure never results in the customer thinking they're booked while the owner never got notified.
@@ -59,6 +62,10 @@ This is the only piece of backend logic in the project, and it's dense — read 
 Genre pages (`newborn.html`, `maternity.html`, `omiyamairi.html`, `shichigosan.html`, `birthday.html`) and the area SEO pages are structurally near-identical (~1030–480 lines each): hero, shared nav/footer markup, FAQ accordion, all wired up by the shared `lp-common.js`. When editing shared behavior (nav, menu, FAQ, GA4 click tracking), edit `lp-common.js` once rather than per-page. When editing shared visual language (colors, fonts), prefer `tokens.css` custom properties over hardcoded values.
 
 `area-*.html` pages are currently `noindex,nofollow` (see `<meta name="robots">` in each) — they were accidentally published before content was sufficiently differentiated per-prefecture; don't remove the noindex tag without checking whether that's intentional.
+
+### Cancellation policy duplication (manual sync, no tooling)
+
+The cancellation/refund policy (studio fees, deposit terms, 特商法12条の6 confirmation-screen text) is written out independently in at least `index.html` (`#policy`, `#tokusho`, and the booking-form deposit note) and `birthday-collab.html` (deposit note + confirm-dialog text). There is a comment at the `birthday-collab.html` confirm dialog reminding editors to update `index.html` too, but nothing enforces it — unlike pricing, there's no `check:prices`-style script for policy text. When editing cancellation/refund wording, grep for `原則返金されません` and `キャンセル` across `public/*.html` and update every match, not just the one you started in.
 
 ## Environment / secrets
 

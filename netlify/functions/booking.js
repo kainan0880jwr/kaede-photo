@@ -52,16 +52,34 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
   console.error('[ratelimit] 警告: Upstashが未設定のため、レート制限が無効です。環境変数を確認してください。');
 }
 
-// 予約プランのホワイトリスト（フォームの選択肢と完全一致で判定）
+// プラン名の末尾についた「（おすすめ）」等の装飾的な補足テキストを除いて比較するための正規化。
+// バッジ文言・キャッチコピーだけをHTML側で変更した際に、ALLOWED_PLANSとの同期を忘れて
+// 該当プランの予約が全て「ご希望のプランが正しくありません」で弾かれる事故を防ぐ。
+// （撮影ジャンルが安定キーで判定されているのと同様の考え方だが、プラン名は
+// Notion記録・メール表示にそのまま使う都合上、キー化はせず正規化のみで対応する）
+function normalizePlanForMatch(s) {
+  return String(s || '').replace(/[（(][^）)]*[）)]\s*$/, '').trim();
+}
+
+// 予約プランのホワイトリスト（価格まで含めた文言で判定。末尾の装飾テキストは無視する）
 const ALLOWED_PLANS = new Set([
   'simple ¥19,000',
-  'standard ¥29,000（おすすめ）',
+  'standard ¥29,000',
   'special ¥39,000',
   'premium ¥77,000',
   // 期間限定コラボ企画「1st BIRTHDAY smash cake photo」（mémoire×kaede photo）専用プラン
   'smash cake photo 40cuts ¥35,000',
   'smash cake photo 50cuts ¥38,000',
 ]);
+
+// 上記の期間限定プランは、開催日（2026-09-04/05）を過ぎてもこの文字列さえ分かれば
+// 予約が通り続けてしまう（ページソースやアーカイブから拾われる可能性がある）。
+// 企画終了後は自動的に受付を締め切るため、受付期限を明示的に持たせる。
+const SMASH_CAKE_PLANS = new Set([
+  'smash cake photo 40cuts ¥35,000',
+  'smash cake photo 50cuts ¥38,000',
+]);
+const SMASH_CAKE_PLAN_DEADLINE = '2026-09-06'; // この日付(Asia/Tokyo)以降は受付終了
 
 // 撮影ジャンルのホワイトリスト（表示ラベルではなく安定キーで判定する。
 // キーは public/index.html の GENRE_LIST と一致させること。
@@ -101,7 +119,11 @@ const OPTION_PRICES = {
   newborn_set: 2000,    // ニューボーンフォトセット
   sns_face: -1000,      // SNS割（顔を含む）
   sns_noface: -500,     // SNS割（顔を含まない）
-  referral: -3000,      // ご紹介割
+  // ご紹介割は「今回」ではなく紹介者・被紹介者それぞれの「次回」の予約に適用される
+  // （フォーム文言・オプション表参照）。この予約自体の概算には反映しないため0円。
+  // チェック状態と紹介者名（referral-name欄）はメール本文に記載され、
+  // 次回予約時に手動で−3,000円を適用する運用。
+  referral: 0,           // ご紹介あり（今回の金額には影響しない。次回適用は手動運用）
 };
 
 const AREA_PRICES = {
@@ -124,13 +146,18 @@ function planYen(plan) {
 }
 
 function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
-  const keys = Array.isArray(optionKeys) ? optionKeys.slice(0, 30) : [];
+  // 件数（30件）に加え、各要素の文字数も上限を設ける（多重防御。ログ・注記文の肥大化を防ぐ）
+  const keys = (Array.isArray(optionKeys) ? optionKeys.slice(0, 30) : []).map(k => String(k).slice(0, 64));
   let total = planYen(plan);
   const unknown = [];
   for (const k of keys) {
-    const price = OPTION_PRICES[String(k)];
-    if (price === undefined) unknown.push(String(k).slice(0, 40));
+    const price = OPTION_PRICES[k];
+    if (price === undefined) unknown.push(k.slice(0, 40));
     else total += price;
+  }
+  // 想定外のキーは改ざん試行かフロント側のバグの可能性があるため、注記だけでなくログにも残す
+  if (unknown.length) {
+    console.warn('[estimate] unknown option keys:', unknown);
   }
 
   if (Object.prototype.hasOwnProperty.call(AREA_PRICES, areaKey)) {
@@ -278,9 +305,22 @@ function validate(data) {
       errors.push('撮影希望日に過去の日付が含まれています。');
     }
   }
-  // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）
-  if (data.plan && !ALLOWED_PLANS.has(data.plan)) {
-    errors.push('ご希望のプランが正しくありません。');
+  // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）。
+  // フォーム（index.html / birthday-collab.html）はどちらもプラン選択をrequiredにしているため、
+  // 空文字（未選択のまま直接APIを叩いた場合）もここで弾く
+  if (!data.plan) {
+    errors.push('ご希望のプランを選択してください。');
+  } else {
+    const normalizedPlan = normalizePlanForMatch(data.plan);
+    if (!ALLOWED_PLANS.has(normalizedPlan)) {
+      errors.push('ご希望のプランが正しくありません。');
+    } else if (SMASH_CAKE_PLANS.has(normalizedPlan)) {
+      // 期間限定コラボ企画：開催日を過ぎたら、文字列を知っているだけでの予約を拒否する
+      const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+      if (today >= SMASH_CAKE_PLAN_DEADLINE) {
+        errors.push('このプランは受付を終了しました。');
+      }
+    }
   }
   // ジャンルはホワイトリスト照合（空文字＝指定なしは許可）
   if (data.genre && !ALLOWED_GENRES.has(data.genre)) {

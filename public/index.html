@@ -400,7 +400,7 @@ ul{list-style:none;}
   letter-spacing:.14em;color:var(--brown);margin-bottom:4px;
 }
 .plan-catch{
-  font-size:10px;color:var(--muted);letter-spacing:.02em;white-space:nowrap;
+  font-size:10px;color:var(--muted);letter-spacing:.02em;white-space:normal;min-height:26px;
   margin-bottom:20px;padding-bottom:16px;
   border-bottom:1px solid var(--surface);
 }
@@ -955,6 +955,7 @@ footer{
           <div class="plan-catch">"家族の今"をコンパクトに残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 30cuts</div>
           <div class="plan-price">¥19,000<span>（税込）</span></div>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('simple');return false;">このプランで予約</a>
         </div>
         <div class="plan-card featured">
           <div class="plan-badge">おすすめ</div>
@@ -962,18 +963,21 @@ footer{
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 65cuts</div>
           <div class="plan-price">¥29,000<span>（税込）</span></div>
+          <a href="#" class="btn btn-primary plan-btn" onclick="selectPlanAndBook('standard');return false;">このプランで予約</a>
         </div>
         <div class="plan-card">
           <div class="plan-name">special</div>
           <div class="plan-catch">"家族の今"をより深く残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts</div>
           <div class="plan-price">¥39,000<span>（税込）</span></div>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('special');return false;">このプランで予約</a>
         </div>
         <div class="plan-card">
           <div class="plan-name">premium</div>
           <div class="plan-catch">"家族の想い"まで残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts ＋ムービー込み</div>
           <div class="plan-price">¥77,000<span>（税込）</span></div>
+          <a href="#" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('premium');return false;">このプランで予約</a>
         </div>
       </div>
       <div class="text-center">
@@ -1068,7 +1072,7 @@ footer{
         <div style="font-family:var(--f-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;">全プラン共通</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px;color:var(--text);">
           <span>✓ 高画質レタッチ</span>
-          <span>✓ 対象エリアは交通費込み</span>
+          <span>✓ 大阪府内・和歌山県北部は交通費込み（他エリアは交通費表参照）</span>
           <span>✓ オンラインデータ納品</span>
           <span>✓ ご家族写真込み</span>
         </div>
@@ -1155,8 +1159,8 @@ footer{
             <label class="sim-check" id="sim-movie-row"><input type="checkbox" class="so" id="sim-movie" value="39800" onchange="calcSim()"> お手紙ムービー ＋39,800円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-1000" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含む） −1,000円</label>
             <label class="sim-check"><input type="checkbox" class="so" value="-500" data-excl="sim-sns" onchange="calcSim()"> SNS割（顔を含まない） −500円</label>
-            <label class="sim-check"><input type="checkbox" class="so" value="-3000" onchange="calcSim()"> ご紹介割 −3,000円</label>
-            <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割・ご紹介割は適用条件があります</div>
+            <label class="sim-check"><input type="checkbox" class="so" value="0" onchange="calcSim()"> ご紹介あり</label>
+            <div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6;">※ SNS割はSNS掲載にご同意いただける方が対象です。ご紹介割は今回ではなく次回のご予約に適用されます（今回の概算には反映されません）。</div>
             <div id="sim-genre-options"></div>
           </div>
           <div class="sim-step">
@@ -1204,7 +1208,7 @@ footer{
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
               <tr><td>SNS割（お顔を含む）<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>SNS割（お顔を含まない・パーツショットのみ）</td><td class="price discount">−500円</td></tr>
-              <tr><td>ご紹介割（紹介者・ご本人）<br><span style="font-size:11px;color:var(--muted);">ご本人様（紹介された方）は次回のご予約時に3,000円引きが適用されます。</span></td><td class="price discount">−3,000円</td></tr>
+              <tr><td>ご紹介割（紹介者・ご本人）<br><span style="font-size:11px;color:var(--muted);">今回のご予約には適用されません。紹介者様・ご紹介された方さまとも、それぞれの次回のご予約時に3,000円引きが適用されます。</span></td><td class="price discount">次回−3,000円</td></tr>
             </tbody>
           </table>
         </div>
@@ -1234,7 +1238,7 @@ footer{
             </tbody>
           </table>
           <div style="background:#FAEEED;border:1px solid #e7cfc9;border-radius:6px;padding:12px 14px;font-size:12px;line-height:1.8;color:var(--red-text);">
-            <strong>※ スタジオ利用料は、撮影当日に全額返金される安心保証金とは性質が異なり、原則返金されません。</strong>キャンセル・返金の条件は各スタジオの規定に従います。スタジオが確定次第、規定を事前にご案内いたします。
+            <strong>※ スタジオ利用料は、撮影当日に全額返金される安心保証金とは性質が異なり、お客様都合のキャンセルの場合は原則返金されません。</strong>キャンセル・返金の条件は各スタジオの規定に従います。スタジオが確定次第、規定を事前にご案内いたします。当方またはスタジオ都合により撮影自体が中止となった場合は、スタジオ利用料も全額返金します。
           </div>
         </div>
       </div>
@@ -1443,7 +1447,7 @@ footer{
           フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）のお支払いをもってご予約確定</strong>となります。<br>
           <span style="color:var(--terra);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
           <span style="font-size:11px;color:var(--muted);">※ 撮影料金（プラン代金・オプション・交通費）は上記の安心保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
-          <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり原則返金されません</strong>（金額・キャンセル規定はスタジオにより異なります）。</span><br>
+          <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり、お客様都合のキャンセルの場合は原則返金されません</strong>（金額・キャンセル規定はスタジオにより異なります。当方またはスタジオ都合による中止の場合は全額返金します）。</span><br>
           <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);">キャンセルポリシー</a>をご確認ください。</span>
         </div>
 
@@ -1505,10 +1509,10 @@ footer{
             <label class="form-label" for="f-plan">ご希望のプラン <span class="req">*</span></label>
             <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie();updateBookingTotal()">
               <option value="">選択してください</option>
-              <option>simple ¥19,000</option>
-              <option>standard ¥29,000（おすすめ）</option>
-              <option>special ¥39,000</option>
-              <option>premium ¥77,000</option>
+              <option value="simple ¥19,000">simple ¥19,000</option>
+              <option value="standard ¥29,000（おすすめ）">standard ¥29,000（おすすめ）</option>
+              <option value="special ¥39,000">special ¥39,000</option>
+              <option value="premium ¥77,000">premium ¥77,000</option>
             </select>
           </div>
 
@@ -1529,10 +1533,11 @@ footer{
               <div class="opt-group-title">割引</div>
               <label class="check-row"><input type="checkbox" data-excl="form-sns" data-opt="sns_face"> SNS割（顔を含む） −1,000円</label>
               <label class="check-row"><input type="checkbox" data-excl="form-sns" data-opt="sns_noface"> SNS割（顔を含まない） −500円</label>
-              <label class="check-row"><input type="checkbox" id="referral-check" data-opt="referral" onchange="toggleReferral()"> ご紹介割 −3,000円（紹介者・ご本人どちらも）</label>
+              <label class="check-row"><input type="checkbox" id="referral-check" data-opt="referral" onchange="toggleReferral()"> ご紹介あり（今回の料金は変わりません。次回のご予約が割引になります）</label>
               <div id="referral-name" style="display:none;margin-top:8px;">
                 <label class="form-label" for="f-referral-name" style="font-size:11px;">ご紹介者のお名前</label>
                 <input class="form-input" id="f-referral-name" type="text" placeholder="例：山田 花子">
+                <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6;">※ 今回のご予約は通常料金です。紹介者様・ご本人様とも、次回のご予約時にお申し出いただくと3,000円引きが適用されます。</div>
               </div>
             </div>
             <div id="genre-options-group" style="display:none;"></div>
@@ -1649,7 +1654,7 @@ footer{
           ③ 撮影当日に、撮影料金（プラン代金・オプション・交通費）を現地で現金またはPayPayにてお支払い<br>
           ④ 撮影終了後、お預かりした保証金2,000円を全額そのまま返金
           <div class="policy-positive">保証金は実質的なご負担なくご予約いただけます。</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:8px;">※ スタジオ撮影の場合、スタジオ利用料（金額はスタジオにより異なります）は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金は撮影当日に全額返金されますが、スタジオ利用料は性質が異なり原則返金されません。</strong>キャンセル・返金は各スタジオの規定に従います。</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px;">※ スタジオ撮影の場合、スタジオ利用料（金額はスタジオにより異なります）は安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金は撮影当日に全額返金されますが、スタジオ利用料は性質が異なり、お客様都合のキャンセルの場合は原則返金されません。</strong>キャンセル・返金は各スタジオの規定に従います。当方またはスタジオ都合による中止の場合は全額返金します。</div>
         </div>
       </div>
 
@@ -1728,8 +1733,8 @@ footer{
       <div class="policy-block">
         <div class="policy-hd red">◆ スタジオ撮影のスタジオ利用料について</div>
         <div class="policy-bd" style="font-size:12px;color:var(--muted);">
-          スタジオ利用料は、安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり、原則返金されません。</strong><br>
-          キャンセル・返金の条件は、ご利用いただく各スタジオの規定に従います。詳細はスタジオが確定次第、個別にご案内いたします。
+          スタジオ利用料は、安心保証金と合わせて事前にお支払いいただきます。<strong style="color:var(--red-text);">安心保証金とは異なり、お客様都合のキャンセルの場合は原則返金されません。</strong><br>
+          キャンセル・返金の条件は、ご利用いただく各スタジオの規定に従います。詳細はスタジオが確定次第、個別にご案内いたします。当方またはスタジオ都合により撮影自体が中止となった場合は、スタジオ利用料も全額返金します。
         </div>
       </div>
 
@@ -1948,7 +1953,7 @@ footer{
           <tr><td style="color:var(--brown);">お支払い方法</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：PayPayまたは銀行振込。撮影料金：現金またはPayPay（撮影当日）。スタジオ利用料（スタジオ撮影の場合）：安心保証金と合わせて事前にお支払い。</td></tr>
           <tr><td style="color:var(--brown);">お支払い時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">安心保証金：フォーム送信後の内容確認のご連絡を経て、お支払いをもってご予約確定。撮影料金：撮影当日に現地でお支払い（現金またはPayPay）。スタジオ利用料（スタジオ撮影の場合）：安心保証金と合わせて事前にお支払い。</td></tr>
           <tr><td style="color:var(--brown);">役務の提供時期</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">ご予約時に確定した撮影日に撮影を行います。撮影データは撮影後約1ヶ月（premiumプランは約1ヶ月半）でオンライン納品します。</td></tr>
-          <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。スタジオ利用料は安心保証金とは異なり<strong>原則返金されません</strong>。キャンセル・返金の条件は各スタジオの規定に従います。</td></tr>
+          <tr><td style="color:var(--brown);">キャンセル・返金</td><td style="text-align:left;font-family:var(--f-ui);color:var(--text);font-size:13px;">役務（撮影）の性質上、撮影完了後のキャンセル・返金はお受けできません。キャンセル・日程変更・保証金の返金条件は<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>に準じます。スタジオ利用料は安心保証金とは異なり、お客様都合のキャンセルの場合は<strong>原則返金されません</strong>。キャンセル・返金の条件は各スタジオの規定に従います（当方またはスタジオ都合による中止の場合は全額返金）。</td></tr>
         </tbody>
       </table>
 
