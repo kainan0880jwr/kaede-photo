@@ -636,8 +636,8 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
         <div class="col-num">02</div>
         <div class="eyebrow">mémoire</div>
         <h2 class="heading-lg">世界にひとつだけの<br>ケーキ。</h2>
-        <p class="lead">今回ケーキをご用意いただくのは、大阪市福島区の「焼き菓子みもあ"mémoire"」。生地やクリーム、デザインまで一つひとつ選びながらお作りする、世界に一つだけのオーダーメイドケーキです。</p>
-        <p class="body-sm">すべてグルテンフリー。小麦粉・白砂糖を使用せず、からだにやさしい素材を選び、アレルギーやお好みにも寄り添いながら心を込めてお作りされています。</p>
+        <p class="lead">今回ケーキをご用意いただくのは、大阪市福島区の「焼き菓子みもあ"mémoire"」。生地やクリーム、デザインまで一つひとつ選びながらお作りする、世界に一つだけのオーダーメイドケーキです。ケーキの製造・販売はmémoireが行い、kaede photoは撮影のみをご提供します。</p>
+        <p class="body-sm">mémoireいわく、グルテンフリーを基本に、小麦粉・白砂糖を控えたからだにやさしい素材を選びながらお作りされているとのことです。アレルギーやご使用の材料について気になる点は、ご予約フォームのアレルギー確認欄にご記入いただくか、直接mémoireまでお問い合わせください。</p>
         <a href="https://www.instagram.com/memoire_baked/" class="btn btn-ig btn-sm" style="margin-top:20px;" target="_blank" rel="noopener noreferrer">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1.3" fill="#fff" stroke="none"/></svg>
           mémoireのInstagramを見る
@@ -756,7 +756,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     <div class="form-wrap reveal">
       <div class="deposit-note">
         通常の撮影予約と同じく、<strong>2,000円の安心保証金</strong>（PayPayまたは振込）のお支払いをもってご予約確定となります。<span style="color:var(--terra);">撮影当日に全額お返しします。</span><br>
-        <span style="font-size:11px;color:var(--muted);">※ プラン代金（ケーキ代込み）は保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
+        <span style="font-size:11px;color:var(--muted);">※ プラン代金（ケーキ代込み）は保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。ケーキの製造・販売はmémoireが行うもので、ケーキに関するご契約はお客様とmémoireとの間で成立します。kaede photoは撮影サービスのみをご提供します。</span><br>
         <span style="font-size:11px;color:var(--muted);">※ 本企画は日程が9/4・9/5に固定されているため、通常のキャンセルポリシーにある無料の日程変更（体調不良・悪天候時）を承れない場合があります。</span><br>
         <span style="font-size:11px;color:var(--muted);">※ キャンセル料は通常のご予約と同じく<strong>安心保証金2,000円のみ</strong>です。撮影日の5日前までにご連絡いただければ全額返金し、4日前以降のお客様都合キャンセル（前日・当日、無断キャンセルを含む）は保証金をキャンセル料に充当します。詳しくは<a href="index.html#policy" target="_blank" rel="noopener noreferrer" style="color:var(--terra);text-decoration:underline;">キャンセルポリシー</a>をご覧ください。</span><br>
         <span style="font-size:11px;color:var(--muted);">※ スタジオ側のご都合等、開催者側の事情により本企画自体が中止となった場合は、安心保証金を全額返金します。</span>
@@ -773,6 +773,13 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
             <label class="form-label" for="c-child-name">お子さまのお名前 <span class="req">*</span></label>
             <input class="form-input" id="c-child-name" type="text" placeholder="例：はな" required>
             <div style="font-size:11px;color:var(--muted);margin-top:6px;">※ 苗字は不要です。複数名の場合はまとめてご記入ください（例：はな、そら）。</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="c-allergy">アレルギーの有無 <span class="req">*</span></label>
+            <input class="form-input" id="c-allergy" type="text" placeholder="例：卵アレルギーあり／特になし" required>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">※ ケーキはmémoireが個別にお作りします。アレルギーがある場合は具体的な食材名をご記入ください。無い場合は「特になし」とご記入ください。</div>
           </div>
         </div>
         <div class="form-row">
@@ -850,6 +857,11 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
           <textarea class="form-input" id="c-message" placeholder="ご自由にどうぞ" maxlength="1500"></textarea>
         </div>
 
+        <div class="form-field">
+          <label class="check-row"><input type="checkbox" id="c-sns-consent" data-opt="collab_sns"> 撮影データの掲載に同意する（任意）</label>
+          <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;">※ 撮影データを kaede photo・mémoire双方の公式サイト・SNS（Instagram等）・実績紹介に掲載することへの同意です。同意は任意で、いつでも撤回できます。同意いただかなくてもご予約には影響ありません。</div>
+        </div>
+
         <div class="privacy-wrap">
           <label class="check-row">
             <input type="checkbox" id="c-privacy" required>
@@ -903,7 +915,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
            index.html のキャンセルポリシーも合わせて更新すること。 -->
       <div style="background:var(--surface);border-radius:6px;padding:12px 14px;margin-top:14px;font-size:11.5px;color:var(--text);line-height:1.85;">
         <strong>お申込み期間</strong>：定員（全6組）に達し次第、または撮影日（2026年9月5日）を過ぎた時点で受付を終了します。<br>
-        <strong>お支払い</strong>：安心保証金2,000円（PayPayまたは銀行振込）のお支払いをもってご予約確定となります。プラン代金（ケーキ代込み）は、保証金とは別に撮影当日に現地で現金またはPayPayでお支払いください。<br>
+        <strong>お支払い</strong>：安心保証金2,000円（PayPayまたは銀行振込）のお支払いをもってご予約確定となります。プラン代金（ケーキ代込み）は、保証金とは別に撮影当日に現地で現金またはPayPayでお支払いください。ケーキの製造・販売はmémoireが行うもので、ケーキに関するご契約はお客様とmémoireとの間で成立します。<br>
         <strong>撮影日時</strong>：2026年9月4日（金）・5日（土）のうち、ご予約時に確定した時間枠（全6組限定）。<br>
         <strong>データ納品時期</strong>：撮影後 約1ヶ月にオンライン納品。<br>
         <strong>キャンセル・返金</strong>：キャンセル料は通常のご予約と同じく<strong>安心保証金2,000円のみ</strong>です。撮影日の5日前までのご連絡で保証金を全額返金し、4日前以降のお客様都合キャンセル（前日・当日、無断キャンセルを含む）は保証金2,000円をキャンセル料に充当します。ただし本企画は日程が固定のため、通常のキャンセルポリシーにある無料の日程変更（ご家族の体調不良・悪天候時）を承れない場合があります。会場都合等、開催者側の事情により本企画自体が中止となった場合は、安心保証金を全額返金します。キャンセルのご連絡は、できる限りお早めに下記メールまでお願いいたします。<br>
@@ -982,15 +994,19 @@ function submitCollabForm(e){
   const planValue = document.getElementById('c-plan');
   const planLabel = planValue.options[planValue.selectedIndex]?.textContent || '';
   const childName = _cval('c-child-name');
+  const allergy = _cval('c-allergy');
   const instagram = _cval('c-instagram');
   const costumeChecked = document.getElementById('c-costume').checked;
+  const snsConsentChecked = document.getElementById('c-sns-consent').checked;
   const userMessage = _cval('c-message');
 
   const lines = [];
   lines.push('【1st BIRTHDAY smash cake photo コラボ企画（mémoire×kaede photo）からのご予約】');
   lines.push(`【お子さまのお名前】${childName}`);
+  lines.push(`【アレルギーの有無】${allergy}`);
   if(instagram) lines.push(`【Instagramユーザー名】${instagram}`);
   if(costumeChecked) lines.push('【小物・衣装の貸出について相談したい】');
+  lines.push(`【撮影データの掲載同意】${snsConsentChecked ? 'あり' : 'なし'}`);
   if(userMessage) lines.push(`【ご要望・ご質問】\n${userMessage}`);
 
   collabPendingBooking = {
@@ -1002,6 +1018,10 @@ function submitCollabForm(e){
     genre: '',
     area: 'mémoireスタジオ（大阪市福島区大開）',
     message: lines.join('\n'),
+    optionKeys: snsConsentChecked ? ['collab_sns'] : [],
+    // プライバシーポリシー同意チェックはHTML5のrequiredで必須化しており、
+    // ここに到達している時点でチェック済み（checkValidity()を通過済み）
+    privacyConsent: true,
     hp_token: _cval('c-hp-token'),
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)+'-'+Math.random().toString(16).slice(2)),
   };
@@ -1010,12 +1030,14 @@ function submitCollabForm(e){
   const addRow = (k,v) => rows.push(`<div><dt>${k}</dt><dd>${v}</dd></div>`);
   addRow('保護者のお名前', _cEscHtml(collabPendingBooking.name));
   addRow('お子さまのお名前', _cEscHtml(childName));
+  addRow('アレルギーの有無', _cEscHtml(allergy));
   addRow('メール', _cEscHtml(collabPendingBooking.email));
   if(collabPendingBooking.phone) addRow('電話番号', _cEscHtml(collabPendingBooking.phone));
   if(instagram) addRow('Instagram', _cEscHtml(instagram));
   addRow('ご希望日時', _cEscHtml(preferredDate));
   addRow('プラン', _cEscHtml(planLabel));
   if(costumeChecked) addRow('衣装貸出相談', 'あり');
+  addRow('撮影データの掲載同意', snsConsentChecked ? 'あり' : 'なし');
   document.getElementById('confirm-body').innerHTML = rows.join('');
 
   const cmsg = document.getElementById('confirm-msg');

@@ -155,6 +155,9 @@ const OPTION_PRICES = {
   // チェック状態と紹介者名（referral-name欄）はメール本文に記載され、
   // 次回予約時に手動で−3,000円を適用する運用。
   referral: 0,           // ご紹介あり（今回の金額には影響しない。次回適用は手動運用）
+  // コラボ企画（birthday-collab.html）専用のSNS掲載同意チェック。通常予約のsns_face/sns_nofaceと
+  // 異なり割引ではないため0円。同意の有無自体はdata.snsConsentとしてNotion記録に渡す。
+  collab_sns: 0,
 };
 
 const AREA_PRICES = {
@@ -183,6 +186,17 @@ const EXCLUSIVE_OPTION_GROUPS = [
   ['early7', 'early10'],
   ['sns_face', 'sns_noface'],
 ];
+
+// 掲載同意（肖像権・プライバシーポリシー「利用目的」参照）の有無を、料金とは別に
+// サーバー側で確定させる。金額はOPTION_PRICESが担うが、同意の記録はここで
+// 独立に判定する（optionKeysはホワイトリスト照合済みの安定キーのため、この判定は信頼できる）。
+function deriveSnsConsent(optionKeys) {
+  const keys = new Set((Array.isArray(optionKeys) ? optionKeys : []).map(k => String(k)));
+  if (keys.has('sns_face')) return { consent: true, scope: '顔を含む' };
+  if (keys.has('sns_noface')) return { consent: true, scope: '顔を含まない' };
+  if (keys.has('collab_sns')) return { consent: true, scope: 'コラボ企画（kaede photo・mémoire双方）' };
+  return { consent: false, scope: '' };
+}
 
 function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
   // 件数（30件）に加え、各要素の文字数も上限を設ける（多重防御。ログ・注記文の肥大化を防ぐ）。
@@ -332,6 +346,13 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validate(data) {
   const errors = [];
+
+  // プライバシーポリシー（コラボ企画では共同利用への同意を含む）への同意はフォーム側で
+  // 必須チェックボックスにしているが、直接APIを叩けばその検証を回避できるため、
+  // ここでも必須項目として扱う。
+  if (!data.privacyConsent) {
+    errors.push('プライバシーポリシーへの同意が必要です。');
+  }
 
   if (!data.name || data.name.trim().length < 1) {
     errors.push('お名前を入力してください。');
@@ -501,6 +522,7 @@ export const handler = async (event) => {
     genre: str(payload.genre),
     area: str(payload.area),
     message: str(payload.message),
+    privacyConsent: payload.privacyConsent === true,
     receivedAt: now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
     receivedAtISO: now.toISOString(),
   };
@@ -531,6 +553,11 @@ export const handler = async (event) => {
   data.estimateText = estimate.text;
   data.estimateTextCustomer = estimate.customerText;
   data.estimateYen = estimate.total;
+
+  // 掲載同意の記録（金額とは独立に、optionKeysから確定させる。#f4/#f6の監査対応）
+  const snsConsent = deriveSnsConsent(payload.optionKeys);
+  data.snsConsent = snsConsent.consent;
+  data.snsConsentScope = snsConsent.scope;
   if (estimate.mismatch) {
     // 単価表のズレ（＝表示と請求の食い違い）を早期に発見するためのログ
     console.warn('[estimate] client/server mismatch:', {

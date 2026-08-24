@@ -1241,7 +1241,7 @@ footer{
               <tr><td>2箇所での撮影（＋20枚）</td><td class="price">＋10,000円</td></tr>
               <tr><td>ニューボーンフォトセット<br><span style="font-size:11px;color:var(--muted);">ラタンかご・お衣装・レース敷物（ニューボーンフォトをご希望の方向け）</span></td><td class="price">＋2,000円</td></tr>
               <tr><td>お手紙ムービー<br><span style="font-size:11px;color:var(--muted);">※premiumプランには含まれています</span></td><td class="price">＋39,800円</td></tr>
-              <tr><td>SNS割（お顔を含む）<br><span style="font-size:11px;color:var(--muted);">撮影したお写真を kaede photo のSNS（Instagram等）に掲載させていただける方が対象です。お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
+              <tr><td>SNS割（お顔を含む）<br><span style="font-size:11px;color:var(--muted);">撮影データを kaede photo の公式サイト・LP・ポートフォリオ・SNS（Instagram等）・広告に掲載させていただける方が対象です。同意は任意・いつでも撤回可能で、お子さまの掲載は保護者さまの同意をいただいたうえで行います。</span></td><td class="price discount">−1,000円</td></tr>
               <tr><td>SNS割（お顔を含まない・パーツショットのみ）</td><td class="price discount">−500円</td></tr>
               <tr><td>ご紹介割（紹介者・ご本人）<br><span style="font-size:11px;color:var(--muted);">今回のご予約には適用されません。紹介者様・ご紹介された方さまとも、それぞれの次回のご予約時に3,000円引きが適用されます。</span></td><td class="price discount">次回−3,000円</td></tr>
             </tbody>
@@ -1567,7 +1567,9 @@ footer{
             <div class="opt-group" style="margin-top:8px;">
               <div class="opt-group-title">割引</div>
               <label class="check-row"><input type="checkbox" data-excl="form-sns" data-opt="sns_face"> SNS割（顔を含む） −1,000円</label>
+              <div style="font-size:10px;color:var(--muted);margin:-6px 0 8px;line-height:1.6;">※ 撮影データを kaede photo の公式サイト・LP・ポートフォリオ・SNS（Instagram等）・広告に、お子さまのお顔を含めて掲載することへの同意です。同意は任意・いつでも撤回可能で、撤回してもご予約自体には影響しません。</div>
               <label class="check-row"><input type="checkbox" data-excl="form-sns" data-opt="sns_noface"> SNS割（顔を含まない） −500円</label>
+              <div style="font-size:10px;color:var(--muted);margin:-6px 0 8px;line-height:1.6;">※ お顔が映らないパーツショット等に限り、上記と同じ媒体に掲載することへの同意です。同意は任意・いつでも撤回可能です。</div>
             </div>
             <div class="opt-group" style="margin-top:8px;">
               <!-- 「割引」グループとは別枠にする：今回の金額には影響しない（次回適用）ため、
@@ -1621,7 +1623,7 @@ footer{
 
           <div class="privacy-wrap">
             <label class="check-row">
-              <input type="checkbox" required>
+              <input type="checkbox" id="f-privacy" required>
               <span style="font-size:12px;"><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a>に同意します <span style="color:var(--terra)">*</span></span>
             </label>
           </div>
@@ -1914,46 +1916,49 @@ footer{
 
       <div class="priv-section">
         <div class="priv-heading">個人情報の収集について</div>
-        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・電話番号　・Instagramアカウント（任意）<br>・撮影希望日　・撮影場所・エリア　・ご希望のプラン・オプション<br>・お子さまの情報（お名前・ニックネーム、人数・年齢）　・その他ご入力いただいた情報</div>
+        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・電話番号　・Instagramアカウント（任意）<br>・撮影希望日　・撮影場所・エリア　・ご希望のプラン・オプション<br>・お子さまの情報（お名前・ニックネーム、人数・年齢。<strong>保護者さまが親権者としてご入力・ご同意いただいているものとして取り扱います</strong>）　・その他ご入力いただいた情報<br>・IPアドレス・アクセスログ（不正送信・スパム防止の目的でのみ利用し、短期間で自動的に消去されます）</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">利用目的</div>
-        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例としてポートフォリオ・SNS（Instagram等）に掲載<br><br>SNS等への掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>SNS掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
+        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例として当サイト・各企画ページ・ポートフォリオ・SNS（Instagram等）・広告に掲載<br><br>掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方、またはコラボ企画で掲載同意にチェックいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">第三者提供</div>
         <div class="priv-body">法令に基づく場合、下記「外部サービスの利用・業務委託」および「共同利用」に記載する場合を除き、お客様の個人情報を第三者に提供することはありません。</div>
       </div>
-      <!-- 共同利用の記載（個人情報保護法27条5項3号）。
-           コラボ企画で予約内容をmémoireと共有するため、開始前の公表が必要な項目。
+      <!-- 共同利用の記載（個人情報保護法27条5項3号）＋コラボ予約フォームでの明示同意（同27条1項）を
+           併用する設計。管理責任者の住所は非公開方針のため、共同利用の公表要件だけに依拠せず、
+           birthday-collab.html の同意チェック（共同利用への同意＋掲載同意）で本人同意を別途取得する。
            共有する項目・共同利用者・利用目的・責任者のいずれかが変わったときは、
            birthday-collab.html の同意チェック文言も合わせて更新すること。 -->
       <div class="priv-section">
         <div class="priv-heading">共同利用（コラボ企画にお申し込みの場合）</div>
-        <div class="priv-body">「1st BIRTHDAY smash cake photo」等、他事業者との共同企画にお申し込みいただいた場合に限り、企画の実施に必要な範囲で、以下のとおり個人情報を共同利用します。<br>
+        <div class="priv-body">「1st BIRTHDAY smash cake photo」等、他事業者との共同企画にお申し込みいただいた場合に限り、企画の実施に必要な範囲で、以下のとおり個人情報を共同利用します。ご予約フォームでの<strong>お申し込み自体を、本共同利用への同意の意思表示</strong>としています。<br>
         ・<strong>共同利用する項目</strong>：保護者さまのお名前、お子さまのお名前、メールアドレス、電話番号、Instagramアカウント、ご希望の日時・プラン<br>
         ・<strong>共同利用する者の範囲</strong>：焼き菓子みもあ "mémoire"（大阪府大阪市福島区大開1丁目10-10）<br>
-        ・<strong>利用目的</strong>：ご予約内容の確認、ケーキの製作準備、当日のご案内、撮影後のご連絡<br>
-        ・<strong>管理について責任を有する者</strong>：kaede photo（運営統括責任者：池端 楓／kaepafu1995@gmail.com）<br>
+        ・<strong>利用目的</strong>：ご予約内容の確認、ケーキの製作準備、当日のご案内、撮影後のご連絡、企画の告知・作例としてのSNS掲載（フォームで掲載に同意いただいた場合に限る）<br>
+        ・<strong>管理について責任を有する者</strong>：kaede photo（運営統括責任者：池端 楓／kaepafu1995@gmail.com）。住所は、下記お問い合わせ窓口までご請求いただければ遅滞なく開示します。<br>
         通常のご予約（コラボ企画以外）では、mémoireを含む他事業者への提供・共同利用は行いません。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">外部サービスの利用・業務委託</div>
-        <div class="priv-body">ご予約の管理・ご連絡・撮影データの納品のため、以下の外部サービスに個人情報・撮影データの取り扱いを委託しています。<br>
+        <div class="priv-body">ご予約の管理・ご連絡・撮影データの納品・サイトの運用のため、以下の外部サービスに個人情報・撮影データの取り扱いを委託しています。<br>
+        ・Netlify（Netlify, Inc.／米国）：当サイトのホスティング、予約フォームの処理基盤<br>
         ・Resend（Resend, Inc.／米国）：確認・通知メールの送信<br>
         ・Upstash（Upstash, Inc.／米国）：不正送信・スパム防止<br>
         ・Notion（Notion Labs, Inc.／米国）：ご予約内容の管理<br>
+        ・Google Analytics（Google LLC／米国）：アクセス解析（詳細は下記「アクセス解析」参照）<br>
         ・ギガファイル便：撮影データのオンライン納品<br>
         ・Select Photo：撮影データのオンライン納品・選択<br>
-        米国の事業者については、日本の個人情報保護法に相当する水準の安全管理措置を講じています。委託先の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
+        米国の事業者へ個人情報を提供する場合は、各社との契約等を通じて日本の個人情報保護法に相当する水準の安全管理措置が講じられるよう努め、その体制を定期的に確認しています。委託先の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">アクセス解析（Cookie）</div>
-        <div class="priv-body">当サイトでは、サイトの利用状況を把握するため Google Analytics（Google LLC／米国）を利用しています。これに伴いCookieを使用し、匿名の利用データ（アクセス数・閲覧ページ等）を収集します。当方がこれらの情報からお客様個人を特定することはありません。ブラウザの設定でCookieを無効にすることで収集を拒否できます。</div>
+        <div class="priv-body">当サイトでは、サイトの利用状況を把握するため Google Analytics（Google LLC／米国）を利用しています。これに伴いCookieを使用し、匿名の利用データ（アクセス数・閲覧ページ等）を収集します。当方がこれらの情報からお客様個人を特定することはありません。ブラウザの設定でCookieを無効にすることで収集を拒否できます。<br>本サービスは日本国内にお住まいの方を主な対象としてご案内しています。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">保管期間</div>
-        <div class="priv-body">ご予約に関する個人情報（お名前・ご連絡先など）は、次回以降のご予約対応やお問い合わせ対応、お子さまの成長記録として将来の節目（七五三・成人式など）の撮影をご案内する目的のため、最後にご利用・お問い合わせいただいた日から<strong>10年間</strong>を目安に、顧客管理システム（Notion）およびご予約受付時のメール・メール送信サービス（Resend）の記録として保管し、その後は速やかに削除します。撮影データ（写真・動画）は、納品後6ヶ月を目安に保管し、その後は速やかに削除します。<br>※ SNS（Instagram等）に掲載させていただいた作例は、上記の保管期間とは別に、削除のご依頼をいただくまで掲載を継続します。<br>個人情報・掲載データの削除をご希望の場合は、保管期間中であっても、いつでも下記のお問い合わせ窓口までご連絡ください。</div>
+        <div class="priv-body">ご予約に関する個人情報（お名前・ご連絡先など）は、次回以降のご予約対応やお問い合わせ対応、顧客管理のため、最後にご利用・お問い合わせいただいた日から<strong>10年間</strong>を目安に、顧客管理システム（Notion）の記録として保管し、その後は速やかに削除します。ご予約確認・自動返信メールの送信記録は、メール送信サービス（Resend）が定める保持期間に従い保管されます。撮影データ（写真・動画）は、納品後6ヶ月を目安に保管し、その後は速やかに削除します。<br>※ SNS（Instagram等）に掲載させていただいた作例は、上記の保管期間とは別に、削除のご依頼をいただくまで掲載を継続します。<br>七五三・成人式など将来の節目の撮影のご案内が不要な場合は、いつでも下記のお問い合わせ窓口までご連絡ください。個人情報・掲載データの削除をご希望の場合も、保管期間中であればいつでも同窓口までご連絡ください。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">開示・訂正・削除等のご請求</div>
@@ -1961,7 +1966,13 @@ footer{
       </div>
       <div class="priv-section">
         <div class="priv-heading">個人情報の管理</div>
-        <div class="priv-body">個人情報は適切な安全対策を講じて管理します。不要になった個人情報は速やかに削除します。個人情報の取り扱いに関するご意見・ご要望も、下記窓口で承ります。</div>
+        <div class="priv-body">個人情報の漏えい・滅失・毀損を防ぐため、以下のとおり安全管理措置を講じています。<br>
+        ・<strong>組織的措置</strong>：個人情報を取り扱う範囲を必要最小限の担当者に限定しています<br>
+        ・<strong>人的措置</strong>：個人情報の取り扱いに関する注意事項を運営者本人が遵守しています<br>
+        ・<strong>物理的措置</strong>：個人情報を扱う端末はパスコード等で保護しています<br>
+        ・<strong>技術的措置</strong>：通信の暗号化（HTTPS）、アクセス制御、不正送信対策（レート制限等）を実施しています<br>
+        ・<strong>外的環境の把握</strong>：上記「外部サービスの利用・業務委託」のとおり、個人情報の一部は米国の事業者において取り扱われます。当方は米国の個人情報保護制度を踏まえたうえで、各委託先において適切な安全管理措置が講じられるよう努めています<br>
+        不要になった個人情報は速やかに削除します。個人情報の取り扱いに関するご意見・ご要望も、下記窓口で承ります。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">お問い合わせ</div>
@@ -2786,6 +2797,9 @@ function submitForm(e){
     area: areaName,
     message: lines.join('\n'),
     optionKeys,
+    // プライバシーポリシー同意チェックはHTML5のrequiredで必須化しており、
+    // ここに到達している時点でチェック済み（checkValidity()を通過済み）
+    privacyConsent: true,
     hp_token: (form.querySelector('input[name="hp_token"]')?.value || ''), // honeypot
     requestId: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now()+'-'+Math.random().toString(16).slice(2)+'-'+Math.random().toString(16).slice(2)),
   };

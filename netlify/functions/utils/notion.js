@@ -11,10 +11,13 @@
 //   受付日時    … Date
 //
 // 任意プロパティ（作成すると自動的に記録されるようになる。未作成でもエラーにはならない）:
-//   撮影ジャンル … Select
-//   エリア      … Rich text
-//   概算金額    … Number（お客様に提示した概算をサーバー側で再計算した値）
-//   ステータス  … Select（「ステータス」型ではない。新規予約時に「新規」で作成する）
+//   撮影ジャンル   … Select
+//   エリア        … Rich text
+//   概算金額      … Number（お客様に提示した概算をサーバー側で再計算した値）
+//   ステータス    … Select（「ステータス」型ではない。新規予約時に「新規」で作成する）
+//   プライバシー同意 … Checkbox（法務監査#f4対応。同意なしでは予約自体が成立しないため常にtrue）
+//   掲載同意       … Checkbox（法務監査#f4/#f6対応。SNS割 or コラボ企画の掲載チェックに基づく）
+//   掲載同意の範囲  … Rich text（「顔を含む」「顔を含まない」等。掲載同意がfalseのときは空）
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -119,6 +122,16 @@ export async function createBookingRecord(data) {
   // 実際のプロパティ設定を確認すること）。新規予約は常に「新規」で作成する。
   if (existingProps.has('ステータス')) {
     properties['ステータス'] = { select: { name: '新規' } };
+  }
+  // 同意の記録（booking.js側で検証・確定済みの値をそのまま台帳に残す。#f4/#f6対応）
+  if (existingProps.has('プライバシー同意')) {
+    properties['プライバシー同意'] = { checkbox: Boolean(data.privacyConsent) };
+  }
+  if (existingProps.has('掲載同意')) {
+    properties['掲載同意'] = { checkbox: Boolean(data.snsConsent) };
+  }
+  if (data.snsConsentScope && existingProps.has('掲載同意の範囲')) {
+    properties['掲載同意の範囲'] = { rich_text: richText(data.snsConsentScope) };
   }
 
   return getClient().pages.create({
