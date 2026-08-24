@@ -61,6 +61,22 @@ function normalizePlanForMatch(s) {
   return String(s || '').replace(/[（(][^）)]*[）)]\s*$/, '').trim();
 }
 
+// 東京時間の「今日」をYYYY-MM-DD形式で返す。
+// toLocaleDateString('sv-SE') はスウェーデン語ロケールデータを要求するため、
+// Node がfull-icu無し（small-icuやsystem-icuの一部設定）でビルドされていると
+// en-USへフォールバックし "9/6/2026" のような別形式を返す。その状態だと
+// 文字列比較の today が常に不正な値になり、日付の前後判定（過去日チェック・
+// 期間限定プランの受付期限）が意図に関わらず常にtrue/falseに固定されてしまう。
+// Intl.DateTimeFormat('en-CA', ...).formatToParts() はsmall-icu（Nodeの既定ビルド）
+// でも確実にYYYY-MM-DD相当のパーツを返せるため、ロケール名に依存しない組み立て方にする。
+function todayJST() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date());
+  const get = type => parts.find(p => p.type === type).value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+
 // 予約プランのホワイトリスト（価格まで含めた文言で判定。末尾の装飾テキストは無視する）
 const ALLOWED_PLANS = new Set([
   'simple ¥19,000',
@@ -80,6 +96,21 @@ const SMASH_CAKE_PLANS = new Set([
   'smash cake photo 50cuts ¥38,000',
 ]);
 const SMASH_CAKE_PLAN_DEADLINE = '2026-09-06'; // この日付(Asia/Tokyo)以降は受付終了
+
+// ALLOWED_PLANS と SMASH_CAKE_PLANS は同じ文字列を別々のリテラル配列として二重管理している
+// （scripts/check-prices.mjs がソースを正規表現で読むため、spread構文にはできない）。
+// 片方だけプラン名を変更すると、そのプランの受付期限チェックが静かに効かなくなる
+// （ALLOWED_PLANS側だけ変えるとホワイトリスト自体を通らなくなるので気づけるが、
+// SMASH_CAKE_PLANS側だけ変え忘れると期限なしで受付し続けてしまう）。
+// コールドスタート時に1回だけ突き合わせ、ズレていたら気づけるようにする。
+// ここでthrowすると以降このコンテナへの全リクエストが道連れで失敗する（予約API全体の障害）
+// ため、あくまでログのみに留める（scripts/check-prices.mjs にも同種のチェックがあり、
+// デプロイ前に気づける可能性が高い）
+for (const p of SMASH_CAKE_PLANS) {
+  if (!ALLOWED_PLANS.has(p)) {
+    console.error(`[config] SMASH_CAKE_PLANS の "${p}" が ALLOWED_PLANS に存在しません（プラン名の変更漏れの可能性があります）`);
+  }
+}
 
 // 撮影ジャンルのホワイトリスト（表示ラベルではなく安定キーで判定する。
 // キーは public/index.html の GENRE_LIST と一致させること。
@@ -145,9 +176,26 @@ function planYen(plan) {
   return m ? parseInt(m[1], 10) : 0;
 }
 
+// フロント側のdata-exclと対になる排他グループ。UIでは同時選択できないが、
+// 直接APIを叩かれた場合に両方を送られると二重計上・矛盾した組み合わせになるため、
+// 先に現れたキーだけを有効にする
+const EXCLUSIVE_OPTION_GROUPS = [
+  ['early7', 'early10'],
+  ['sns_face', 'sns_noface'],
+];
+
 function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
-  // 件数（30件）に加え、各要素の文字数も上限を設ける（多重防御。ログ・注記文の肥大化を防ぐ）
-  const keys = (Array.isArray(optionKeys) ? optionKeys.slice(0, 30) : []).map(k => String(k).slice(0, 64));
+  // 件数（30件）に加え、各要素の文字数も上限を設ける（多重防御。ログ・注記文の肥大化を防ぐ）。
+  // 同じキーの重複送信は1回分にまとめる
+  const rawKeys = (Array.isArray(optionKeys) ? optionKeys.slice(0, 30) : []).map(k => String(k).slice(0, 64));
+  const keys = [...new Set(rawKeys)];
+  for (const group of EXCLUSIVE_OPTION_GROUPS) {
+    const present = keys.filter(k => group.includes(k));
+    for (const extra of present.slice(1)) {
+      keys.splice(keys.indexOf(extra), 1);
+    }
+  }
+
   let total = planYen(plan);
   const unknown = [];
   for (const k of keys) {
@@ -168,6 +216,9 @@ function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
   if (Object.prototype.hasOwnProperty.call(AREA_PRICES, areaKey)) {
     total += AREA_PRICES[areaKey];
   }
+  // 値引きの合計がプラン代金を上回ることは想定していない。直接APIを叩かれた場合の
+  // 異常値（マイナスの概算金額がメール・Notionに記録される事態）を防ぐ下限ガード
+  total = Math.max(0, total);
 
   const notes = [];
   if (areaKey === 'その他') notes.push('交通費別途');
@@ -180,7 +231,11 @@ function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
 
   return {
     total,
+    // オーナー宛・Notion向け：改ざん試行やフロント側バグの痕跡を含む診断メモ込みの全文
     text: `${YEN(total)}（税込）${notes.length ? `　※ ${notes.join(' / ')}` : ''}`,
+    // お客様宛：診断メモは内部向けの情報でしかないため反射しない、金額のみのクリーンな文言
+    // （「交通費別途」はお客様に必要な案内なので残す）
+    customerText: `${YEN(total)}（税込）${areaKey === 'その他' ? '　※ 交通費別途' : ''}`,
     mismatch,
   };
 }
@@ -253,7 +308,7 @@ function getClientIp(event) {
 async function notifyGlobalLimit(lastIp) {
   if (!redis) return;
   try {
-    const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+    const day = todayJST();
     const first = await redis.set(`booking:global-alert:${day}`, '1', { nx: true, ex: 86400 });
     if (first === null) return; // 本日は通知済み
     const alert = globalLimitAlert({
@@ -305,7 +360,7 @@ function validate(data) {
     // ※ コラボ企画のフォームは「2026年9月4日（金）」形式で送るため、
     //   YYYY-MM-DD が含まれる場合にだけ検査する（含まれない形式は従来どおり通す）
     const iso = data.preferredDate.match(/\d{4}-\d{2}-\d{2}/g) || [];
-    const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+    const today = todayJST();
     if (iso.some(d => d < today)) {
       errors.push('撮影希望日に過去の日付が含まれています。');
     }
@@ -325,7 +380,7 @@ function validate(data) {
       errors.push('ご希望のプランが正しくありません。');
     } else if (SMASH_CAKE_PLANS.has(normalizedPlan)) {
       // 期間限定コラボ企画：開催日を過ぎたら、文字列を知っているだけでの予約を拒否する
-      const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
+      const today = todayJST();
       if (today >= SMASH_CAKE_PLAN_DEADLINE) {
         errors.push('このプランは受付を終了しました。');
       }
@@ -433,15 +488,19 @@ export const handler = async (event) => {
 
   // 3. バリデーション
   const now = new Date();
+  // 直接APIを叩かれた場合、各フィールドが文字列でない（数値・配列・オブジェクト等）
+  // JSONが来ると (payload.name || '').trim() がTypeErrorを投げて500エラーになる
+  // （catchで囲まれておらずCORSヘッダも付かない）。文字列以外は空文字扱いにする
+  const str = v => (typeof v === 'string' ? v.trim() : '');
   const data = {
-    name: (payload.name || '').trim(),
-    email: (payload.email || '').trim(),
-    phone: (payload.phone || '').trim(),
-    preferredDate: (payload.preferredDate || '').trim(),
-    plan: (payload.plan || '').trim(),
-    genre: (payload.genre || '').trim(),
-    area: (payload.area || '').trim(),
-    message: (payload.message || '').trim(),
+    name: str(payload.name),
+    email: str(payload.email),
+    phone: str(payload.phone),
+    preferredDate: str(payload.preferredDate),
+    plan: str(payload.plan),
+    genre: str(payload.genre),
+    area: str(payload.area),
+    message: str(payload.message),
     receivedAt: now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
     receivedAtISO: now.toISOString(),
   };
@@ -470,6 +529,7 @@ export const handler = async (event) => {
     clientValue: payload.value,
   });
   data.estimateText = estimate.text;
+  data.estimateTextCustomer = estimate.customerText;
   data.estimateYen = estimate.total;
   if (estimate.mismatch) {
     // 単価表のズレ（＝表示と請求の食い違い）を早期に発見するためのログ

@@ -92,7 +92,13 @@ function detailsTable(data, opts = {}) {
     ${row('電話番号', esc(phone) || '—')}
     ${row('ご希望日', esc(preferredDate) || '—')}
     ${row('プラン', esc(plan) || '—')}
-    ${data.estimateText ? row('概算金額', esc(data.estimateText)) : ''}
+    ${(() => {
+      // お客様宛には、改ざん試行やフロント側バグの痕跡（「未計上のオプション」「フォーム表示額と
+      // 不一致」等の内部向け診断メモ）を含まない estimateTextCustomer を使う。
+      // 未設定（古い呼び出し経路）の場合のみ estimateText にフォールバックする
+      const text = forCustomer ? (data.estimateTextCustomer ?? data.estimateText) : data.estimateText;
+      return text ? row('概算金額', esc(text)) : '';
+    })()}
     ${row('ご要望', nl2br(message) || '—')}
   </table>`;
 }

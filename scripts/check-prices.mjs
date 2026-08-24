@@ -156,6 +156,13 @@ for (const opt of extractOptions(fPlanBlock[1])) {
 }
 const smashCakeMatch = bookingSrc.match(/const SMASH_CAKE_PLANS = new Set\(\[([\s\S]*?)\]\);/);
 const SMASH_CAKE_PLANS = smashCakeMatch ? [...smashCakeMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];
+// ALLOWED_PLANS と SMASH_CAKE_PLANS は booking.js 内で別々のリテラル配列として二重管理されている。
+// 片方だけプラン名を変更すると受付期限チェックが静かに無効化されるため、ここで先に検出する
+for (const p of SMASH_CAKE_PLANS) {
+  if (!ALLOWED_PLANS.includes(p)) {
+    mismatches.push(`SMASH_CAKE_PLANS の "${p}" が ALLOWED_PLANS に存在しない（受付期限チェックが効かなくなっている可能性）`);
+  }
+}
 for (const p of ALLOWED_PLANS) {
   // 期間限定コラボ企画のプランは index.html の #f-plan ではなく birthday-collab.html 側にあるため対象外
   if (SMASH_CAKE_PLANS.includes(p)) continue;

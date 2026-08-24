@@ -21,6 +21,9 @@
 
 <link rel="canonical" href="https://kaede-photo.com/birthday-collab.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23B5633F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23ffffff' text-anchor='middle'%3Ek%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-title" content="kaede photo">
 
 <link rel="preload" as="image" href="images/collab-1-main.webp" type="image/webp">
 
@@ -84,7 +87,7 @@
    RESET & BASE
 ══════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{
   font-family:var(--f-ui);
   color:var(--text);
@@ -445,7 +448,7 @@ ul{list-style:none;}
 .form-select{
   width:100%;padding:13px 16px;background:var(--white);border:1px solid var(--beige);
   border-radius:10px;font-family:var(--f-body);font-size:14px;color:var(--text);
-  outline:none;appearance:none;
+  outline:none;-webkit-appearance:none;appearance:none;
   transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B7355' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 16px center;
@@ -515,6 +518,13 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   .section-num{display:none;}
   .col-num{display:none;}
   .form-wrap{padding:28px 20px;}
+  /* iOS Safariはフォーカスした入力欄のfont-sizeが16px未満だとページ全体を自動ズームし、
+     以降ズームが戻らない。全6組限定の予約導線でこれが起きると離脱に直結するため対策する */
+  .form-input,.form-select{font-size:16px;}
+}
+@media (pointer:coarse){
+  /* 横向き（幅767px超）ではmax-width基準のズーム対策が効かないため、タッチ操作端末自体を対象に補う */
+  .form-input,.form-select{font-size:16px;}
 }
 </style>
 </head>

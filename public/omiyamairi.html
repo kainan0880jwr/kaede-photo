@@ -21,6 +21,9 @@
 
 <link rel="canonical" href="https://kaede-photo.com/omiyamairi.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23B5633F'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23ffffff' text-anchor='middle'%3Ek%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-title" content="kaede photo">
 
 <link rel="preload" as="image" href="images/omiyamairi-1.webp" type="image/webp">
 
@@ -297,6 +300,12 @@ ul{list-style:none;}
   position:relative;overflow:hidden;
   padding:0 0 80px;
 }
+@supports (height: 100svh){
+  /* iOS Safariの100vhはツールバーが隠れた状態の高さを指すため、初回表示（ツールバー展開時）
+     では実際の可視領域より約100px前後大きく確保してしまい、下端のCTAがツールバー裏に隠れる。
+     100svhに対応するブラウザでは、常に「見えている領域」基準の高さに切り替える */
+  .hero{min-height:100svh;}
+}
 .hero-bg{
   position:absolute;inset:0;
   background:linear-gradient(135deg, #EDE5D8 0%, #F3EDE4 45%, #FAF8F5 100%);
@@ -368,7 +377,7 @@ ul{list-style:none;}
 .plan-card.featured{border-color:var(--terra);}
 .plan-badge{
   position:absolute;top:-11px;left:20px;
-  background:var(--terra);color:#fff;
+  background:var(--terra-dk);color:#fff;
   font-size:10px;letter-spacing:.08em;
   padding:3px 12px;border-radius:20px;
 }
@@ -377,7 +386,7 @@ ul{list-style:none;}
   letter-spacing:.14em;color:var(--brown);margin-bottom:4px;
 }
 .plan-catch{
-  font-size:10px;color:var(--muted);letter-spacing:.02em;white-space:normal;min-height:26px;
+  font-size:12px;color:var(--muted);letter-spacing:.02em;white-space:normal;min-height:30px;
   margin-bottom:20px;padding-bottom:16px;
   border-bottom:1px solid var(--surface);
 }
@@ -613,7 +622,7 @@ ul{list-style:none;}
   width:100%;padding:12px 16px;
   background:var(--white);border:1px solid var(--beige);border-radius:2px;
   font-family:var(--f-body);font-size:14px;color:var(--text);
-  outline:none;appearance:none;
+  outline:none;-webkit-appearance:none;appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B7355' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center;
 }
@@ -770,6 +779,11 @@ footer{
   .heading-xl{font-size:36px;}
   .heading-lg{font-size:28px;}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+  /* おすすめバッジがカード上端の外にはみ出すため、縦積み時は前のカードとの間隔を広げる */
+  .grid-4{row-gap:28px;}
+  /* モバイルでは4枚が縦積みになり、おすすめ(standard)が2番目に沈んでファーストビューに
+     入らなくなるため、モバイルでのみ先頭に繰り上げる */
+  .plan-card.featured{order:-1;}
   .form-row{grid-template-columns:1fr;}
   .section{padding:56px 0;}
   .cta-block{padding:56px 20px;}
@@ -904,29 +918,34 @@ footer{
     <h2 class="heading-lg text-center">撮影プラン</h2>
     <div class="grid-4" style="margin-bottom:32px;">
       <div class="plan-card">
-        <div class="plan-name">simple</div>
+        <h3 class="plan-name">simple</h3>
         <div class="plan-catch">"家族の今"をコンパクトに残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 30cuts</div>
         <div class="plan-price">¥19,000<span>（税込）</span></div>
+        <a href="index.html?genre=omiyamairi&plan=simple#booking" class="btn btn-outline plan-btn" aria-label="simpleプランで予約する（¥19,000）">このプランで予約</a>
       </div>
       <div class="plan-card featured">
         <div class="plan-badge">おすすめ</div>
-        <div class="plan-name">standard</div>
+        <h3 class="plan-name">standard</h3>
         <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 65cuts</div>
         <div class="plan-price">¥29,000<span>（税込）</span></div>
+        <a href="index.html?genre=omiyamairi&plan=standard#booking" class="btn btn-primary plan-btn" aria-label="standardプランで予約する（¥29,000）">このプランで予約</a>
       </div>
       <div class="plan-card">
-        <div class="plan-name">special</div>
+        <h3 class="plan-name">special</h3>
         <div class="plan-catch">"家族の今"をより深く残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts</div>
         <div class="plan-price">¥39,000<span>（税込）</span></div>
+        <a href="index.html?genre=omiyamairi&plan=special#booking" class="btn btn-outline plan-btn" aria-label="specialプランで予約する（¥39,000）">このプランで予約</a>
       </div>
       <div class="plan-card">
-        <div class="plan-name">premium</div>
+        <h3 class="plan-name">premium</h3>
         <div class="plan-catch">"家族の想い"まで残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts ＋ムービー込み</div>
+          <div style="font-size:11px;color:var(--terra-dk);margin-bottom:4px;">お手紙ムービー（単体¥39,800）込み</div>
         <div class="plan-price">¥77,000<span>（税込）</span></div>
+        <a href="index.html?genre=omiyamairi&plan=premium#booking" class="btn btn-outline plan-btn" aria-label="premiumプランで予約する（¥77,000）">このプランで予約</a>
       </div>
     </div>
     <p class="body-sm text-center">大阪府内・和歌山県北部は交通費込み。その他エリアは<a href="index.html?genre=omiyamairi#plan" style="color:var(--terra);text-decoration:underline;">交通費参考表</a>をご覧ください。</p>
