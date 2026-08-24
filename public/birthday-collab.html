@@ -1010,6 +1010,16 @@ function submitCollabForm(e){
   const cmsg = document.getElementById('confirm-msg');
   if(cmsg) cmsg.style.display = 'none';
   document.getElementById('confirm-overlay').style.display = 'block';
+
+  // GA4計測：確認画面まで到達したユーザーを計測する（フォーム入力を始めたが確認画面より前で
+  // 離脱したのか、確認画面までは来たが送信しなかったのかを区別できるようにする）
+  if(typeof gtag === 'function'){
+    gtag('event', 'booking_confirm_view', {
+      currency: 'JPY',
+      value: 0,
+      plan: planLabel || '',
+    });
+  }
 }
 
 function closeCollabConfirm(){

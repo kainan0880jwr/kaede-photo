@@ -2714,6 +2714,16 @@ function submitForm(e){
   const estimate = _planYen(planLabel) + options.reduce((s,l)=>s+_optYen(l),0) + areaYen;
   pendingBooking.value = estimate;
 
+  // GA4計測：確認画面まで到達したユーザーを計測する（generate_leadは最終送信時のみ発火するため、
+  // 「フォーム入力は始めたが確認画面より前で離脱」と「確認画面までは来たが送信しなかった」を区別できるようにする）
+  if(typeof gtag === 'function'){
+    gtag('event', 'booking_confirm_view', {
+      currency: 'JPY',
+      value: estimate,
+      plan: planLabel || '',
+    });
+  }
+
   // 確認画面を描画（特商法12条の6：分量・対価・支払時期方法・提供時期・解約条件）
   const rows = [];
   const addRow = (k,v)=> rows.push(`<div style="display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--beige);"><dt style="width:96px;flex:none;color:var(--muted);">${k}</dt><dd style="margin:0;flex:1;">${v}</dd></div>`);

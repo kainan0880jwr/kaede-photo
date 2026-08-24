@@ -8,13 +8,13 @@
 //   ご希望日    … Rich text
 //   プラン      … Select
 //   ご要望      … Rich text
-//   ステータス  … Status または Select（既定値「新規」）
 //   受付日時    … Date
 //
 // 任意プロパティ（作成すると自動的に記録されるようになる。未作成でもエラーにはならない）:
 //   撮影ジャンル … Select
 //   エリア      … Rich text
 //   概算金額    … Number（お客様に提示した概算をサーバー側で再計算した値）
+//   ステータス  … Select（「ステータス」型ではない。新規予約時に「新規」で作成する）
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -113,6 +113,12 @@ export async function createBookingRecord(data) {
   // 特商法12条の6の最終確認画面でお客様に提示した対価を、台帳側にも残すためのもの。
   if (typeof data.estimateYen === 'number' && existingProps.has('概算金額')) {
     properties['概算金額'] = { number: data.estimateYen };
+  }
+  // ステータスは「選択（Select）」型のプロパティ（「ステータス」型ではない点に注意。
+  // 型が違うとNotion APIがエラーを返し予約記録全体が失敗するため、変更する際は
+  // 実際のプロパティ設定を確認すること）。新規予約は常に「新規」で作成する。
+  if (existingProps.has('ステータス')) {
+    properties['ステータス'] = { select: { name: '新規' } };
   }
 
   return getClient().pages.create({
