@@ -151,10 +151,15 @@ function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
   let total = planYen(plan);
   const unknown = [];
   for (const k of keys) {
-    const price = OPTION_PRICES[k];
-    if (price === undefined) unknown.push(k.slice(0, 40));
-    else total += price;
+    // 素の添字アクセスだと 'toString' / '__proto__' / 'constructor' 等が
+    // Object.prototype 由来の値（関数など）を返してしまい、total が数値でなく
+    // 文字列化する（AREA_PRICESの直後のチェックと同じ書き方に揃える）
+    const hasKey = Object.prototype.hasOwnProperty.call(OPTION_PRICES, k);
+    if (!hasKey) unknown.push(k.slice(0, 40));
+    else total += OPTION_PRICES[k];
   }
+  // 上記のガードで通常は数値のはずだが、多重防御として最終値も検証する
+  if (!Number.isFinite(total)) total = planYen(plan);
   // 想定外のキーは改ざん試行かフロント側のバグの可能性があるため、注記だけでなくログにも残す
   if (unknown.length) {
     console.warn('[estimate] unknown option keys:', unknown);
@@ -310,6 +315,10 @@ function validate(data) {
   // 空文字（未選択のまま直接APIを叩いた場合）もここで弾く
   if (!data.plan) {
     errors.push('ご希望のプランを選択してください。');
+  } else if (data.plan.length > 120) {
+    // normalizePlanForMatch は末尾の（...）の中身を無条件に無視するため、
+    // 括弧の中に任意の長文を仕込んでホワイトリストを通す経路を長さ制限で塞ぐ
+    errors.push('ご希望のプランが正しくありません。');
   } else {
     const normalizedPlan = normalizePlanForMatch(data.plan);
     if (!ALLOWED_PLANS.has(normalizedPlan)) {
@@ -447,6 +456,10 @@ export const handler = async (event) => {
   if (data.genre) {
     data.genre = GENRE_LABELS[data.genre] || data.genre;
   }
+  // ホワイトリスト通過後の data.plan を正準値（末尾の装飾テキストを除いた値）に置き換える。
+  // normalizePlanForMatch は照合にしか使っていなかったため、括弧内に任意の文字列（URL等）を
+  // 仕込んだ元の文字列がそのままメール本文・Notionに渡ってしまっていた（フィッシング中継経路）。
+  data.plan = normalizePlanForMatch(data.plan);
 
   // 概算金額はフォームから受け取った値をそのまま使わず、サーバー側で再計算する。
   // area には data-area 属性の値（地名のみの安定値）が入るため、そのままキーとして使える。

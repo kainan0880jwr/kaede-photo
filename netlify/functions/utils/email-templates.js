@@ -76,16 +76,22 @@ function row(label, value) {
 // （オーナー宛・アラート宛は全文をそのまま表示する）
 function detailsTable(data, opts = {}) {
   const forCustomer = opts.forCustomer === true;
-  const name = forCustomer ? deLink(data.name) : data.name;
+  // お客様宛（forCustomer）は、name/messageに限らず自由入力・準自由入力の全フィールドを無害化する。
+  // plan/genreはホワイトリスト済みだが、preferredDate・phoneは自由記述のため引き続きURLを反射しうる
+  const dl = forCustomer ? deLink : (v => v);
+  const name = dl(data.name);
   const message = forCustomer
-    ? deLink(String(data.message || '').slice(0, 1000))
+    ? dl(String(data.message || '').slice(0, 1000))
     : data.message;
+  const preferredDate = dl(data.preferredDate);
+  const phone = dl(data.phone);
+  const plan = dl(data.plan);
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
     ${row('お名前', esc(name))}
     ${row('メール', esc(data.email))}
-    ${row('電話番号', esc(data.phone) || '—')}
-    ${row('ご希望日', esc(data.preferredDate) || '—')}
-    ${row('プラン', esc(data.plan) || '—')}
+    ${row('電話番号', esc(phone) || '—')}
+    ${row('ご希望日', esc(preferredDate) || '—')}
+    ${row('プラン', esc(plan) || '—')}
     ${data.estimateText ? row('概算金額', esc(data.estimateText)) : ''}
     ${row('ご要望', nl2br(message) || '—')}
   </table>`;
