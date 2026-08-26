@@ -137,6 +137,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 .hero-plain{padding:168px 40px 96px;text-align:center;background:linear-gradient(180deg,var(--surface) 0%,var(--base) 72%);}
 .hero-plain-title{font-family:var(--f-display);font-size:clamp(30px,4.6vw,50px);font-weight:300;color:var(--brown);line-height:1.4;letter-spacing:.03em;margin-bottom:20px;}
 .hero-plain-sub{font-family:var(--f-body);font-size:15.5px;font-weight:300;color:var(--muted);line-height:1.9;max-width:520px;margin:0 auto 32px;}
+.hero-photo-strip{display:flex;gap:14px;justify-content:center;max-width:640px;margin:48px auto 0;}
+.hero-photo-strip-item{flex:1;aspect-ratio:3/4;overflow:hidden;border-radius:12px;box-shadow:0 12px 32px rgba(44,31,26,.12);}
 
 /* Item cards */
 .item-card{
@@ -146,7 +148,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 .item-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(44,31,26,.1);}
 .item-photo{aspect-ratio:4/3;overflow:hidden;background:var(--surface);}
 .item-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px;flex-grow:1;}
-.item-name{font-family:var(--f-body);font-size:16px;color:var(--brown);line-height:1.6;}
+.item-name{font-family:var(--f-body);font-size:16px;color:var(--brown);line-height:1.6;min-height:2.6em;}
 .item-price{font-family:var(--f-display);font-size:24px;color:var(--terra-dk);}
 .item-price span{font-size:11px;color:var(--muted);font-family:var(--f-ui);margin-left:6px;}
 .item-contents{list-style:disc;padding-left:18px;flex-grow:1;}
@@ -270,6 +272,11 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     <a href="https://kaephoto.base.shop" class="btn btn-primary" target="_blank" rel="noopener noreferrer">ショップを見る</a>
     <a href="#items" class="btn btn-ghost">アイテムを見る</a>
   </div>
+  <div class="hero-photo-strip">
+    <div class="hero-photo-strip-item reveal"><picture><source srcset="images/rental-1.webp" type="image/webp"><img src="images/rental-1.jpg" width="900" height="600" loading="lazy" decoding="async" alt="白ふわふわうさぎ耳アウター"></picture></div>
+    <div class="hero-photo-strip-item reveal reveal-d1"><picture><source srcset="images/rental-2.webp" type="image/webp"><img src="images/rental-2.jpg" width="900" height="599" loading="lazy" decoding="async" alt="アイボリーチュールドレス＆蝶リボンヘッドバンド"></picture></div>
+    <div class="hero-photo-strip-item reveal reveal-d2"><picture><source srcset="images/rental-3.webp" type="image/webp"><img src="images/rental-3.jpg" width="900" height="599" loading="lazy" decoding="async" alt="アイボリーニット3点セット"></picture></div>
+  </div>
 </div>
 
 <!-- About -->
@@ -282,6 +289,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     </div>
     <p class="lead text-center" style="max-width:640px;margin-left:auto;margin-right:auto;">ニューボーンフォトに憧れていても、専用の衣装や小物をすべて揃えるのは大変です。「kaede photo」のレンタルショップでは、撮影に必要なアイテムをセットにしてお届けします。</p>
     <p class="body-sm text-center" style="max-width:560px;margin:0 auto 16px;">往復送料込み・保証金不要。到着指定日から3日間、ご自宅でゆっくりとご利用いただけます。</p>
+    <p class="body-sm text-center" style="max-width:560px;margin:0 auto;">新生児期のお子さまを対象とした衣装・小物です。撮影のタイミングに合わせて、余裕を持ってご注文ください。</p>
     <p class="body-sm text-center" style="max-width:560px;margin:0 auto;">本レンタルサービスの提供者（賃貸人）は kaede photo です。ご契約はお客様と kaede photo との間で成立します。ご注文・お支払い・配送手続きは、ショップシステムを提供するプラットフォーム事業者「BASE」（BASE株式会社）のシステム上で行われます。</p>
     <p class="body-sm text-center" style="max-width:560px;margin:16px auto 0;">プロに撮ってほしい方は、<a href="newborn.html" style="color:var(--terra-dk);text-decoration:underline;">ニューボーンフォトの出張撮影</a>もご検討ください。</p>
   </div>
