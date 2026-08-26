@@ -26,14 +26,18 @@ No test suite, linter, or type checker is configured — verify changes by runni
 public/                     Static site, deployed as-is (Netlify `publish = "public"`)
   index.html                 Home page + the booking form (long — pricing, options, form logic all inline)
   newborn.html, maternity.html, omiyamairi.html, shichigosan.html, birthday.html
-                              Genre landing pages, structurally identical, share lp-common.js
-  area-*.html                 Prefecture SEO landing pages — currently noindex,nofollow (see below)
+                              Genre landing pages, structurally identical, share lp-common.js AND site.css
+  area-*.html                 Prefecture SEO landing pages — currently noindex,nofollow (see below).
+                               Share area.css (their <style> block was byte-identical across all 5)
   birthday-collab.html        Time-limited collaboration campaign landing page (live)
   birthday-kyoto.html          Draft campaign page for a future event — intentionally NOT committed
                                (untracked in git; see docs/birthday-kyoto.README.txt before touching it)
   photographer.html           Photographer bio page
   lp-common.js                Shared JS for landing pages: sticky nav, hamburger menu, FAQ accordion, GA4 click tracking
-  tokens.css                  Design tokens (CSS custom properties: colors, fonts, easing) shared across pages
+  tokens.css                  Design tokens (CSS custom properties: colors, fonts, easing) shared across ALL pages
+  site.css                    CSS shared by the 5 genre LPs only (layout, buttons, hero, cards — everything except
+                               each page's own hero background image, which stays in that page's inline <style>)
+  area.css                    CSS shared by the 5 area-*.html pages only (fully identical across all 5)
   sitemap.xml / robots.txt
 
 netlify/functions/
@@ -62,7 +66,9 @@ This is the only piece of backend logic in the project, and it's dense — read 
 
 ### Landing page pattern
 
-Genre pages (`newborn.html`, `maternity.html`, `omiyamairi.html`, `shichigosan.html`, `birthday.html`) and the area SEO pages are structurally near-identical (~1030–480 lines each): hero, shared nav/footer markup, FAQ accordion, all wired up by the shared `lp-common.js`. When editing shared behavior (nav, menu, FAQ, GA4 click tracking), edit `lp-common.js` once rather than per-page. When editing shared visual language (colors, fonts), prefer `tokens.css` custom properties over hardcoded values.
+Genre pages (`newborn.html`, `maternity.html`, `omiyamairi.html`, `shichigosan.html`, `birthday.html`, ~350 lines each) and the area SEO pages (`area-*.html`, ~335 lines each) are structurally near-identical: hero, shared nav/footer markup, FAQ accordion. Genre pages are wired up by the shared `lp-common.js` (sticky nav, hamburger menu, FAQ accordion, GA4 click tracking, scroll-reveal) and share `site.css`. Area pages do **not** use `lp-common.js` — they carry their own near-identical inline `<script>` for the same behaviors — but they do share `area.css` (their CSS was byte-identical across all 5, so it was extracted wholesale; there was no need to split out a per-page override). `photographer.html`/`rental.html`/`birthday-collab.html` also don't use `lp-common.js` and remain self-contained (their CSS/JS overlaps only partially, ~76% between `rental.html` and `photographer.html`, so it wasn't worth extracting).
+
+When editing shared behavior on genre pages (nav, menu, FAQ, GA4 click tracking), edit `lp-common.js` once. When editing shared behavior on area pages, you currently have to edit all 5 files' inline `<script>` (or take the opportunity to move them onto `lp-common.js` too). When editing shared visual language across genre LPs, edit `site.css`; across area pages, edit `area.css`; sitewide tokens (colors, fonts, easing) still live in `tokens.css`.
 
 `area-*.html` pages are currently `noindex,nofollow` (see `<meta name="robots">` in each) — they were accidentally published before content was sufficiently differentiated per-prefecture; don't remove the noindex tag without checking whether that's intentional.
 

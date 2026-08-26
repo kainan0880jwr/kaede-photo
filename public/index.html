@@ -964,14 +964,6 @@ footer{
     })();
   </script>
 
-  <!-- レンタルショップ開始のお知らせ -->
-  <a href="rental.html" style="display:block;background:var(--terra-dk);color:#fff;text-decoration:none;">
-    <div class="container" style="padding:16px 40px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
-      <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">NEW｜ニューボーンフォト衣装・小物のレンタルをはじめました</span>
-      <span style="font-size:12px;text-decoration:underline;white-space:nowrap;">詳しく見る →</span>
-    </div>
-  </a>
-
   <!-- Concept -->
   <section class="section">
     <div class="container">
@@ -989,6 +981,15 @@ footer{
           <picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" width="1200" height="785" alt="窓辺で赤ちゃんを抱くご家族の写真" style="object-fit:cover;filter:sepia(8%) saturate(.9);"></picture>
         </div>
       </div>
+
+      <!-- レンタルショップ開始のお知らせ：以前はコラボ企画バナーの直下に同格の帯として
+           並んでいたが、時限性の高いコラボ企画（ヒーロー直下）と視覚的に競合していたため、
+           控えめなカード形式に変えてConceptセクション末尾へ移動した（Opus 5監査 UI/UX #18） -->
+      <a href="rental.html" style="display:block;margin-top:40px;background:var(--surface);border:1px solid var(--beige);border-radius:8px;padding:20px 28px;text-align:center;">
+        <span style="font-size:12px;letter-spacing:.06em;color:var(--terra-dk);">NEW</span>
+        <span style="font-family:var(--f-display);font-size:16px;color:var(--brown);margin-left:8px;">ニューボーンフォト衣装・小物のレンタルもはじめました</span>
+        <span style="font-size:12px;text-decoration:underline;color:var(--muted);margin-left:8px;">詳しく見る →</span>
+      </a>
     </div>
   </section>
 
