@@ -321,9 +321,9 @@ function isAllowedOrigin(event) {
   return allowed.has(originNormalized);
 }
 
-function json(statusCode, body) {
+function json(statusCode, body, extraHeaders) {
   // 予約内容を含むレスポンスが共有端末のキャッシュや中間キャッシュに残らないようにする
-  const headers = { ...corsHeaders(), 'Cache-Control': 'no-store' };
+  const headers = { ...corsHeaders(), 'Cache-Control': 'no-store', ...extraHeaders };
   return { statusCode, headers, body: JSON.stringify(body) };
 }
 
@@ -531,10 +531,14 @@ export const handler = async (event) => {
       // サイト全体の上限に達している間は、正規のお客様も一律で予約できなくなる。
       // 気づかないまま丸一日フォームが死ぬのを避けるため、1日1回だけオーナーへ通知する。
       if (!global.success) await notifyGlobalLimit(ip);
+      // Ratelimit.limit()の戻り値に含まれるresetを使って、あとどれくらいで
+      // 再試行できるかをクライアントに伝える
+      const resetAt = Math.max(perIp.reset || 0, global.success ? 0 : (global.reset || 0));
+      const retryAfterSec = resetAt ? Math.max(1, Math.ceil((resetAt - Date.now()) / 1000)) : undefined;
       return json(429, {
         ok: false,
         error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください。',
-      });
+      }, retryAfterSec ? { 'Retry-After': String(retryAfterSec) } : undefined);
     }
   }
 

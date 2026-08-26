@@ -178,12 +178,16 @@ export function priceMismatchAlert(data, { clientValue, serverValue }) {
 
 // だいきさん宛：Notion記録失敗アラート
 export function notionFailureAlert(data, errorMessage) {
+  // Notion SDKの例外はレスポンスボディを含むことがあり、原因調査に必要な範囲を
+  // 超えて詳細が長文でメール（＝Gmail等のメールサーバー）に残り続けるのを避けるため、
+  // 表示は先頭200文字までに切り詰める（Opus 5監査 セキュリティL-5）
+  const truncated = String(errorMessage || '').slice(0, 200);
   const inner = `
     <p style="margin:0 0 16px;font-size:14px;line-height:1.8;color:#c0392b;">
     ⚠️ メールは送信されましたが、Notion台帳への記録に失敗しました。<br>
     お手数ですが、以下の内容を手動で台帳へ追記してください。</p>
     ${detailsTable(data)}
-    <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">エラー内容：${esc(errorMessage)}</p>`;
+    <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">エラー内容：${esc(truncated)}${String(errorMessage || '').length > 200 ? '…（詳細はNetlifyのFunctionログをご確認ください）' : ''}</p>`;
   return {
     subject: subj(`【要対応】Notion記録失敗 - ${data.name} 様の予約`),
     html: wrap('Notion記録に失敗しました', inner),

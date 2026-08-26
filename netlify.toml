@@ -16,12 +16,15 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
+    # サイト内にiframe/object/embedは一つも存在しない（自サイトも含め、どこにも
+    # フレーム埋め込みされる想定が無い）ため、SAMEORIGIN/'self'より厳格なDENY/'none'に
+    # 引き締められる（Opus 5監査 セキュリティL-6）
+    X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-src 'none'"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-src 'none'"
 
 # --- API（Functions）への明示ルーティング ---------------------
 [[redirects]]
@@ -82,5 +85,37 @@
 [[redirects]]
   from = "/rental"
   to = "/rental.html"
+  status = 301
+  force = true
+
+# area-*.html は現在 noindex,nofollow のため実害は小さいが、本公開時に
+# 忘れやすいため他ページと同じパターンで先に用意しておく
+[[redirects]]
+  from = "/area-osaka"
+  to = "/area-osaka.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/area-hyogo"
+  to = "/area-hyogo.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/area-nara"
+  to = "/area-nara.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/area-kyoto"
+  to = "/area-kyoto.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/area-wakayama"
+  to = "/area-wakayama.html"
   status = 301
   force = true

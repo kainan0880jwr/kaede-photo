@@ -17,3 +17,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 次回撮影会イベント用の未公開ドラフト（満枠のため保留中。docs/birthday-kyoto.README.txt参照）。
+# `git add .`等で誤ってコミットしないよう明記しておく
+/public/birthday-kyoto.html
+/public/images/kyoto-*

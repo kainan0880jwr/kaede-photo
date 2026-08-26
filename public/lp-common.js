@@ -1,8 +1,19 @@
-// GA4 手動ページビュー（静的ページのため1回のみ）
+// GA4 手動ページビュー（静的ページのため1回のみ）。
+// page_locationにlocation.hrefをそのまま渡すと、万が一お客様がメールアドレス等を
+// 含むクエリ付きURLで着地した場合にそれがGA4へ記録されてしまうため、
+// 既知のクエリパラメータ（utm_*等）のみ許可する（Opus 5監査 セキュリティL-4）
 if(typeof gtag === 'function'){
+  const _lpAllowedParams = ['genre', 'plan', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  const _lpSafeParams = new URLSearchParams();
+  const _lpSrcParams = new URLSearchParams(location.search);
+  for(const key of _lpAllowedParams){
+    const val = _lpSrcParams.get(key);
+    if(val) _lpSafeParams.set(key, val);
+  }
+  const _lpSafeSearch = _lpSafeParams.toString();
   gtag('event', 'page_view', {
     page_title: document.title,
-    page_location: location.href,
+    page_location: location.origin + location.pathname + (_lpSafeSearch ? '?' + _lpSafeSearch : ''),
     page_path: location.pathname,
   });
 }

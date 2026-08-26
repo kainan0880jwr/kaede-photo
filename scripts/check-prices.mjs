@@ -330,7 +330,44 @@ for (const file of LP_FILES) {
   checkPlanCards(read(`public/${file}`), file);
 }
 
-// ---- 8) ジャンル（index.html の GENRE_LIST ⇔ booking.js の ALLOWED_GENRES / GENRE_LABELS） ----
+// ---- 8) 役務の分量（PLAN_VOLUME、特商法12条の6の確認画面表示）⇔ index.html #page-plan の .plan-specs ----
+// PLAN_VOLUMEはplan-specsの内容と一致させることがコメントで指示されているだけで、
+// これまで自動チェックが無く、カット数変更時に確認画面の表示だけ古いまま残りうる状態だった。
+const planVolumeMatch = indexSrc.match(/const PLAN_VOLUME = \{([\s\S]*?)\n\};/);
+if (!planVolumeMatch) throw new Error('PLAN_VOLUME が index.html 内に見つかりません');
+const PLAN_VOLUME = {};
+for (const m of planVolumeMatch[1].matchAll(/^\s*([a-z]+):\s*'([^']*)',?\s*$/gm)) {
+  PLAN_VOLUME[m[1]] = m[2];
+}
+let planSpecsChecked = 0;
+for (const cardM of indexSrc.matchAll(/<div class="plan-card[^"]*">([\s\S]*?)<\/div>\s*(?=<div class="plan-card|<\/div>\s*<div class="text-center"|<div class="text-center"|<\/div>\s*<\/div>)/g)) {
+  const block = cardM[1];
+  const nameM = block.match(/<(?:div|h3)[^>]*class="plan-name"[^>]*>([a-z]+)<\/(?:div|h3)>/);
+  const specsM = block.match(/<ul class="plan-specs">([\s\S]*?)<\/ul>/);
+  if (!nameM || !specsM) continue;
+  planSpecsChecked++;
+  const prefix = nameM[1];
+  const items = [...specsM[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)].map(m => m[1].replace(/<[^>]+>/g, '').trim());
+  // 撮影データ／撮影時間の2項目だけを比較対象にする（納期・premiumのお手紙ムービー等の
+  // 追加行はPLAN_VOLUME側に含まれていないケースがあるため、先頭一致で判定する）
+  const expected = items.slice(0, 2).join('・');
+  const actual = PLAN_VOLUME[prefix];
+  if (actual === undefined) {
+    mismatches.push(`index.html: プランカード "${prefix}" に対応する分量が PLAN_VOLUME に無い`);
+  } else if (!actual.startsWith(expected)) {
+    mismatches.push(`index.html: プランカード "${prefix}" の分量表示 "${expected}" が PLAN_VOLUME.${prefix} ("${actual}") と一致しない`);
+  }
+}
+if (planSpecsChecked === 0) {
+  mismatches.push('index.html: .plan-specs を1枚も検出できませんでした（セレクタ不一致の可能性）');
+}
+for (const key of Object.keys(PLAN_VOLUME)) {
+  if (PLAN_PRICE_BY_PREFIX[key] === undefined) {
+    mismatches.push(`PLAN_VOLUME.${key} に対応するプランが ALLOWED_PLANS に無い`);
+  }
+}
+
+// ---- 9) ジャンル（index.html の GENRE_LIST ⇔ booking.js の ALLOWED_GENRES / GENRE_LABELS） ----
 // ジャンルの同期漏れは validate() が400を返して予約自体を失う、価格ズレより重い障害のため、
 // 価格チェックと同じスクリプトで一緒に検出する。
 const genreListMatch = indexSrc.match(/const GENRE_LIST = \[([\s\S]*?)\n\];/);

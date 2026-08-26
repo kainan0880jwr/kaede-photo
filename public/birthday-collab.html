@@ -251,10 +251,10 @@ ul{list-style:none;}
 .text-col > *{position:relative;z-index:1;}
 
 /* Scroll reveal */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);}
 .reveal.in-view{opacity:1;transform:translateY(0);}
-.reveal-d1{transition-delay:.12s;}
-.reveal-d2{transition-delay:.24s;}
+.reveal-d1{transition-delay:.06s;}
+.reveal-d2{transition-delay:.12s;}
 @media (prefers-reduced-motion: reduce){
   .reveal{opacity:1;transform:none;transition:none;}
 }
@@ -783,18 +783,18 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
         <div class="form-row">
           <div class="form-field">
             <label class="form-label" for="c-name">保護者のお名前 <span class="req">*</span></label>
-            <input class="form-input" id="c-name" type="text" placeholder="例：山田 花子" autocomplete="name" required>
+            <input class="form-input" id="c-name" type="text" placeholder="例：山田 花子" autocomplete="name" maxlength="60" required>
           </div>
           <div class="form-field">
             <label class="form-label" for="c-child-name">お子さまのお名前 <span class="req">*</span></label>
-            <input class="form-input" id="c-child-name" type="text" placeholder="例：はな" required>
+            <input class="form-input" id="c-child-name" type="text" placeholder="例：はな" maxlength="60" required>
             <div style="font-size:11px;color:var(--muted);margin-top:6px;">※ 苗字は不要です。複数名の場合はまとめてご記入ください（例：はな、そら）。</div>
           </div>
         </div>
         <div class="form-row">
           <div class="form-field">
             <label class="form-label" for="c-allergy">アレルギーの有無 <span class="req">*</span></label>
-            <input class="form-input" id="c-allergy" type="text" placeholder="例：卵アレルギーあり／特になし" required>
+            <input class="form-input" id="c-allergy" type="text" placeholder="例：卵アレルギーあり／特になし" maxlength="200" required>
             <div style="font-size:11px;color:var(--muted);margin-top:6px;">※ ケーキはmémoireが個別にお作りします。アレルギーがある場合は具体的な食材名をご記入ください。無い場合は「特になし」とご記入ください。</div>
           </div>
         </div>
@@ -810,7 +810,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
         </div>
         <div class="form-field">
           <label class="form-label" for="c-instagram" style="text-transform:none;">Instagramのユーザー名（任意）</label>
-          <input class="form-input" id="c-instagram" type="text" placeholder="例：@kae_photo6378">
+          <input class="form-input" id="c-instagram" type="text" placeholder="例：@kae_photo6378" maxlength="31" pattern="@?[A-Za-z0-9._]{1,30}" title="半角英数字と . _ が使えます（例：@kae_photo6378）">
           <div style="font-size:11px;color:var(--muted);margin-top:6px;">※ カメラマン・mémoireよりInstagramのDMでご連絡する場合があります。お持ちの方はご記入ください。</div>
         </div>
 
@@ -965,7 +965,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
       <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
     </div>
-    <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
+    <div class="footer-copy">© 2026 kaede photo. All rights reserved.</div>
   </div>
 </footer>
 

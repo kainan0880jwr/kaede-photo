@@ -92,6 +92,7 @@ ul{list-style:none;}
 .mobile-menu-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:16px;}
 .sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:700;background:var(--brown);padding:12px 20px;padding-bottom:calc(12px + env(safe-area-inset-bottom));gap:10px;box-shadow:0 -4px 20px rgba(44,31,26,.15);}
 .sticky-cta .btn{flex:1;}
+.sticky-cta .btn-primary{flex:2;}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-ui);letter-spacing:.1em;border-radius:999px;border:none;cursor:pointer;font-size:13px;white-space:nowrap;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease);}
@@ -101,6 +102,8 @@ ul{list-style:none;}
 .btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px);}
 .btn-line{background:var(--line-green);color:#fff;padding:13px 28px;display:inline-flex;align-items:center;gap:8px;}
 .btn-line:hover{background:#05a849;transform:translateY(-2px);}
+.btn-ig{background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:13px 28px;display:inline-flex;align-items:center;gap:8px;}
+.btn-ig:hover{filter:brightness(.94);transform:translateY(-2px);}
 .btn-sm{padding:9px 20px;font-size:11px;}
 
 /* LAYOUT */
@@ -122,10 +125,10 @@ ul{list-style:none;}
 .section-head > *{position:relative;z-index:1;}
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);}
 .reveal.in-view{opacity:1;transform:translateY(0);}
-.reveal-d1{transition-delay:.12s;}
-.reveal-d2{transition-delay:.24s;}
+.reveal-d1{transition-delay:.06s;}
+.reveal-d2{transition-delay:.12s;}
 @media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none;}}
 
 /* HERO */
@@ -248,6 +251,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 
 <div class="sticky-cta">
   <a href="https://lin.ee/Pz3VLXT" class="btn btn-line btn-sm" target="_blank" rel="noopener noreferrer">LINE</a>
+  <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig btn-sm" target="_blank" rel="noopener noreferrer">Instagram</a>
   <a href="index.html#booking" class="btn btn-primary btn-sm">予約</a>
 </div>
 
@@ -436,7 +440,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
       <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
     </div>
-    <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
+    <div class="footer-copy">© 2026 kaede photo. All rights reserved.</div>
   </div>
 </footer>
 
