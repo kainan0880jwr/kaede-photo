@@ -78,3 +78,9 @@
   to = "/photographer.html"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/rental"
+  to = "/rental.html"
+  status = 301
+  force = true

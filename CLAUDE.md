@@ -28,8 +28,9 @@ public/                     Static site, deployed as-is (Netlify `publish = "pub
   newborn.html, maternity.html, omiyamairi.html, shichigosan.html, birthday.html
                               Genre landing pages, structurally identical, share lp-common.js
   area-*.html                 Prefecture SEO landing pages — currently noindex,nofollow (see below)
-  birthday-collab.html, birthday-kyoto.html
-                              Time-limited collaboration campaign landing pages
+  birthday-collab.html        Time-limited collaboration campaign landing page (live)
+  birthday-kyoto.html          Draft campaign page for a future event — intentionally NOT committed
+                               (untracked in git; see docs/birthday-kyoto.README.txt before touching it)
   photographer.html           Photographer bio page
   lp-common.js                Shared JS for landing pages: sticky nav, hamburger menu, FAQ accordion, GA4 click tracking
   tokens.css                  Design tokens (CSS custom properties: colors, fonts, easing) shared across pages
@@ -42,6 +43,7 @@ netlify/functions/
   utils/notion.js              Writes the booking to a Notion database (best-effort — failures alert the owner but don't fail the request)
 
 netlify.toml                  Security headers (CSP etc.), the /api/booking redirect, and 301s for extensionless URLs
+docs/                          Standalone notes for specific pages (currently just birthday-kyoto's reuse instructions)
 ```
 
 ### Booking flow (`netlify/functions/booking.js`)
@@ -63,6 +65,8 @@ This is the only piece of backend logic in the project, and it's dense — read 
 Genre pages (`newborn.html`, `maternity.html`, `omiyamairi.html`, `shichigosan.html`, `birthday.html`) and the area SEO pages are structurally near-identical (~1030–480 lines each): hero, shared nav/footer markup, FAQ accordion, all wired up by the shared `lp-common.js`. When editing shared behavior (nav, menu, FAQ, GA4 click tracking), edit `lp-common.js` once rather than per-page. When editing shared visual language (colors, fonts), prefer `tokens.css` custom properties over hardcoded values.
 
 `area-*.html` pages are currently `noindex,nofollow` (see `<meta name="robots">` in each) — they were accidentally published before content was sufficiently differentiated per-prefecture; don't remove the noindex tag without checking whether that's intentional.
+
+`birthday-kyoto.html` is a paused draft (its event sold out before launch) kept locally and deliberately untracked — do not `git add`/commit it. `docs/birthday-kyoto.README.txt` documents what needs updating to reuse it for a future event, including the two steps required before it can ever go live: adding its plan strings to `booking.js`'s `ALLOWED_PLANS` and adding its extensionless-URL redirect to `netlify.toml` (both currently absent on purpose).
 
 ### Cancellation policy duplication (manual sync, no tooling)
 
