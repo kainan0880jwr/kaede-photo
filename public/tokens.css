@@ -38,3 +38,10 @@ body{
   font-variant-numeric: oldstyle-nums;
   font-feature-settings: "onum" 1;
 }
+
+/* スクロールリビール（photographer.html/rental.html等の「モダンUI」パターンと共通化） */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.12s;}
+.reveal-d2{transition-delay:.24s;}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none;}}

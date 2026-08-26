@@ -145,7 +145,7 @@ ul{list-style:none;}
 .btn-line-nav{
   background:var(--line-green);color:#fff;
   font-size:11px;letter-spacing:.06em;
-  padding:8px 16px;border-radius:2px;
+  padding:8px 16px;border-radius:999px;
   transition:background var(--dur) var(--ease);
   display:flex;align-items:center;gap:5px;
 }
@@ -154,7 +154,7 @@ ul{list-style:none;}
   background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
   color:#fff;
   font-size:11px;letter-spacing:.06em;
-  padding:8px 16px;border-radius:2px;
+  padding:8px 16px;border-radius:999px;
   transition:filter var(--dur) var(--ease);
   display:flex;align-items:center;gap:5px;
 }
@@ -162,7 +162,7 @@ ul{list-style:none;}
 .btn-reserve-nav{
   border:1px solid var(--terra);color:var(--terra-dk);
   font-size:11px;letter-spacing:.08em;
-  padding:7px 18px;border-radius:2px;
+  padding:7px 18px;border-radius:999px;
   transition:all var(--dur) var(--ease);
 }
 .btn-reserve-nav:hover{background:var(--terra);color:#fff;}
@@ -214,7 +214,7 @@ ul{list-style:none;}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
   font-family:var(--f-ui);letter-spacing:.1em;
-  border-radius:2px;border:none;cursor:pointer;
+  border-radius:999px;border:none;cursor:pointer;
   transition:all var(--dur) var(--ease);
   font-size:13px;white-space:nowrap;
 }
@@ -260,7 +260,7 @@ ul{list-style:none;}
 .text-center{text-align:center;}
 
 /* Section spacing */
-.section{padding:80px 0;}
+.section{padding:96px 0;}
 .section-sm{padding:48px 0;}
 .section-alt{background:var(--surface);}
 
@@ -815,6 +815,7 @@ footer{
     <li><a href="index.html?genre=birthday#gallery">Gallery</a></li>
     <li><a href="index.html#voice">Voice</a></li>
     <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="rental.html">Rental</a></li>
   </ul>
   <div class="nav-actions">
     <a href="https://lin.ee/Pz3VLXT" class="btn-line-nav" target="_blank" rel="noopener noreferrer">
@@ -841,6 +842,7 @@ footer{
   <a href="index.html?genre=birthday#gallery">Gallery</a>
   <a href="index.html#voice">Voice</a>
   <a href="index.html#faq">FAQ</a>
+  <a href="rental.html">Rental</a>
   <div class="mobile-menu-actions">
     <a href="https://lin.ee/Pz3VLXT" class="btn btn-line btn-sm" target="_blank" rel="noopener noreferrer">LINEで相談</a>
     <a href="https://www.instagram.com/kae_photo6378/" class="btn btn-ig btn-sm" target="_blank" rel="noopener noreferrer">Instagramで相談</a>
@@ -869,13 +871,25 @@ footer{
   <div class="hero-scroll">scroll</div>
 </div>
 
-<!-- 期間限定コラボ企画バナー：1st BIRTHDAY smash cake photo（mémoire×kaede photo） -->
-<a href="birthday-collab.html" style="display:block;background:#8A4B41;color:#fff;text-decoration:none;">
+<!-- 期間限定コラボ企画バナー：1st BIRTHDAY smash cake photo（mémoire×kaede photo）
+     受付期限（booking.jsのSMASH_CAKE_PLAN_DEADLINEと同じ2026-09-06）を過ぎたら
+     下のscriptで自動非表示にする。 -->
+<a id="collab-banner" href="birthday-collab.html" style="display:block;background:#8A4B41;color:#fff;text-decoration:none;">
   <div class="container" style="padding:16px 40px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
     <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">期間限定コラボ企画「1st BIRTHDAY smash cake photo」mémoire×kaede photo　2026.09.04-05・全6組限定</span>
     <span style="font-size:12px;text-decoration:underline;white-space:nowrap;">詳しく見る →</span>
   </div>
 </a>
+<script>
+  (function(){
+    var deadline = '2026-09-06';
+    var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+    if (today >= deadline) {
+      var b = document.getElementById('collab-banner');
+      if (b) b.style.display = 'none';
+    }
+  })();
+</script>
 
 <!-- Intro -->
 <section class="section">
@@ -887,7 +901,7 @@ footer{
         <p class="lead">よちよち歩きの1歳の誕生日は、家族みんなが笑顔になる特別な1日。一升餅を背負う瞬間や、選び取りで悩む表情まで、ありのままの雰囲気を撮影します。</p>
         <p class="body-sm">ご自宅でのアットホームな雰囲気も、飾り付けをしたレンタルスタジオでの華やかな撮影も、ご希望に合わせて対応いたします。</p>
       </div>
-      <div style="aspect-ratio:4/3;overflow:hidden;border-radius:4px;">
+      <div class="reveal" style="aspect-ratio:4/3;overflow:hidden;border-radius:4px;">
         <picture><source srcset="images/sekku-2.webp" type="image/webp"><img src="images/sekku-2.jpg" width="1067" height="1600" alt="紙吹雪の中で笑う三兄妹のバースデー写真" style="object-fit:cover;filter:sepia(8%) saturate(.9);"></picture>
       </div>
     </div>
@@ -900,17 +914,17 @@ footer{
     <div class="eyebrow">Why</div>
     <h2 class="heading-lg">ファーストバースデーの出張撮影が<br>選ばれる理由</h2>
     <div class="grid-3">
-      <div class="trust-item">
+      <div class="trust-item reveal">
         <div class="trust-num">01</div>
         <div class="trust-title">一升餅・選び取りに対応</div>
         <div class="trust-body">日本の伝統行事である一升餅や選び取りの様子も、自然な表情のまま撮影いたします。</div>
       </div>
-      <div class="trust-item">
+      <div class="trust-item reveal reveal-d1">
         <div class="trust-num">02</div>
         <div class="trust-title">自宅でもスタジオでも</div>
         <div class="trust-body">ご自宅でのアットホームな撮影、飾り付けをしたレンタルスタジオでの華やかな撮影、どちらもご相談いただけます。</div>
       </div>
-      <div class="trust-item">
+      <div class="trust-item reveal reveal-d2">
         <div class="trust-num">03</div>
         <div class="trust-title">交通費込みの安心価格</div>
         <div class="trust-body">大阪府内・和歌山県北部は追加料金なし。遠方エリアも<a href="index.html?genre=birthday#plan" style="color:var(--terra-dk);text-decoration:underline;">交通費参考表</a>で明確にご案内します。</div>
@@ -925,14 +939,14 @@ footer{
     <div class="eyebrow text-center">Plan</div>
     <h2 class="heading-lg text-center">撮影プラン</h2>
     <div class="grid-4" style="margin-bottom:32px;">
-      <div class="plan-card">
+      <div class="plan-card reveal">
         <h3 class="plan-name">simple</h3>
         <div class="plan-catch">"家族の今"をコンパクトに残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 30cuts</div>
         <div class="plan-price">¥19,000<span>（税込）</span></div>
         <a href="index.html?genre=birthday&plan=simple#booking" class="btn btn-outline plan-btn" aria-label="simpleプランで予約する（¥19,000）">このプランで予約</a>
       </div>
-      <div class="plan-card featured">
+      <div class="plan-card featured reveal reveal-d1">
         <div class="plan-badge">おすすめ</div>
         <h3 class="plan-name">standard</h3>
         <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
@@ -940,14 +954,14 @@ footer{
         <div class="plan-price">¥29,000<span>（税込）</span></div>
         <a href="index.html?genre=birthday&plan=standard#booking" class="btn btn-primary plan-btn" aria-label="standardプランで予約する（¥29,000）">このプランで予約</a>
       </div>
-      <div class="plan-card">
+      <div class="plan-card reveal reveal-d2">
         <h3 class="plan-name">special</h3>
         <div class="plan-catch">"家族の今"をより深く残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts</div>
         <div class="plan-price">¥39,000<span>（税込）</span></div>
         <a href="index.html?genre=birthday&plan=special#booking" class="btn btn-outline plan-btn" aria-label="specialプランで予約する（¥39,000）">このプランで予約</a>
       </div>
-      <div class="plan-card">
+      <div class="plan-card reveal reveal-d2">
         <h3 class="plan-name">premium</h3>
         <div class="plan-catch">"家族の想い"まで残すプラン</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts ＋ムービー込み</div>
@@ -1040,12 +1054,13 @@ footer{
         <li><a href="index.html#deposit">安心保証金について</a></li>
         <li><a href="index.html#policy">キャンセルポリシー</a></li>
         <li><a href="index.html#faq">よくある質問</a></li>
+        <li><a href="rental.html">レンタルショップ</a></li>
         <li><a href="index.html#privacy">プライバシーポリシー</a></li>
         <li><a href="index.html#tokusho">特定商取引法に基づく表記</a></li>
       </ul>
       <div class="footer-social">
-        <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
-        <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
+        <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:999px;font-size:11px;">LINE</a>
+        <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:999px;font-size:11px;">Instagram</a>
       </div>
       <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
     </div>

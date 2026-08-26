@@ -160,7 +160,7 @@ ul{list-style:none;}
 .btn-line-nav{
   background:var(--line-green);color:#fff;
   font-size:11px;letter-spacing:.06em;
-  padding:8px 16px;border-radius:2px;
+  padding:8px 16px;border-radius:999px;
   transition:background var(--dur) var(--ease);
   display:flex;align-items:center;gap:5px;
 }
@@ -169,7 +169,7 @@ ul{list-style:none;}
   background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
   color:#fff;
   font-size:11px;letter-spacing:.06em;
-  padding:8px 16px;border-radius:2px;
+  padding:8px 16px;border-radius:999px;
   transition:filter var(--dur) var(--ease);
   display:flex;align-items:center;gap:5px;
 }
@@ -177,7 +177,7 @@ ul{list-style:none;}
 .btn-reserve-nav{
   border:1px solid var(--terra);color:var(--terra-dk);
   font-size:11px;letter-spacing:.08em;
-  padding:7px 18px;border-radius:2px;
+  padding:7px 18px;border-radius:999px;
   transition:all var(--dur) var(--ease);
 }
 .btn-reserve-nav:hover{background:var(--terra);color:#fff;}
@@ -229,7 +229,7 @@ ul{list-style:none;}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
   font-family:var(--f-ui);letter-spacing:.1em;
-  border-radius:2px;border:none;cursor:pointer;
+  border-radius:999px;border:none;cursor:pointer;
   transition:all var(--dur) var(--ease);
   font-size:13px;white-space:nowrap;
 }
@@ -275,7 +275,7 @@ ul{list-style:none;}
 .text-center{text-align:center;}
 
 /* Section spacing */
-.section{padding:80px 0;}
+.section{padding:96px 0;}
 .section-sm{padding:48px 0;}
 .section-alt{background:var(--surface);}
 
@@ -940,13 +940,26 @@ footer{
     <a href="photographer.html" class="hero-photographer-badge">カメラマン紹介 →</a>
   </div>
 
-  <!-- 期間限定コラボ企画バナー：1st BIRTHDAY smash cake photo（mémoire×kaede photo） -->
-  <a href="birthday-collab.html" style="display:block;background:#8A4B41;color:#fff;text-decoration:none;">
+  <!-- 期間限定コラボ企画バナー：1st BIRTHDAY smash cake photo（mémoire×kaede photo）
+       受付期限（booking.jsのSMASH_CAKE_PLAN_DEADLINEと同じ2026-09-06）を過ぎたら
+       下のscriptで自動非表示にする。バナーだけの対応でLP本体・sitemap掲載の
+       取り下げは別途手動対応が必要（CLAUDE.md参照）。 -->
+  <a id="collab-banner" href="birthday-collab.html" style="display:block;background:#8A4B41;color:#fff;text-decoration:none;">
     <div class="container" style="padding:16px 40px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
       <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">期間限定コラボ企画「1st BIRTHDAY smash cake photo」mémoire×kaede photo　2026.09.04-05・全6組限定</span>
       <span style="font-size:12px;text-decoration:underline;white-space:nowrap;">詳しく見る →</span>
     </div>
   </a>
+  <script>
+    (function(){
+      var deadline = '2026-09-06';
+      var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+      if (today >= deadline) {
+        var b = document.getElementById('collab-banner');
+        if (b) b.style.display = 'none';
+      }
+    })();
+  </script>
 
   <!-- レンタルショップ開始のお知らせ -->
   <a href="rental.html" style="display:block;background:var(--terra-dk);color:#fff;text-decoration:none;">
@@ -969,7 +982,7 @@ footer{
             <a href="#" class="btn btn-ghost" onclick="goPage('gallery');return false;">ギャラリーを見る</a>
           </div>
         </div>
-        <div style="aspect-ratio:4/3;overflow:hidden;border-radius:4px;">
+        <div class="reveal" style="aspect-ratio:4/3;overflow:hidden;border-radius:4px;">
           <picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" width="1200" height="785" alt="窓辺で赤ちゃんを抱くご家族の写真" style="object-fit:cover;filter:sepia(8%) saturate(.9);"></picture>
         </div>
       </div>
@@ -992,14 +1005,14 @@ footer{
         </div>
       </div>
       <div class="grid-4" style="margin-bottom:32px;">
-        <div class="plan-card">
+        <div class="plan-card reveal">
           <h3 class="plan-name">simple</h3>
           <div class="plan-catch">"家族の今"をコンパクトに残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 30cuts</div>
           <div class="plan-price">¥19,000<span>（税込）</span></div>
           <button type="button" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('simple')" aria-label="simpleプランで予約する（¥19,000）">このプランで予約</button>
         </div>
-        <div class="plan-card featured">
+        <div class="plan-card featured reveal reveal-d1">
           <div class="plan-badge">おすすめ</div>
           <h3 class="plan-name">standard</h3>
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
@@ -1007,14 +1020,14 @@ footer{
           <div class="plan-price">¥29,000<span>（税込）</span></div>
           <button type="button" class="btn btn-primary plan-btn" onclick="selectPlanAndBook('standard')" aria-label="standardプランで予約する（¥29,000）">このプランで予約</button>
         </div>
-        <div class="plan-card">
+        <div class="plan-card reveal reveal-d2">
           <h3 class="plan-name">special</h3>
           <div class="plan-catch">"家族の今"をより深く残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts</div>
           <div class="plan-price">¥39,000<span>（税込）</span></div>
           <button type="button" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('special')" aria-label="specialプランで予約する（¥39,000）">このプランで予約</button>
         </div>
-        <div class="plan-card">
+        <div class="plan-card reveal reveal-d2">
           <h3 class="plan-name">premium</h3>
           <div class="plan-catch">"家族の想い"まで残すプラン</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">撮影データ 100〜150cuts ＋ムービー込み</div>
@@ -1036,17 +1049,17 @@ footer{
       <div class="eyebrow">Why</div>
       <h2 class="heading-lg">kaede photoが<br>選ばれる理由</h2>
       <div class="grid-3">
-        <div class="trust-item">
+        <div class="trust-item reveal">
           <div class="trust-num">01</div>
           <div class="trust-title">交通費込みの安心価格</div>
           <div class="trust-body">大阪府内・和歌山県北部は追加料金なし。遠方エリアも明確な料金表でご案内します。</div>
         </div>
-        <div class="trust-item">
+        <div class="trust-item reveal reveal-d1">
           <div class="trust-num">02</div>
           <div class="trust-title">お子さまペースで撮影</div>
           <div class="trust-body">泣いても、走っても大丈夫。自然な表情を引き出すのが得意です。安心してお任せください。</div>
         </div>
-        <div class="trust-item">
+        <div class="trust-item reveal reveal-d2">
           <div class="trust-num">03</div>
           <div class="trust-title">安心の保証制度</div>
           <div class="trust-body">ご家族の発熱・悪天候は無料で日程変更。2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra-dk);text-decoration:underline;">安心保証金</a>は<strong>撮影当日に全額返金</strong>します。</div>
@@ -1094,8 +1107,8 @@ footer{
         <li><a href="rental.html">レンタルショップ</a></li>
       </ul>
       <div class="footer-social">
-        <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">LINE</a>
-        <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:2px;font-size:11px;">Instagram</a>
+        <a href="https://lin.ee/Pz3VLXT" target="_blank" rel="noopener noreferrer" class="social-line" style="background:var(--line-green);color:#fff;padding:8px 18px;border-radius:999px;font-size:11px;">LINE</a>
+        <a href="https://www.instagram.com/kae_photo6378/" target="_blank" rel="noopener noreferrer" class="social-ig" style="background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);color:#fff;padding:8px 18px;border-radius:999px;font-size:11px;">Instagram</a>
       </div>
       <div class="footer-copy">© 2025 kaede photo. All rights reserved.</div>
     </div>
@@ -1125,7 +1138,7 @@ footer{
       </div>
 
       <div class="grid-4" style="margin-bottom:48px;">
-        <div class="plan-card">
+        <div class="plan-card reveal">
           <h3 class="plan-name">simple</h3>
           <div class="plan-catch">"家族の今"をコンパクトに残すプラン</div>
           <ul class="plan-specs">
@@ -1136,7 +1149,7 @@ footer{
           <div class="plan-price">¥19,000<span>（税込）</span></div>
           <button type="button" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('simple')" aria-label="simpleプランで予約する（¥19,000）">このプランで予約</button>
         </div>
-        <div class="plan-card featured">
+        <div class="plan-card featured reveal reveal-d1">
           <div class="plan-badge">おすすめ</div>
           <h3 class="plan-name">standard</h3>
           <div class="plan-catch">"家族の今"をしっかり残すプラン</div>
@@ -1148,7 +1161,7 @@ footer{
           <div class="plan-price">¥29,000<span>（税込）</span></div>
           <button type="button" class="btn btn-primary plan-btn" onclick="selectPlanAndBook('standard')" aria-label="standardプランで予約する（¥29,000）">このプランで予約</button>
         </div>
-        <div class="plan-card">
+        <div class="plan-card reveal reveal-d2">
           <h3 class="plan-name">special</h3>
           <div class="plan-catch">"家族の今"をより深く残すプラン</div>
           <ul class="plan-specs">
@@ -1159,7 +1172,7 @@ footer{
           <div class="plan-price">¥39,000<span>（税込）</span></div>
           <button type="button" class="btn btn-outline plan-btn" onclick="selectPlanAndBook('special')" aria-label="specialプランで予約する（¥39,000）">このプランで予約</button>
         </div>
-        <div class="plan-card">
+        <div class="plan-card reveal reveal-d2">
           <h3 class="plan-name">premium</h3>
           <div class="plan-catch">"家族の想い"まで残すプラン</div>
           <ul class="plan-specs">
@@ -1306,7 +1319,7 @@ footer{
       </div>
     </div>
   </div>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1383,7 +1396,7 @@ footer{
       </div>
     </div>
   </div>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1458,7 +1471,7 @@ footer{
       </div>
     </div>
   </div>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1490,11 +1503,15 @@ footer{
       <!-- Form -->
       <div class="form-wrap">
         <div style="background:var(--white);border:1px solid var(--beige);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--text);line-height:1.9;">
-          フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="#" onclick="goPage('deposit');return false;" style="color:var(--terra-dk);text-decoration:underline;">安心保証金</a>（PayPayまたは振込）のお支払いをもってご予約確定</strong>となります。<br>
-          <span style="color:var(--terra-dk);">撮影当日に全額お返しします。</span>万が一のキャンセルへの備えとして、お客様・カメラマン双方のための制度です。<br>
-          <span style="font-size:11px;color:var(--muted);">※ 撮影料金（プラン代金・オプション・交通費）は上記の安心保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
-          <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて<strong>事前にお支払い</strong>いただきます。金額・キャンセル規定はスタジオにより異なるため、キャンセル・返金の条件は各スタジオの規定に従います。</span><br>
-          <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="#" onclick="goPage('policy');return false;" style="color:var(--terra-dk);">キャンセルポリシー</a>をご確認ください。</span>
+          フォーム送信後、当方より内容確認のご連絡をいたします。<strong>2,000円の<a href="index.html#deposit" target="_blank" rel="noopener noreferrer" style="color:var(--terra-dk);text-decoration:underline;">安心保証金</a>のお支払いをもってご予約確定</strong>となります（<span style="color:var(--terra-dk);">撮影当日に全額返金</span>）。
+          <details style="margin-top:8px;">
+            <summary style="cursor:pointer;color:var(--muted);font-size:11px;">お支払い・キャンセルについて詳しく見る</summary>
+            <div style="margin-top:8px;">
+              <span style="font-size:11px;color:var(--muted);">※ 撮影料金（プラン代金・オプション・交通費）は上記の安心保証金とは別に、撮影当日に現地にて現金またはPayPayでお支払いください。</span><br>
+              <span style="font-size:11px;color:var(--muted);">※ スタジオ撮影をご希望の場合、スタジオ利用料は安心保証金と合わせて<strong>事前にお支払い</strong>いただきます。金額・キャンセル規定はスタジオにより異なるため、キャンセル・返金の条件は各スタジオの規定に従います。</span><br>
+              <span style="font-size:11px;color:var(--muted);">※ 撮影日4日前以降のお客様都合・無断キャンセルの場合は返金されません（体調不良・悪天候は無料で日程変更）。詳しくは<a href="index.html#policy" target="_blank" rel="noopener noreferrer" style="color:var(--terra-dk);">キャンセルポリシー</a>をご確認ください。</span>
+            </div>
+          </details>
         </div>
 
         <form onsubmit="submitForm(event)" novalidate>
@@ -1635,7 +1652,7 @@ footer{
           <div class="privacy-wrap">
             <label class="check-row">
               <input type="checkbox" id="f-privacy" required>
-              <span style="font-size:12px;"><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a>・<a href="#" onclick="goPage('terms');return false;">撮影規約</a>に同意します <span style="color:var(--terra-dk)">*</span></span>
+              <span style="font-size:12px;"><a href="index.html#privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>・<a href="index.html#terms" target="_blank" rel="noopener noreferrer">撮影規約</a>に同意します <span style="color:var(--terra-dk)">*</span></span>
             </label>
           </div>
 
@@ -1733,7 +1750,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1823,7 +1840,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1913,7 +1930,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -1924,14 +1941,15 @@ footer{
     <div class="container" style="max-width:720px;">
       <div class="eyebrow">Privacy</div>
       <h2 class="heading-lg">プライバシーポリシー</h2>
+      <p class="priv-body" style="margin-bottom:8px;">本ポリシーは、kaede photoの出張撮影サービス（本サイト上でのご予約）に加え、kaede photoが運営するレンタルショップ（BASE）でのお取引にも適用されます。</p>
 
       <div class="priv-section">
         <div class="priv-heading">個人情報の収集について</div>
-        <div class="priv-body">kaede photo（以下「当サービス」）は、ご予約フォームにて以下の個人情報をお預かりします。<br>・お名前　・メールアドレス　・電話番号　・Instagramアカウント（任意）<br>・撮影希望日　・撮影場所・エリア　・ご希望のプラン・オプション<br>・お子さまの情報（お名前・ニックネーム、人数・年齢。<strong>保護者さまが親権者としてご入力・ご同意いただいているものとして取り扱います</strong>）　・その他ご入力いただいた情報<br>・IPアドレス・アクセスログ（不正送信・スパム防止の目的でのみ利用し、短期間で自動的に消去されます）</div>
+        <div class="priv-body">kaede photo（以下「当サービス」）は、以下の個人情報をお預かりします。<br><strong>ご予約フォームにて</strong>：・お名前　・メールアドレス　・電話番号　・Instagramアカウント（任意）<br>・撮影希望日　・撮影場所・エリア　・ご希望のプラン・オプション<br>・お子さまの情報（お名前・ニックネーム、人数・年齢。<strong>保護者さまが親権者としてご入力・ご同意いただいているものとして取り扱います</strong>）　・その他ご入力いただいた情報<br>・IPアドレス・アクセスログ（不正送信・スパム防止の目的でのみ利用し、短期間で自動的に消去されます）<br><strong>レンタルショップ（BASE）ご利用時</strong>：・お届け先のご住所　・お名前　・お電話番号　・ご注文内容（BASEを通じてお預かりします）</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">利用目的</div>
-        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例として当サイト・各企画ページ・ポートフォリオ・SNS（Instagram等）・広告に掲載<br><br>掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方、またはコラボ企画で掲載同意にチェックいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
+        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・レンタル商品の受注・発送・返却管理、延滞料・破損時の費用のご請求<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例として当サイト・各企画ページ・ポートフォリオ・SNS（Instagram等）・広告に掲載<br><br>掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方、またはコラボ企画で掲載同意にチェックいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">第三者提供</div>
@@ -1961,6 +1979,7 @@ footer{
         ・Google Analytics（Google LLC／米国）：アクセス解析（詳細は下記「アクセス解析」参照）<br>
         ・ギガファイル便：撮影データのオンライン納品<br>
         ・Select Photo：撮影データのオンライン納品・選択<br>
+        ・BASE（BASE株式会社／日本）：レンタルショップの運営基盤、ご注文・配送管理<br>
         米国の事業者へ個人情報を提供する場合は、各社との契約等を通じて日本の個人情報保護法に相当する水準の安全管理措置が講じられるよう努め、その体制を定期的に確認しています。委託先の詳細は、下記お問い合わせ窓口までご請求いただけます。</div>
       </div>
       <div class="priv-section">
@@ -1991,7 +2010,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -2026,7 +2045,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 <!-- ════════════════════ PAGE: TERMS（撮影規約） ════════════════════ -->
@@ -2065,7 +2084,7 @@ footer{
       </div>
     </div>
   </section>
-  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
+  <footer><div class="container"><div class="footer-logo">kaede photo</div><ul class="footer-links"><li><a href="#" onclick="goPage('top');return false;">Home</a></li><li><a href="rental.html">レンタルショップ</a></li><li><a href="#" onclick="goPage('booking');return false;">予約する</a></li><li><a href="#" onclick="goPage('policy');return false;">キャンセルポリシー</a></li><li><a href="#" onclick="goPage('privacy');return false;">プライバシーポリシー</a></li><li><a href="#" onclick="goPage('terms');return false;">撮影規約</a></li><li><a href="#" onclick="goPage('tokusho');return false;">特定商取引法に基づく表記</a></li></ul><div class="footer-copy">© 2025 kaede photo. All rights reserved.</div></div></footer>
 </div>
 
 
@@ -2255,6 +2274,21 @@ window.addEventListener('scroll', () => {
     _scrollTick = true;
   }
 }, { passive: true });
+
+/* ────────────────────────────────
+   スクロールリビール
+──────────────────────────────── */
+(function(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
 
 /* ────────────────────────────────
    ハンバーガーメニュー（ARIA + Escape + フォーカストラップ）

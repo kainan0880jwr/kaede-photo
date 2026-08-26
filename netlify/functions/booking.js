@@ -300,6 +300,25 @@ function json(statusCode, body) {
   return { statusCode, headers, body: JSON.stringify(body) };
 }
 
+// レート制限のキーに生のIPをそのまま使うと、IPv6環境では攻撃者が/64プレフィックス内の
+// アドレスを1件ごとに変えるだけでper-IP制限を無限に回避できてしまう（同一契約者に
+// 割り当てられる典型的なブロックサイズが/64のため）。IPv6のみ先頭4グループ（=/64）に
+// 丸めてバケット化し、IPv4はそのまま使う。
+function rateLimitKey(ip) {
+  if (!ip.includes(':')) return `v4:${ip}`;
+  let groups;
+  if (ip.includes('::')) {
+    const [head, tail] = ip.split('::');
+    const headParts = head ? head.split(':').filter(Boolean) : [];
+    const tailParts = tail ? tail.split(':').filter(Boolean) : [];
+    const zeros = Math.max(8 - headParts.length - tailParts.length, 0);
+    groups = [...headParts, ...Array(zeros).fill('0'), ...tailParts];
+  } else {
+    groups = ip.split(':');
+  }
+  return `v6:${groups.slice(0, 4).join(':')}`;
+}
+
 function getClientIp(event) {
   const headers = event.headers || {};
   // Netlifyが付与する x-nf-client-connection-ip を最優先（クライアントからは詐称できない）。
@@ -460,24 +479,35 @@ export const handler = async (event) => {
   // ※ 冪等性キーの書き込みより先に行い、レート制限で弾かれるリクエストが
   //   Redisに書き込みを発生させない（コストDoS対策）ようにする
   if (ratelimit) {
+    const ip = getClientIp(event);
+    let perIp, global;
     try {
-      const ip = getClientIp(event);
-      const [perIp, global] = await Promise.all([
-        ratelimit.limit(ip),
+      [perIp, global] = await Promise.all([
+        ratelimit.limit(rateLimitKey(ip)),
         globalRatelimit ? globalRatelimit.limit('global') : Promise.resolve({ success: true }),
       ]);
-      if (!perIp.success || !global.success) {
-        // サイト全体の上限に達している間は、正規のお客様も一律で予約できなくなる。
-        // 気づかないまま丸一日フォームが死ぬのを避けるため、1日1回だけオーナーへ通知する。
-        if (!global.success) await notifyGlobalLimit(ip);
-        return json(429, {
-          ok: false,
-          error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください。',
-        });
-      }
     } catch (err) {
-      // レート制限基盤の障害で予約をブロックしないよう、ログのみで続行
-      console.error('[ratelimit] failed, continuing:', err?.message || err);
+      // Upstashは設定済みだが呼び出しが失敗した状態（無料プランの長期アイドル停止・
+      // 一時的な障害など）。ここでフェイルオープンにすると、認証済みドメイン
+      // (kaede-photo.com)から攻撃者が指定した任意アドレス宛に無制限にメールを
+      // 送信できる中継点になり、送信ドメインのレピュテーション毀損という
+      // 復旧困難な被害に直結するため、フェイルクローズ（503）する。
+      // ※ Upstashが最初から未設定（環境変数自体が無い）の場合はこのブロックに入らず、
+      //   従来どおりフェイルオープンのまま（ローカル開発等でUpstashを使わない構成を壊さないため）。
+      console.error('[ratelimit] failed, rejecting request (fail-closed):', err?.message || err);
+      return json(503, {
+        ok: false,
+        error: 'ただいま送信が混み合っております。しばらく時間をおいて再度お試しいただくか、LINE・Instagramにてご連絡ください。',
+      });
+    }
+    if (!perIp.success || !global.success) {
+      // サイト全体の上限に達している間は、正規のお客様も一律で予約できなくなる。
+      // 気づかないまま丸一日フォームが死ぬのを避けるため、1日1回だけオーナーへ通知する。
+      if (!global.success) await notifyGlobalLimit(ip);
+      return json(429, {
+        ok: false,
+        error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください。',
+      });
     }
   }
 

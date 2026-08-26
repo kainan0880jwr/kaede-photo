@@ -578,6 +578,22 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   <a href="#booking" class="btn btn-primary btn-sm">予約する</a>
 </div>
 
+<!-- 受付終了のお知らせ（SMASH_CAKE_PLAN_DEADLINE=2026-09-06、booking.jsと同じ日付。
+     期限後にこのLPへ直接アクセスした場合、フォーム送信までさせて弾くのを防ぐための告知） -->
+<div id="collab-closed-notice" style="display:none;background:var(--brown);color:#fff;text-align:center;padding:16px 20px;font-size:13px;">
+  本企画の受付は終了しました。ご興味をお持ちの方は<a href="index.html" style="color:#fff;text-decoration:underline;">通常の出張撮影プラン</a>をご覧ください。
+</div>
+<script>
+  (function(){
+    var deadline = '2026-09-06';
+    var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+    if (today >= deadline) {
+      var n = document.getElementById('collab-closed-notice');
+      if (n) n.style.display = 'block';
+    }
+  })();
+</script>
+
 <!-- Hero -->
 <div class="hero">
   <div class="hero-grid">
@@ -937,6 +953,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     <div class="footer-tagline">子ども・家族専門出張カメラマン｜関西（大阪・和歌山・兵庫・奈良・京都）中心、全国対応</div>
     <ul class="footer-links">
       <li><a href="index.html">Home</a></li>
+      <li><a href="rental.html">レンタルショップ</a></li>
       <li><a href="#booking">予約フォーム</a></li>
       <li><a href="index.html#deposit">安心保証金について</a></li>
       <li><a href="index.html#policy">キャンセルポリシー</a></li>

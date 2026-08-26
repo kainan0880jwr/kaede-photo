@@ -177,6 +177,27 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 .cta-title{font-family:var(--f-display);font-size:32px;font-weight:300;color:var(--brown);letter-spacing:.06em;margin-bottom:16px;}
 .cta-sub{font-size:14px;color:var(--muted);line-height:1.9;max-width:480px;margin:0 auto 32px;}
 
+/* Mobile sticky CTA */
+.sticky-cta{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:700;
+  background:var(--brown);
+  padding:12px 20px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  gap:10px;
+  box-shadow:0 -4px 20px rgba(44,31,26,.15);
+}
+.sticky-cta .btn{flex:1;}
+.sticky-cta .btn-ghost{border-color:rgba(255,255,255,.4);color:#fff;}
+.sticky-cta .btn-ghost:hover{border-color:#fff;}
+
+/* Tokusho table */
+.tokusho-table{width:100%;border-collapse:collapse;max-width:640px;margin:0 auto;}
+.tokusho-table tr{border-top:1px solid var(--beige);}
+.tokusho-table tr:first-child{border-top:none;}
+.tokusho-table td{padding:12px 8px;font-size:13px;color:var(--text);line-height:1.8;vertical-align:top;}
+.tokusho-table td:first-child{width:32%;color:var(--brown);white-space:nowrap;}
+
 /* FOOTER */
 footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 .footer-logo{font-family:var(--f-display);font-size:30px;font-weight:300;letter-spacing:.28em;color:rgba(255,255,255,.9);margin-bottom:12px;}
@@ -204,6 +225,8 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   .cta-block{padding:56px 20px;}
   .hero-plain{padding:136px 20px 56px;}
   .section-num{display:none;}
+  .sticky-cta{display:flex;}
+  body{padding-bottom:64px;}
 }
 </style>
 </head>
@@ -232,6 +255,12 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   </div>
 </div>
 
+<!-- Mobile Sticky CTA -->
+<div class="sticky-cta">
+  <a href="index.html#booking" class="btn btn-ghost btn-sm">撮影のご予約</a>
+  <a href="https://kaephoto.base.shop" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">ショップを見る</a>
+</div>
+
 <!-- Hero -->
 <div class="hero-plain">
   <div class="eyebrow">Rental / New</div>
@@ -252,7 +281,9 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <h2 class="heading-lg">レンタルではじめる、<br>ニューボーンフォトの世界。</h2>
     </div>
     <p class="lead text-center" style="max-width:640px;margin-left:auto;margin-right:auto;">ニューボーンフォトに憧れていても、専用の衣装や小物をすべて揃えるのは大変です。「kaede photo」のレンタルショップでは、撮影に必要なアイテムをセットにしてお届けします。</p>
-    <p class="body-sm text-center" style="max-width:560px;margin:0 auto;">往復送料込み・保証金不要。到着指定日から3日間、ご自宅でゆっくりとご利用いただけます。</p>
+    <p class="body-sm text-center" style="max-width:560px;margin:0 auto 16px;">往復送料込み・保証金不要。到着指定日から3日間、ご自宅でゆっくりとご利用いただけます。</p>
+    <p class="body-sm text-center" style="max-width:560px;margin:0 auto;">本レンタルサービスの提供者（賃貸人）は kaede photo です。ご契約はお客様と kaede photo との間で成立します。ご注文・お支払い・配送手続きは、ショップシステムを提供するプラットフォーム事業者「BASE」（BASE株式会社）のシステム上で行われます。</p>
+    <p class="body-sm text-center" style="max-width:560px;margin:16px auto 0;">プロに撮ってほしい方は、<a href="newborn.html" style="color:var(--terra-dk);text-decoration:underline;">ニューボーンフォトの出張撮影</a>もご検討ください。</p>
   </div>
 </section>
 
@@ -311,11 +342,31 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   </div>
 </section>
 
-<!-- How to -->
-<section class="section" id="howto">
+<!-- Safety -->
+<section class="section" id="safety">
   <div class="container">
     <div class="section-head text-center">
       <div class="section-num">03</div>
+      <div class="eyebrow">Safety</div>
+      <h2 class="heading-lg">安全にご使用いただくために</h2>
+    </div>
+    <p class="lead text-center" style="max-width:600px;margin:0 auto 24px;">バスケットや布、小物を使った撮影は、扱い方を誤ると赤ちゃんに危険が及ぶことがあります。ご使用の際は、必ず以下をお守りください。</p>
+    <ul class="note-list">
+      <li>ご使用中は、赤ちゃんから絶対に目を離さないでください。</li>
+      <li>バスケットは必ず床など低い位置で使用し、台・ソファ・ベッドの上には置かないでください（転落のおそれがあります）。</li>
+      <li>ベールや布類が赤ちゃんの顔にかからないよう、常にご注意ください（窒息のおそれがあります）。</li>
+      <li>うつ伏せの姿勢や、首がすわっていない状態での不安定な体勢は避けてください。</li>
+      <li>小物・アクセサリー類の小さな部品を口に入れないよう、ご注意ください（誤飲のおそれがあります）。</li>
+      <li>撮影は必ず2人以上で行い、1人が常に赤ちゃんに手を添えられる状態にしてください。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- How to -->
+<section class="section section-alt" id="howto">
+  <div class="container">
+    <div class="section-head text-center">
+      <div class="section-num">04</div>
       <div class="eyebrow">How to</div>
       <h2 class="heading-lg">ご利用の流れ</h2>
     </div>
@@ -338,28 +389,55 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <div class="step-item reveal reveal-d2">
         <div class="step-num">4</div>
         <div class="step-title">ご返却</div>
-        <div class="step-body">返却期限までに、届いた時と同じ梱包でご返送ください。</div>
+        <div class="step-body">返却期限（到着指定日から3日目までのご発送）までに、届いた時と同じ梱包でご返送ください。</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Notes -->
-<section class="section section-alt">
+<section class="section">
   <div class="container">
     <div class="section-head text-center">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="eyebrow">Notes</div>
       <h2 class="heading-lg">ご利用にあたって</h2>
     </div>
+    <p class="body-sm text-center" style="max-width:560px;margin:0 auto 16px;">以下は主な条件の抜粋です。正式な契約条件は、ショップ（BASE）の商品ページの記載によります。</p>
     <ul class="note-list">
-      <li>レンタル期間は到着指定日から3日間です。</li>
+      <li>レンタル期間は到着指定日から3日間、返却期限は到着指定日から3日目までのご発送です。</li>
       <li>保証金は不要です。</li>
-      <li>返却期限を過ぎた場合、延滞料として超過1日につき¥5,600（レンタル料金の3分の1相当）がかかります。</li>
+      <li>返却期限を過ぎた場合、延滞料として超過1日につき¥5,600がかかります（上限：商品の新品購入相当額）。</li>
       <li>キャンセルは、発送前は全額返金、発送後はレンタル料金の返金をいたしかねます。</li>
+      <li>在庫を複数のお客様で共有しているため、やむを得ずご注文後にキャンセルをお願いする場合があります。</li>
+      <li>すべての商品は、発送前にクリーニング・除菌を行ってからお届けします。</li>
+      <li>お届けした商品に欠陥がある場合は、到着後2日以内にご連絡ください。</li>
       <li>軽微な汚れ・シワ・毛羽立ちのご請求はありません。修理が難しい破損・紛失の場合は、実費相当額（上限：新品購入相当額）をご請求する場合があります。</li>
       <li>ご注文・お支払い・配送は、ショップ（BASE）にて承ります。</li>
     </ul>
+  </div>
+</section>
+
+<!-- Tokusho -->
+<section class="section section-alt" id="tokusho">
+  <div class="container">
+    <div class="section-head text-center">
+      <div class="section-num">06</div>
+      <div class="eyebrow">Legal</div>
+      <h2 class="heading-lg">事業者情報</h2>
+    </div>
+    <table class="tokusho-table">
+      <tr><td>販売事業者</td><td>Kaede Photo</td></tr>
+      <tr><td>運営統括責任者</td><td>池端 楓</td></tr>
+      <tr><td>所在地</td><td>ご請求があれば遅滞なく開示します（下記メールアドレスまでご請求ください）</td></tr>
+      <tr><td>電話番号</td><td>ご請求があれば遅滞なく開示します（下記メールアドレスまでご請求ください）</td></tr>
+      <tr><td>メールアドレス</td><td>kaepafu1995@gmail.com</td></tr>
+      <tr><td>商品代金</td><td>各商品ページに表示（¥16,600・税込・往復送料込み）</td></tr>
+      <tr><td>商品代金以外の必要料金</td><td>ございません（送料込みの価格です）</td></tr>
+      <tr><td>お支払い方法・時期</td><td>ショップ（BASE）のご案内に従います。ご注文時にお支払いいただきます。</td></tr>
+      <tr><td>引渡時期</td><td>ご指定いただいたお届け日にお届けします。</td></tr>
+      <tr><td>キャンセル・返品</td><td>発送前は全額返金、発送後はレンタル料金の返金をいたしかねます。詳しくは上記「ご利用にあたって」をご確認ください。</td></tr>
+    </table>
   </div>
 </section>
 
@@ -381,8 +459,11 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
       <li><a href="index.html">Home</a></li>
       <li><a href="index.html#booking">出張撮影のご予約</a></li>
       <li><a href="https://kaephoto.base.shop" target="_blank" rel="noopener noreferrer">レンタルショップ（BASE）</a></li>
+      <li><a href="index.html#privacy">プライバシーポリシー</a></li>
+      <li><a href="index.html#terms">撮影規約</a></li>
+      <li><a href="#tokusho">特定商取引法に基づく表記</a></li>
     </ul>
-    <p class="footer-note">商品のご注文・お支払い・配送は「BASE」が提供するショップサービスを通じて行われます。ご購入にあたっては、ショップページに記載の特定商取引法に基づく表記・利用規約をご確認ください。</p>
+    <p class="footer-note">本レンタルサービスの提供者（賃貸人）は kaede photo です。ご注文・お支払い・配送は、プラットフォーム事業者「BASE」（BASE株式会社）が提供するショップシステムを通じて行われます。ご購入にあたっては、ショップページに記載の特定商取引法に基づく表記・利用規約もあわせてご確認ください。</p>
     <div class="footer-copy">© 2026 kaede photo. All rights reserved.</div>
   </div>
 </footer>

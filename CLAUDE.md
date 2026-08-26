@@ -70,7 +70,16 @@ Genre pages (`newborn.html`, `maternity.html`, `omiyamairi.html`, `shichigosan.h
 
 ### Cancellation policy duplication (manual sync, no tooling)
 
-The cancellation/refund policy (studio fees, deposit terms, 特商法12条の6 confirmation-screen text) is written out independently in at least `index.html` (`#policy`, `#tokusho`, and the booking-form deposit note) and `birthday-collab.html` (deposit note + confirm-dialog text). There is a comment at the `birthday-collab.html` confirm dialog reminding editors to update `index.html` too, but nothing enforces it — unlike pricing, there's no `check:prices`-style script for policy text. When editing cancellation/refund wording, grep for `原則返金されません` and `キャンセル` across `public/*.html` and update every match, not just the one you started in.
+The cancellation/refund policy (studio fees, deposit terms, 特商法12条の6 confirmation-screen text) is written out independently in at least `index.html` (`#policy`, `#tokusho`, and the booking-form deposit note) and `birthday-collab.html` (deposit note + confirm-dialog text). There is a comment at the `birthday-collab.html` confirm dialog reminding editors to update `index.html` too, but nothing enforces it — unlike pricing, there's no `check:prices`-style script for policy text. When editing cancellation/refund wording, grep for `返金はお受けできません` and `キャンセル` across `public/*.html` and update every match, not just the one you started in.
+
+### Time-limited campaign cleanup checklist
+
+When a `SMASH_CAKE_PLANS`-style time-limited campaign's deadline (`SMASH_CAKE_PLAN_DEADLINE` in `booking.js`) has passed, `npm run check:prices` prints a `[warn]` reminder but doesn't block anything — cleanup is still manual. Do the following once the event is truly over:
+
+- Remove the plan strings from `booking.js`'s `ALLOWED_PLANS`/`SMASH_CAKE_PLANS` (and the matching entry in `PLAN_PRICE_BY_PREFIX`-adjacent tables if any).
+- Delete or `noindex` the campaign LP (e.g. `birthday-collab.html`) and remove its redirect from `netlify.toml` if it's being deleted.
+- Remove the campaign banner from `index.html` and any genre LP that cross-promotes it (currently `birthday.html`) — these auto-hide via inline JS once the deadline passes, but the markup should still be deleted once the campaign is truly retired rather than left hidden forever.
+- Remove the page from `sitemap.xml`.
 
 ## Environment / secrets
 

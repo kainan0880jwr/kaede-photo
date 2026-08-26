@@ -56,6 +56,19 @@ document.addEventListener('click', e => {
   btn.setAttribute('aria-expanded', isOpen);
 });
 
+// スクロールリビール
+(function(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
 // GA4 クリック計測（LINE / Instagram 導線）
 document.addEventListener('click', (e) => {
   if(typeof gtag !== 'function') return;
