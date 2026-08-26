@@ -152,6 +152,30 @@ export function globalLimitAlert({ limit, windowLabel, lastIp, at }) {
   };
 }
 
+// だいきさん宛：表示額とサーバー再計算額の不一致アラート（単価表ドリフトの早期発見用）。
+// 予約自体は成立させたうえで送るため、通常のご予約通知メールとは別に届く。
+export function priceMismatchAlert(data, { clientValue, serverValue }) {
+  const yen = n => Number.isFinite(n) ? `¥${n.toLocaleString('ja-JP')}` : '—';
+  const inner = `
+    <p style="margin:0 0 16px;font-size:14px;line-height:1.8;color:#c0392b;">
+    ⚠️ フォーム表示額とサーバー側の再計算額が一致しませんでした。<br>
+    改ざん試行の可能性もありますが、多くの場合は index.html の単価表と
+    booking.js の単価表がズレている（値上げ時の直し忘れ等）ことが原因です。
+    <code>npm run check:prices</code> で確認してください。</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+      ${row('フォーム表示額', esc(yen(Number(clientValue))))}
+      ${row('サーバー再計算額', esc(yen(serverValue)))}
+      ${row('お名前', esc(data.name))}
+      ${row('プラン', esc(data.plan))}
+      ${row('エリア', esc(data.area || '—'))}
+    </table>
+    <p style="margin:24px 0 0;font-size:12px;color:#9a938b;">この予約自体は通常どおり受け付けています（お客様にはサーバー側の金額のみをご案内しています）。</p>`;
+  return {
+    subject: subj(`【要確認】概算金額の不一致 - ${data.name} 様の予約`),
+    html: wrap('概算金額が一致しませんでした', inner),
+  };
+}
+
 // だいきさん宛：Notion記録失敗アラート
 export function notionFailureAlert(data, errorMessage) {
   const inner = `

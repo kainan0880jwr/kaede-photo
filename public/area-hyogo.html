@@ -223,7 +223,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 
 <!-- NAV -->
 <nav class="nav" id="main-nav">
-  <div class="nav-logo" onclick="location.href='index.html'">kaede photo <span class="nav-tag">兵庫</span></div>
+  <a href="index.html" class="nav-logo">kaede photo <span class="nav-tag">兵庫</span></a>
   <ul class="nav-links">
     <li><a href="#area">対応エリア</a></li>
     <li><a href="#plan">プラン</a></li>
@@ -366,23 +366,23 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     </div>
     <div class="grid-5">
       <a class="genre-card reveal" href="newborn.html">
-        <div class="genre-card-img"><picture><source srcset="images/baby-9.webp" type="image/webp"><img src="images/baby-9.jpg" alt="ニューボーンフォト"></picture></div>
+        <div class="genre-card-img"><picture><source srcset="images/baby-9.webp" type="image/webp"><img src="images/baby-9.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="ニューボーンフォト"></picture></div>
         <div class="genre-card-label">ニューボーン</div>
       </a>
       <a class="genre-card reveal reveal-d1" href="maternity.html">
-        <div class="genre-card-img"><picture><source srcset="images/maternity-3.webp" type="image/webp"><img src="images/maternity-3.jpg" alt="マタニティフォト"></picture></div>
+        <div class="genre-card-img"><picture><source srcset="images/maternity-3.webp" type="image/webp"><img src="images/maternity-3.jpg" width="1100" height="1640" loading="lazy" decoding="async" alt="マタニティフォト"></picture></div>
         <div class="genre-card-label">マタニティ</div>
       </a>
       <a class="genre-card reveal reveal-d1" href="omiyamairi.html">
-        <div class="genre-card-img"><picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" alt="お宮参りフォト"></picture></div>
+        <div class="genre-card-img"><picture><source srcset="images/family-1.webp" type="image/webp"><img src="images/family-1.jpg" width="1200" height="785" loading="lazy" decoding="async" alt="お宮参りフォト"></picture></div>
         <div class="genre-card-label">お宮参り</div>
       </a>
       <a class="genre-card reveal reveal-d2" href="shichigosan.html">
-        <div class="genre-card-img"><picture><source srcset="images/family-6.webp" type="image/webp"><img src="images/family-6.jpg" alt="七五三フォト"></picture></div>
+        <div class="genre-card-img"><picture><source srcset="images/family-6.webp" type="image/webp"><img src="images/family-6.jpg" width="1200" height="800" loading="lazy" decoding="async" alt="七五三フォト"></picture></div>
         <div class="genre-card-label">七五三</div>
       </a>
       <a class="genre-card reveal reveal-d2" href="birthday.html">
-        <div class="genre-card-img"><picture><source srcset="images/sekku-2.webp" type="image/webp"><img src="images/sekku-2.jpg" alt="ファーストバースデーフォト"></picture></div>
+        <div class="genre-card-img"><picture><source srcset="images/sekku-2.webp" type="image/webp"><img src="images/sekku-2.jpg" width="1067" height="1600" loading="lazy" decoding="async" alt="ファーストバースデーフォト"></picture></div>
         <div class="genre-card-label">ファーストバースデー</div>
       </a>
     </div>
@@ -446,18 +446,31 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 </footer>
 
 <script>
-function toggleMenu(forceClose){
+function toggleMenu(forceClose, returnFocus = true){
   const h = document.getElementById('hamburger');
   const m = document.getElementById('mobile-menu');
   const isOpen = forceClose ? false : !m.classList.contains('open');
   h.classList.toggle('open', isOpen);
   m.classList.toggle('open', isOpen);
   h.setAttribute('aria-expanded', isOpen);
+  h.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
   m.setAttribute('aria-hidden', !isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
+  if(isOpen){
+    const firstLink = m.querySelector('a, button');
+    if(firstLink) firstLink.focus();
+  } else if(returnFocus){
+    h.focus();
+  }
 }
 document.getElementById('hamburger').addEventListener('click', () => toggleMenu());
 document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => toggleMenu(true)));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    const m = document.getElementById('mobile-menu');
+    if(m.classList.contains('open')) toggleMenu(true);
+  }
+});
 
 let _scrollTick = false;
 window.addEventListener('scroll', () => {

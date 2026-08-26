@@ -19,6 +19,7 @@ import {
   customerConfirmation,
   notionFailureAlert,
   globalLimitAlert,
+  priceMismatchAlert,
 } from './utils/email-templates.js';
 import { createBookingRecord } from './utils/notion.js';
 
@@ -171,6 +172,12 @@ const AREA_PRICES = {
   'その他': 0, // 交通費は別途見積り
 };
 
+// エリアのホワイトリスト（AREA_PRICESのキー＋コラボ企画の固定エリア文字列）。
+// plan/genre/optionKeysと違い、area は文字数上限だけで中身は未検証だったため、
+// 直接APIを叩けば任意の100文字をNotion・オーナー宛メールへ注入できてしまっていた
+//（HTMLエスケープ済みでXSSには至らないが、台帳・通知メールの汚染が可能だった。Opus 5監査 セキュリティM-3）
+const ALLOWED_AREAS = new Set([...Object.keys(AREA_PRICES), 'mémoireスタジオ（大阪市福島区大開）']);
+
 const YEN = n => `¥${n.toLocaleString('ja-JP')}`;
 
 // プラン単価はホワイトリスト済みラベルから抽出する（単価表の二重管理による食い違いを避ける）
@@ -189,7 +196,8 @@ const EXCLUSIVE_OPTION_GROUPS = [
 
 // 掲載同意（肖像権・プライバシーポリシー「利用目的」参照）の有無を、料金とは別に
 // サーバー側で確定させる。金額はOPTION_PRICESが担うが、同意の記録はここで
-// 独立に判定する（optionKeysはホワイトリスト照合済みの安定キーのため、この判定は信頼できる）。
+// 独立に判定する。呼び出し側は computeEstimate() が返す正規化済み keys を渡すこと
+// （重複除去・排他グループ適用済みのため、料金計算と矛盾しない判定になる）。
 function deriveSnsConsent(optionKeys) {
   const keys = new Set((Array.isArray(optionKeys) ? optionKeys : []).map(k => String(k)));
   if (keys.has('sns_face')) return { consent: true, scope: '顔を含む' };
@@ -251,6 +259,10 @@ function computeEstimate({ plan, areaKey, optionKeys, clientValue }) {
     // （「交通費別途」はお客様に必要な案内なので残す）
     customerText: `${YEN(total)}（税込）${areaKey === 'その他' ? '　※ 交通費別途' : ''}`,
     mismatch,
+    // 重複除去・30件切り詰め・排他グループ適用後の正規化済みキー。
+    // deriveSnsConsent はこの keys を使うこと（payload.optionKeysを直接渡すと、
+    // 料金計算とSNS掲載同意の判定基準がズレて記録が矛盾しうる。Opus 5監査 M-1）。
+    keys,
   };
 }
 
@@ -261,6 +273,15 @@ function corsHeaders() {
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json; charset=utf-8',
+    // netlify.tomlの[[headers]]は静的アセットにのみ適用され、Functionsのレスポンスには
+    // 効かない（本番で実測確認済み）。レスポンスは常に固定のJSON文字列でユーザー入力を
+    // 反射しないため実害は小さいが、念のため主要なセキュリティヘッダーをここでも
+    // 明示的に付与する（Opus 5監査 セキュリティM-2）
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'no-referrer',
+    'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
   };
   // SITE_URL が設定されているときだけ許可オリジンを明示（未設定時は 'null' を返さない）
   if (origin) headers['Access-Control-Allow-Origin'] = origin;
@@ -268,9 +289,15 @@ function corsHeaders() {
 }
 
 // リクエスト元オリジンの検証（他サイトからのPOSTを弾く）
-// ホスト名ベースで判定し、末尾スラッシュやドメイン表記の差で正規の予約を誤って弾かないようにする。
-function hostOf(value) {
-  try { return new URL(value).host.toLowerCase(); } catch { return ''; }
+// スキーム＋ホスト名で判定し、末尾スラッシュやドメイン表記の差で正規の予約を誤って弾かないようにする。
+// （以前はホスト名のみの比較で、Origin: http://kaede-photo.com のような非HTTPSの
+//   オリジンも通過してしまっていた。HSTS preload・301リダイレクトにより実際に平文HTTPの
+//   ページがこのドメインに存在する経路は無いため実害は限定的だったが、Opus 5監査 セキュリティM-4対応）
+function originOf(value) {
+  try {
+    const u = new URL(value);
+    return `${u.protocol}//${u.host}`.toLowerCase();
+  } catch { return ''; }
 }
 function isAllowedOrigin(event) {
   const origin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
@@ -280,18 +307,18 @@ function isAllowedOrigin(event) {
   // curl等は -H "Origin: https://kaede-photo.com" を付ければ通過するため、
   // 機械的な連投への防御はレート制限とhoneypotが担っている。
   if (!origin) return false;
-  const host = hostOf(origin);
-  if (!host) return false;
-  const allowed = new Set(['kaede-photo.com', 'www.kaede-photo.com']);
-  const siteHost = hostOf(process.env.SITE_URL || '');
-  if (siteHost) allowed.add(siteHost);
+  const originNormalized = originOf(origin);
+  if (!originNormalized) return false;
+  const allowed = new Set(['https://kaede-photo.com', 'https://www.kaede-photo.com']);
+  const siteOrigin = originOf(process.env.SITE_URL || '');
+  if (siteOrigin) allowed.add(siteOrigin);
   // このプロジェクト自身のNetlify URL（本番・プレビュー/ブランチデプロイ）のみ許可。
   // ※ *.netlify.app 全体を許可すると、第三者が無料で作成した別サイトも信頼してしまうため使わない
   [process.env.URL, process.env.DEPLOY_URL, process.env.DEPLOY_PRIME_URL].forEach(u => {
-    const h = hostOf(u || '');
-    if (h) allowed.add(h);
+    const o = originOf(u || '');
+    if (o) allowed.add(o);
   });
-  return allowed.has(host);
+  return allowed.has(originNormalized);
 }
 
 function json(statusCode, body) {
@@ -430,7 +457,7 @@ function validate(data) {
   if (data.genre && !ALLOWED_GENRES.has(data.genre)) {
     errors.push('撮影ジャンルの形式が正しくありません。');
   }
-  if (data.area && data.area.length > 100) {
+  if (data.area && !ALLOWED_AREAS.has(data.area)) {
     errors.push('エリアの形式が正しくありません。');
   }
 
@@ -584,8 +611,10 @@ export const handler = async (event) => {
   data.estimateTextCustomer = estimate.customerText;
   data.estimateYen = estimate.total;
 
-  // 掲載同意の記録（金額とは独立に、optionKeysから確定させる。#f4/#f6の監査対応）
-  const snsConsent = deriveSnsConsent(payload.optionKeys);
+  // 掲載同意の記録（金額とは独立に、optionKeysから確定させる。#f4/#f6の監査対応）。
+  // 料金計算(computeEstimate)と同じ正規化済みキー(estimate.keys)を使うことで、
+  // 順序・重複・30件超過による判定のズレを防ぐ
+  const snsConsent = deriveSnsConsent(estimate.keys);
   data.snsConsent = snsConsent.consent;
   data.snsConsentScope = snsConsent.scope;
   if (estimate.mismatch) {
@@ -596,6 +625,22 @@ export const handler = async (event) => {
       plan: data.plan,
       area: data.area,
     });
+    // ログはNetlifyの画面を開かないと気づけないため、オーナーへ即時メールでも知らせる
+    // （予約自体はブロックしない。このアラート送信の成否も予約の成否に影響させない）
+    try {
+      const mismatchAlert = priceMismatchAlert(data, {
+        clientValue: payload.value,
+        serverValue: estimate.total,
+      });
+      await resend.emails.send({
+        from: process.env.MAIL_FROM,
+        to: process.env.OWNER_EMAIL,
+        subject: mismatchAlert.subject,
+        html: mismatchAlert.html,
+      });
+    } catch (alertErr) {
+      console.error('[mail:mismatch-alert] failed:', alertErr?.message || alertErr);
+    }
   }
 
   // 4. メール送信（直列）

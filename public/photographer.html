@@ -213,7 +213,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 
 <!-- NAV -->
 <nav class="nav" id="main-nav">
-  <div class="nav-logo" onclick="location.href='index.html'">kaede photo <span class="nav-tag">Photographer</span></div>
+  <a href="index.html" class="nav-logo">kaede photo <span class="nav-tag">Photographer</span></a>
   <ul class="nav-links">
     <li><a href="#story">Story</a></li>
     <li><a href="#approach">Approach</a></li>
@@ -362,18 +362,31 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 
 <script>
 // ハンバーガーメニュー
-function toggleMenu(forceClose){
+function toggleMenu(forceClose, returnFocus = true){
   const h = document.getElementById('hamburger');
   const m = document.getElementById('mobile-menu');
   const isOpen = forceClose ? false : !m.classList.contains('open');
   h.classList.toggle('open', isOpen);
   m.classList.toggle('open', isOpen);
   h.setAttribute('aria-expanded', isOpen);
+  h.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
   m.setAttribute('aria-hidden', !isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
+  if(isOpen){
+    const firstLink = m.querySelector('a, button');
+    if(firstLink) firstLink.focus();
+  } else if(returnFocus){
+    h.focus();
+  }
 }
 document.getElementById('hamburger').addEventListener('click', () => toggleMenu());
 document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => toggleMenu(true)));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){
+    const m = document.getElementById('mobile-menu');
+    if(m.classList.contains('open')) toggleMenu(true);
+  }
+});
 
 // スクロールでnav背景切り替え
 let _scrollTick = false;

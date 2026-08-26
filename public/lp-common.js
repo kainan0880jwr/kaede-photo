@@ -8,11 +8,14 @@ if(typeof gtag === 'function'){
 }
 
 // Sticky nav on scroll
+// #main-navが無いページで例外が発生すると、以降に登録するはずだった
+// ハンバーガーメニュー・FAQアコーディオン・GA4クリック計測の登録が
+// サイレントに失敗していた（Opus 5監査 エンジニアM-8）。要素の有無を必ずガードする。
 let _scrollTick = false;
 window.addEventListener('scroll', () => {
   if(!_scrollTick){
     requestAnimationFrame(() => {
-      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+      document.getElementById('main-nav')?.classList.toggle('scrolled', window.scrollY > 10);
       _scrollTick = false;
     });
     _scrollTick = true;
@@ -23,6 +26,7 @@ window.addEventListener('scroll', () => {
 function toggleMenu(forceClose, returnFocus = true){
   const h = document.getElementById('hamburger');
   const m = document.getElementById('mobile-menu');
+  if(!h || !m) return;
   const isOpen = forceClose ? false : !m.classList.contains('open');
   h.classList.toggle('open', isOpen);
   m.classList.toggle('open', isOpen);
@@ -37,7 +41,7 @@ function toggleMenu(forceClose, returnFocus = true){
     h.focus();
   }
 }
-document.getElementById('hamburger').addEventListener('click', () => toggleMenu());
+document.getElementById('hamburger')?.addEventListener('click', () => toggleMenu());
 document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => toggleMenu(true)));
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape'){

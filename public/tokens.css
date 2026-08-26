@@ -39,6 +39,24 @@ body{
   font-feature-settings: "onum" 1;
 }
 
+/* フォーカスリング（一部ページにしか定義が無く、ベージュ／テラコッタ配色では
+   ブラウザ既定のリングが視認しづらかったため、全ページ共通で明示する） */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+  outline: 2px solid var(--terra-dk);
+  outline-offset: 3px;
+}
+
+/* タップ領域（Apple Human Interface GuidelinesのNo44x44pt未満だった要素を、指での
+   誤タップが起きにくいサイズに）。index.htmlだけにあったpointer:coarseブロックを
+   全ページで使う要素（ハンバーガー・フッターリンク・固定CTA）についてここへ集約する。
+   index.html独自の要素（.check-row等）は引き続きindex.html側で個別に定義する。 */
+@media (pointer:coarse){
+  .hamburger{width:44px;height:44px;justify-content:center;align-items:center;}
+  .footer-links a{display:inline-block;padding:6px 0;}
+  .sticky-cta .btn{min-height:44px;}
+}
+
 /* スクロールリビール（photographer.html/rental.html等の「モダンUI」パターンと共通化） */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1);}
 .reveal.in-view{opacity:1;transform:translateY(0);}

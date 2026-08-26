@@ -532,7 +532,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
 
 <!-- ════════════════════ NAVIGATION ════════════════════ -->
 <nav class="nav" id="main-nav">
-  <div class="nav-logo" onclick="location.href='index.html'">kaede photo <span class="nav-tag">× mémoire</span></div>
+  <a href="index.html" class="nav-logo">kaede photo <span class="nav-tag">× mémoire</span></a>
   <ul class="nav-links">
     <li><a href="#concept">Concept</a></li>
     <li><a href="#memoire">mémoire</a></li>
@@ -990,6 +990,13 @@ const _cval = id => (document.getElementById(id)?.value || '').trim();
 function _cEscHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+// planの安定キー文字列（例: "smash cake photo 40cuts ¥35,000"）から金額を取り出す。
+// GA4のコンバージョン値をこれまで0円固定にしていたため、企画経由の売上がGA4上で
+// 計測できていなかった（Opus 5監査 M-13）。
+function _cPlanYen(plan){
+  const m = String(plan || '').match(/¥([\d,]+)/);
+  return m ? parseInt(m[1].replace(/,/g, ''), 10) : 0;
+}
 
 function submitCollabForm(e){
   e.preventDefault();
@@ -1060,20 +1067,57 @@ function submitCollabForm(e){
   const cmsg = document.getElementById('confirm-msg');
   if(cmsg) cmsg.style.display = 'none';
   document.getElementById('confirm-overlay').style.display = 'block';
+  openCollabConfirmFocusTrap();
 
   // GA4計測：確認画面まで到達したユーザーを計測する（フォーム入力を始めたが確認画面より前で
   // 離脱したのか、確認画面までは来たが送信しなかったのかを区別できるようにする）
   if(typeof gtag === 'function'){
     gtag('event', 'booking_confirm_view', {
       currency: 'JPY',
-      value: 0,
+      value: _cPlanYen(collabPendingBooking.plan),
       plan: planLabel || '',
     });
   }
 }
 
+/* ────────────────────────────────
+   確認ダイアログのフォーカス管理（index.htmlの実装と同一パターン。
+   表示中はダイアログ内でTabを循環させ、Escapeで閉じ、閉じたら元のフォーカス位置に戻す）
+──────────────────────────────── */
+let _collabConfirmTriggerEl = null;
+function _collabConfirmFocusableEls(){
+  const dialog = document.querySelector('#confirm-overlay [role="dialog"]');
+  if(!dialog) return [];
+  return [...dialog.querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter(el => !el.disabled && el.offsetParent !== null);
+}
+function _collabConfirmKeydownHandler(e){
+  const overlay = document.getElementById('confirm-overlay');
+  if(!overlay || overlay.style.display === 'none') return;
+  if(e.key === 'Escape'){ closeCollabConfirm(); return; }
+  if(e.key !== 'Tab') return;
+  const focusable = _collabConfirmFocusableEls();
+  if(!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if(e.shiftKey && document.activeElement === first){
+    e.preventDefault(); last.focus();
+  } else if(!e.shiftKey && document.activeElement === last){
+    e.preventDefault(); first.focus();
+  }
+}
+function openCollabConfirmFocusTrap(){
+  _collabConfirmTriggerEl = document.activeElement;
+  const focusable = _collabConfirmFocusableEls();
+  if(focusable.length) focusable[0].focus();
+  document.addEventListener('keydown', _collabConfirmKeydownHandler);
+}
+
 function closeCollabConfirm(){
   document.getElementById('confirm-overlay').style.display = 'none';
+  document.removeEventListener('keydown', _collabConfirmKeydownHandler);
+  if(_collabConfirmTriggerEl && typeof _collabConfirmTriggerEl.focus === 'function') _collabConfirmTriggerEl.focus();
+  _collabConfirmTriggerEl = null;
 }
 
 async function sendCollabBooking(){
@@ -1096,7 +1140,7 @@ async function sendCollabBooking(){
       if(typeof gtag === 'function'){
         gtag('event', 'generate_lead', {
           currency: 'JPY',
-          value: 0,
+          value: _cPlanYen(collabPendingBooking.plan),
           plan: collabPendingBooking.plan || '',
         });
       }
