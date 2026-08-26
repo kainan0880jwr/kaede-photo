@@ -75,11 +75,11 @@ ul{list-style:none;}
 }
 .nav.scrolled{background:rgba(250,248,245,1);}
 .nav-logo{font-family:var(--f-display);font-size:22px;font-weight:300;letter-spacing:.22em;color:var(--brown);cursor:pointer;margin-right:auto;display:flex;align-items:center;}
-.nav-tag{font-family:var(--f-ui);font-size:10px;letter-spacing:.03em;color:var(--terra);background:var(--surface);padding:4px 10px;border-radius:20px;margin-left:10px;white-space:nowrap;}
+.nav-tag{font-family:var(--f-ui);font-size:10px;letter-spacing:.03em;color:var(--terra-dk);background:var(--surface);padding:4px 10px;border-radius:20px;margin-left:10px;white-space:nowrap;}
 .nav-links{display:flex;gap:32px;align-items:center;}
 .nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color var(--dur) var(--ease);}
 .nav-links a:hover{color:var(--brown);}
-.btn-reserve-nav{border:1px solid var(--terra);color:var(--terra);font-size:11px;letter-spacing:.08em;padding:7px 18px;border-radius:20px;transition:all var(--dur) var(--ease);margin-left:32px;}
+.btn-reserve-nav{border:1px solid var(--terra);color:var(--terra-dk);font-size:11px;letter-spacing:.08em;padding:7px 18px;border-radius:20px;transition:all var(--dur) var(--ease);margin-left:32px;}
 .btn-reserve-nav:hover{background:var(--terra);color:#fff;}
 .hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;margin-left:auto;}
 .hamburger span{width:22px;height:1.5px;background:var(--brown);transition:all var(--dur) var(--ease);}
@@ -95,8 +95,8 @@ ul{list-style:none;}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-ui);letter-spacing:.1em;border-radius:999px;border:none;cursor:pointer;font-size:13px;white-space:nowrap;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease);}
-.btn-primary{background:var(--terra);color:#fff;padding:14px 36px;box-shadow:0 8px 24px rgba(181,99,63,.25);}
-.btn-primary:hover{background:var(--terra-dk);transform:translateY(-2px);}
+.btn-primary{background:var(--terra-dk);color:#fff;padding:14px 36px;box-shadow:0 8px 24px rgba(181,99,63,.25);}
+.btn-primary:hover{background:var(--terra-dkr);transform:translateY(-2px);}
 .btn-ghost{background:transparent;color:var(--text);padding:13px 35px;border:1px solid var(--beige);}
 .btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px);}
 .btn-line{background:var(--line-green);color:#fff;padding:13px 28px;display:inline-flex;align-items:center;gap:8px;}
@@ -111,7 +111,7 @@ ul{list-style:none;}
 .text-center{text-align:center;}
 .section{padding:96px 0;}
 .section-alt{background:var(--surface);}
-.eyebrow{font-family:var(--f-display);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;}
+.eyebrow{font-family:var(--f-display);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--terra-dk);margin-bottom:16px;}
 .heading-lg{font-family:var(--f-display);font-size:38px;font-weight:300;letter-spacing:.06em;color:var(--brown);line-height:1.3;margin-bottom:24px;}
 .lead{font-family:var(--f-body);font-size:17px;font-weight:300;color:var(--text);line-height:1.9;margin-bottom:24px;}
 .body-sm{font-size:13px;color:var(--muted);line-height:1.9;}
@@ -131,7 +131,7 @@ ul{list-style:none;}
 /* HERO */
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:640px;padding-top:64px;}
 .hero-text-col{display:flex;flex-direction:column;justify-content:center;padding:56px clamp(24px,6vw,80px);}
-.hero-eyebrow{font-family:var(--f-display);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--terra);margin-bottom:20px;}
+.hero-eyebrow{font-family:var(--f-display);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--terra-dk);margin-bottom:20px;}
 .hero-title{font-family:var(--f-display);font-size:clamp(32px,4.4vw,50px);font-weight:300;color:var(--brown);line-height:1.3;letter-spacing:.02em;margin-bottom:20px;}
 .hero-sub{font-family:var(--f-body);font-size:15.5px;font-weight:300;color:var(--muted);line-height:1.9;margin-bottom:28px;max-width:440px;}
 .hero-img-col{position:relative;overflow:hidden;}
@@ -141,12 +141,12 @@ ul{list-style:none;}
   border-radius:16px;padding:12px 18px;box-shadow:0 8px 28px rgba(44,31,26,.18);
   font-size:12px;color:var(--brown);line-height:1.6;
 }
-.hero-ribbon strong{color:var(--terra);}
+.hero-ribbon strong{color:var(--terra-dk);}
 
 /* Trust cards */
 .trust-item{padding:24px;background:var(--white);border-radius:12px;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);}
 .trust-item:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(44,31,26,.08);}
-.trust-icon{width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--terra);}
+.trust-icon{width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--terra-dk);}
 .trust-title{font-family:var(--f-body);font-size:15px;color:var(--brown);margin-bottom:8px;}
 .trust-body{font-size:13px;color:var(--muted);line-height:1.8;}
 
@@ -154,7 +154,7 @@ ul{list-style:none;}
 .area-card{background:var(--white);border-radius:16px;padding:28px 24px;text-align:center;}
 .area-card.free{border:1px solid var(--terra);}
 .area-name{font-family:var(--f-display);font-size:20px;color:var(--brown);margin-bottom:10px;}
-.area-fee{font-family:var(--f-display);font-size:30px;color:var(--terra);margin-bottom:6px;}
+.area-fee{font-family:var(--f-display);font-size:30px;color:var(--terra-dk);margin-bottom:6px;}
 .area-fee.free{color:var(--green-text);}
 .area-note{font-size:12px;color:var(--muted);}
 
@@ -179,7 +179,7 @@ ul{list-style:none;}
 .faq-item{border-bottom:1px solid var(--beige);padding:20px 0;}
 .faq-item:last-child{border-bottom:none;}
 .faq-q{font-family:var(--f-body);font-size:15px;color:var(--brown);display:flex;gap:14px;align-items:flex-start;}
-.faq-q-mark{font-family:var(--f-display);font-size:22px;font-weight:300;color:var(--terra);line-height:1.2;flex-shrink:0;}
+.faq-q-mark{font-family:var(--f-display);font-size:22px;font-weight:300;color:var(--terra-dk);line-height:1.2;flex-shrink:0;}
 .faq-a{font-size:13px;color:var(--muted);line-height:1.9;margin-top:10px;padding-left:36px;}
 
 /* CTA */
@@ -201,7 +201,8 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   .section-num{font-size:120px;top:-30px;}
 }
 @media(max-width:767px){
-  .nav-links{display:none;}
+  .nav-links,.btn-reserve-nav{display:none;}
+  .nav-tag{display:none;}
   .hamburger{display:flex;}
   .sticky-cta{display:flex;}
   .container{padding:0 20px;}
@@ -315,7 +316,7 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
         <div class="area-note">交通費の目安です</div>
       </div>
     </div>
-    <p class="body-sm text-center" style="margin-top:24px;">上記以外のエリアも全国対応しております。詳しくは<a href="index.html#plan" style="color:var(--terra);text-decoration:underline;">交通費参考表</a>をご覧ください。</p>
+    <p class="body-sm text-center" style="margin-top:24px;">上記以外のエリアも全国対応しております。詳しくは<a href="index.html#plan" style="color:var(--terra-dk);text-decoration:underline;">交通費参考表</a>をご覧ください。</p>
   </div>
 </section>
 

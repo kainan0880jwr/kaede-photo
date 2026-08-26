@@ -5,6 +5,7 @@
   --terra:      #B5633F;
   --terra-lt:   #D4895F;
   --terra-dk:   #8C3E1F;
+  --terra-dkr:  #6E3018; /* .btn-primary等、背景が既にterra-dkの要素のhover用（terra-dkより一段暗い） */
   --brown:      #2C1F1A;
   --text:       #4A3728;
   --muted:      #6B5744;
@@ -23,4 +24,17 @@
 
   --ease: cubic-bezier(.4,0,.2,1);
   --dur:  260ms;
+}
+
+/* Cormorant Garamondの既定数字はoldstyle（非等高）で、価格・日付が
+   「¥ɪ6,6oo」のように誤読される（1がI、0がoに見える）。本文全体は
+   等高数字（lining-nums）を既定にし、装飾目的の巨大な連番（01/02/03等）
+   だけ個別に元のoldstyleへ戻す。 */
+body{
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+.section-num, .col-num{
+  font-variant-numeric: oldstyle-nums;
+  font-feature-settings: "onum" 1;
 }

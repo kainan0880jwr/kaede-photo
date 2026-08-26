@@ -29,7 +29,9 @@ function extractNumericObjectLiteral(src, name) {
   if (!m) throw new Error(`${name} が booking.js 内に見つかりません`);
   const entries = {};
   for (const line of m[1].split('\n')) {
-    const em = line.match(/^\s*(?:'([^']+)'|([A-Za-z0-9_]+)):\s*(-?\d+),/);
+    // 末尾カンマは無くても抽出できるようにする（最終行のカンマを消しただけでキーが
+    // 静かに検査対象から落ち、不一致としても報告されない状態になっていたため）
+    const em = line.match(/^\s*(?:'([^']+)'|([A-Za-z0-9_]+)):\s*(-?\d+)\s*,?\s*(?:\/\/.*)?$/);
     if (em) entries[em[1] || em[2]] = parseInt(em[3], 10);
   }
   return entries;
@@ -270,13 +272,18 @@ const areaTableM = indexSrc.match(/<table class="area-table">([\s\S]*?)<\/table>
 if (areaTableM) checkDisplayTable(areaTableM[1], { isArea: true });
 
 // ---- 7) プランカード（index.html 2箇所 + 5つのジャンルLP）：plan-name と plan-price の対応を全箇所で確認 ----
+// plan-name は <h3 class="plan-name">、plan-price は <div class="plan-price"> と、実際のHTMLではタグが異なる
+// （以前 <div class="plan-name"> 前提の正規表現になっており、常にマッチ0件＝未検証のまま「OK」を返していた）。
+// このセクションは「1枚も検出できない」こと自体が壊れている兆候なので、0件ならエラーとして扱う。
 function checkPlanCards(html, label) {
+  let checked = 0;
   // plan-card 内の plan-name（先頭の英字プラン名）と plan-price（¥表示）をブロック単位で拾う
   for (const cardM of html.matchAll(/<div class="plan-card[^"]*">([\s\S]*?)<\/div>\s*(?=<div class="plan-card|<\/div>\s*<div class="text-center"|<div class="text-center"|<\/div>\s*<\/div>)/g)) {
     const block = cardM[1];
-    const nameM = block.match(/<div class="plan-name">([a-z]+)<\/div>/);
-    const priceM = block.match(/<div class="plan-price">¥([\d,]+)/);
+    const nameM = block.match(/<(?:div|h3)[^>]*class="plan-name"[^>]*>([a-z]+)<\/(?:div|h3)>/);
+    const priceM = block.match(/<(?:div|h3)[^>]*class="plan-price"[^>]*>¥([\d,]+)/);
     if (!nameM || !priceM) continue;
+    checked++;
     const prefix = nameM[1];
     const htmlYen = parseInt(priceM[1].replace(/,/g, ''), 10);
     const serverYen = PLAN_PRICE_BY_PREFIX[prefix];
@@ -285,6 +292,9 @@ function checkPlanCards(html, label) {
     } else if (serverYen !== htmlYen) {
       mismatches.push(`${label}: プランカード "${prefix}" 表示 ¥${htmlYen} ≠ ALLOWED_PLANS ¥${serverYen}`);
     }
+  }
+  if (checked === 0) {
+    mismatches.push(`${label}: プランカードを1枚も検出できませんでした（セレクタ不一致でチェックが機能していない可能性があります）`);
   }
 }
 checkPlanCards(indexSrc, 'index.html');

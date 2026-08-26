@@ -69,14 +69,14 @@ ul{list-style:none;}
   color:var(--brown);cursor:pointer;margin-right:auto;display:flex;align-items:center;
 }
 .nav-tag{
-  font-family:var(--f-ui);font-size:10px;letter-spacing:.03em;color:var(--terra);
+  font-family:var(--f-ui);font-size:10px;letter-spacing:.03em;color:var(--terra-dk);
   background:var(--surface);padding:4px 10px;border-radius:20px;margin-left:10px;white-space:nowrap;
 }
 .nav-links{display:flex;gap:32px;align-items:center;}
 .nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color var(--dur) var(--ease);}
 .nav-links a:hover{color:var(--brown);}
 .btn-reserve-nav{
-  border:1px solid var(--terra);color:var(--terra);font-size:11px;letter-spacing:.08em;
+  border:1px solid var(--terra);color:var(--terra-dk);font-size:11px;letter-spacing:.08em;
   padding:7px 18px;border-radius:20px;transition:all var(--dur) var(--ease);margin-left:32px;white-space:nowrap;
 }
 .btn-reserve-nav:hover{background:var(--terra);color:#fff;}
@@ -99,8 +99,8 @@ ul{list-style:none;}
   border-radius:999px;border:none;cursor:pointer;font-size:13px;white-space:nowrap;
   transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease);
 }
-.btn-primary{background:var(--terra);color:#fff;padding:14px 36px;box-shadow:0 8px 24px rgba(181,99,63,.25);}
-.btn-primary:hover{background:var(--terra-dk);transform:translateY(-2px);}
+.btn-primary{background:var(--terra-dk);color:#fff;padding:14px 36px;box-shadow:0 8px 24px rgba(181,99,63,.25);}
+.btn-primary:hover{background:var(--terra-dkr);transform:translateY(-2px);}
 .btn-ghost{background:transparent;color:var(--text);padding:13px 35px;border:1px solid var(--beige);}
 .btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px);}
 .btn-sm{padding:9px 20px;font-size:11px;}
@@ -112,7 +112,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 .text-center{text-align:center;}
 .section{padding:96px 0;}
 .section-alt{background:var(--surface);}
-.eyebrow{font-family:var(--f-display);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--terra);margin-bottom:16px;}
+.eyebrow{font-family:var(--f-display);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--terra-dk);margin-bottom:16px;}
 .heading-lg{font-family:var(--f-display);font-size:38px;font-weight:300;letter-spacing:.06em;color:var(--brown);line-height:1.3;margin-bottom:24px;}
 .lead{font-family:var(--f-body);font-size:17px;font-weight:300;color:var(--text);line-height:1.9;margin-bottom:24px;}
 .body-sm{font-size:13px;color:var(--muted);line-height:1.9;}
@@ -147,11 +147,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 .item-photo{aspect-ratio:4/3;overflow:hidden;background:var(--surface);}
 .item-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px;flex-grow:1;}
 .item-name{font-family:var(--f-body);font-size:16px;color:var(--brown);line-height:1.6;}
-.item-price{font-family:var(--f-display);font-size:24px;color:var(--terra);}
+.item-price{font-family:var(--f-display);font-size:24px;color:var(--terra-dk);}
 .item-price span{font-size:11px;color:var(--muted);font-family:var(--f-ui);margin-left:6px;}
 .item-contents{list-style:disc;padding-left:18px;flex-grow:1;}
 .item-contents li{font-size:12.5px;color:var(--muted);line-height:1.9;}
-.item-link{font-size:12px;letter-spacing:.06em;color:var(--terra);border-top:1px solid var(--beige);padding-top:14px;transition:color var(--dur) var(--ease);}
+.item-link{font-size:12px;letter-spacing:.06em;color:var(--terra-dk);border-top:1px solid var(--beige);padding-top:14px;transition:color var(--dur) var(--ease);}
 .item-link:hover{color:var(--terra-dk);}
 
 /* Steps */
@@ -193,7 +193,8 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
   .section-num{font-size:120px;top:-30px;}
 }
 @media(max-width:767px){
-  .nav-links{display:none;}
+  .nav-links,.btn-reserve-nav{display:none;}
+  .nav-tag{display:none;}
   .hamburger{display:flex;}
   .container{padding:0 20px;}
   .heading-lg{font-size:26px;}
