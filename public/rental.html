@@ -140,11 +140,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--terra);outline-offs
 
 /* Item cards */
 .item-card{
-  background:var(--white);border-radius:16px;padding:32px 28px;display:flex;flex-direction:column;gap:14px;
+  background:var(--white);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
   transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease);
 }
 .item-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(44,31,26,.1);}
-.item-icon{width:44px;height:44px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--terra);}
+.item-photo{aspect-ratio:4/3;overflow:hidden;background:var(--surface);}
+.item-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px;flex-grow:1;}
 .item-name{font-family:var(--f-body);font-size:16px;color:var(--brown);line-height:1.6;}
 .item-price{font-family:var(--f-display);font-size:24px;color:var(--terra);}
 .item-price span{font-size:11px;color:var(--muted);font-family:var(--f-ui);margin-left:6px;}
@@ -264,40 +265,46 @@ footer{background:var(--brown);color:rgba(255,255,255,.55);padding:64px 0 40px;}
     </div>
     <div class="grid-3">
       <div class="item-card reveal">
-        <div class="item-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3c-1 2-1 4 0 6M16 3c1 2 1 4 0 6"/><rect x="5" y="9" width="14" height="11" rx="3"/></svg></div>
-        <div class="item-name">白ふわふわうさぎ耳アウターセット</div>
-        <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
-        <ul class="item-contents">
-          <li>ラタンバスケット（クッション付き）</li>
-          <li>レース刺繍ベール</li>
-          <li>白ふわふわうさぎ耳アウター</li>
-        </ul>
-        <a href="https://kaephoto.base.shop/items/155287308" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        <div class="item-photo"><picture><source srcset="images/rental-1.webp" type="image/webp"><img src="images/rental-1.jpg" width="900" height="600" loading="lazy" decoding="async" alt="白ふわふわうさぎ耳アウターセット"></picture></div>
+        <div class="item-body">
+          <div class="item-name">白ふわふわうさぎ耳アウターセット</div>
+          <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
+          <ul class="item-contents">
+            <li>ラタンバスケット（クッション付き）</li>
+            <li>レース刺繍ベール</li>
+            <li>白ふわふわうさぎ耳アウター</li>
+          </ul>
+          <a href="https://kaephoto.base.shop/items/155287308" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        </div>
       </div>
       <div class="item-card reveal reveal-d1">
-        <div class="item-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v4M9 7l1.5 13h3L15 7"/><path d="M7 8c1.5-2 8.5-2 10 0"/></svg></div>
-        <div class="item-name">アイボリーチュールドレス＆蝶リボンヘッドバンド</div>
-        <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
-        <ul class="item-contents">
-          <li>ラタンバスケット（クッション付き）</li>
-          <li>レース刺繍ベール</li>
-          <li>チュールドレス</li>
-          <li>蝶リボンヘッドバンド</li>
-        </ul>
-        <a href="https://kaephoto.base.shop/items/155287178" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        <div class="item-photo"><picture><source srcset="images/rental-2.webp" type="image/webp"><img src="images/rental-2.jpg" width="900" height="599" loading="lazy" decoding="async" alt="アイボリーチュールドレス＆蝶リボンヘッドバンド"></picture></div>
+        <div class="item-body">
+          <div class="item-name">アイボリーチュールドレス＆蝶リボンヘッドバンド</div>
+          <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
+          <ul class="item-contents">
+            <li>ラタンバスケット（クッション付き）</li>
+            <li>レース刺繍ベール</li>
+            <li>チュールドレス</li>
+            <li>蝶リボンヘッドバンド</li>
+          </ul>
+          <a href="https://kaephoto.base.shop/items/155287178" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        </div>
       </div>
       <div class="item-card reveal reveal-d2">
-        <div class="item-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M9 10h.01M15 10h.01M9 15c1 1 5 1 6 0"/></svg></div>
-        <div class="item-name">アイボリーニット3点セット</div>
-        <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
-        <ul class="item-contents">
-          <li>ラタンバスケット（クッション付き）</li>
-          <li>レース刺繍ベール</li>
-          <li>ニットロンパース</li>
-          <li>くま耳帽子</li>
-          <li>編みぐるみ</li>
-        </ul>
-        <a href="https://kaephoto.base.shop/items/155286916" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        <div class="item-photo"><picture><source srcset="images/rental-3.webp" type="image/webp"><img src="images/rental-3.jpg" width="900" height="599" loading="lazy" decoding="async" alt="アイボリーニット3点セット"></picture></div>
+        <div class="item-body">
+          <div class="item-name">アイボリーニット3点セット</div>
+          <div class="item-price">¥16,600<span>税込・往復送料込み</span></div>
+          <ul class="item-contents">
+            <li>ラタンバスケット（クッション付き）</li>
+            <li>レース刺繍ベール</li>
+            <li>ニットロンパース</li>
+            <li>くま耳帽子</li>
+            <li>編みぐるみ</li>
+          </ul>
+          <a href="https://kaephoto.base.shop/items/155286916" class="item-link" target="_blank" rel="noopener noreferrer">商品ページを見る →</a>
+        </div>
       </div>
     </div>
   </div>
