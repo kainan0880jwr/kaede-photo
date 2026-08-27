@@ -19,6 +19,7 @@
 //   掲載同意       … Checkbox（法務監査#f4/#f6対応。SNS割 or コラボ企画の掲載チェックに基づく）
 //   掲載同意の範囲  … Rich text（「顔を含む」「顔を含まない」等。掲載同意がfalseのときは空）
 //   ご紹介者      … Rich text（紹介制度の追跡用。次回予約の3,000円引き適用は引き続き手動運用）
+//   流入経路      … Select（#f-sourceの選択式ラベルをそのまま記録。施策の効果測定用）
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -138,6 +139,11 @@ export async function createBookingRecord(data) {
   // 紹介実績の集計（フィルタ・件数把握）ができなかった
   if (data.referralName && existingProps.has('ご紹介者')) {
     properties['ご紹介者'] = { rich_text: richText(data.referralName) };
+  }
+  // 流入経路の追跡用。同上の理由でNotion上で構造化されておらず、施策ごとの
+  // 効果測定（Instagram/ご紹介/Google検索/LINE/その他の内訳）が台帳だけではできなかった
+  if (data.source && existingProps.has('流入経路')) {
+    properties['流入経路'] = { select: { name: text(data.source).replace(/,/g, '') } };
   }
 
   return getClient().pages.create({

@@ -586,6 +586,9 @@ export const handler = async (event) => {
     // 紹介制度（次回予約適用、金額には影響しない）。以前はmessage欄に埋め込むだけで
     // Notion上で構造化されていなかったため、紹介実績の集計・追跡ができなかった
     referralName: str(payload.referralName).slice(0, 60),
+    // 流入経路（#f-sourceの選択式ラベルをそのまま）。以前はmessage欄への埋め込みのみで
+    // Notion上で構造化されておらず、施策ごとの効果測定が台帳だけではできなかった
+    source: str(payload.source).slice(0, 40),
     privacyConsent: payload.privacyConsent === true,
     receivedAt: now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
     receivedAtISO: now.toISOString(),
