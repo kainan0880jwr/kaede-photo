@@ -8,6 +8,8 @@ node_modules/
 
 # netlify
 .netlify/
+# netlify dev（Edge Functionsランタイム確認用。このプロジェクトはEdge Functions未使用）
+deno.lock
 
 # os
 .DS_Store

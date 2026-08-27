@@ -1542,11 +1542,13 @@ footer{
           <div class="form-row">
             <div class="form-field">
               <label class="form-label" for="f-date1">撮影希望日 第1希望 <span class="req">*</span></label>
-              <input class="form-input" id="f-date1" name="date1" type="date" required onchange="syncWeekendSurcharge()">
+              <input class="form-input" id="f-date1" name="date1" type="date" required onchange="syncWeekendSurcharge();checkDateAvailability('f-date1')">
+              <div id="f-date1-avail-note" style="display:none;font-size:11px;color:var(--terra-dk);margin-top:4px;"></div>
             </div>
             <div class="form-field">
               <label class="form-label" for="f-date2">撮影希望日 第2希望</label>
-              <input class="form-input" id="f-date2" name="date2" type="date">
+              <input class="form-input" id="f-date2" name="date2" type="date" onchange="checkDateAvailability('f-date2')">
+              <div id="f-date2-avail-note" style="display:none;font-size:11px;color:var(--terra-dk);margin-top:4px;"></div>
             </div>
           </div>
           <div class="form-field">
@@ -2267,6 +2269,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // changeイベントが発火しないため、他の動的表示と同様に初期同期が必要
   // （抜けていると表示金額が実際の請求額より¥3,000安いまま確認・送信されうる）
   if (typeof syncWeekendSurcharge === 'function') syncWeekendSurcharge();
+  // 空き状況の参考表示も、フォーム復元・オートフィルでchangeイベントが発火しないケースに備えて初期同期
+  if (typeof checkDateAvailability === 'function') { checkDateAvailability('f-date1'); checkDateAvailability('f-date2'); }
   // 撮影希望日は本日以降・1年以内のみ選択可（過去日の送信防止、および極端な未来日の誤入力防止）
   const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD（ローカルTZ）
   const maxDate = new Date();
@@ -2749,6 +2753,37 @@ function syncWeekendSurcharge(){
   const day = new Date(dateEl.value + 'T00:00:00').getDay();
   cb.checked = (day === 0 || day === 6 || isJapaneseHoliday(dateEl.value));
   updateBookingTotal();
+}
+
+/* ────────────────────────────────
+   予約の空き状況（参考表示のみ・送信はブロックしない）
+   だいきさんがNotionに登録したブロック日と選択日が重なる場合だけ、
+   フォーム送信前に気づけるよう控えめな注記を出す
+──────────────────────────────── */
+let _blockedDatesPromise = null;
+function fetchBlockedDates(){
+  if(!_blockedDatesPromise){
+    _blockedDatesPromise = fetch('/api/availability')
+      .then(r => r.ok ? r.json() : { blockedDates: [] })
+      .then(data => Array.isArray(data.blockedDates) ? data.blockedDates : [])
+      .catch(() => []); // 取得に失敗しても参考表示が出ないだけなので、フォーム自体には影響させない
+  }
+  return _blockedDatesPromise;
+}
+function checkDateAvailability(id){
+  const dateEl = document.getElementById(id);
+  const note = document.getElementById(id + '-avail-note');
+  if(!dateEl || !note || !dateEl.value) { if(note) note.style.display = 'none'; return; }
+  const value = dateEl.value;
+  fetchBlockedDates().then(blocked => {
+    if(dateEl.value !== value) return; // 応答が返る間に日付が変わっていたら結果を捨てる
+    if(blocked.includes(value)){
+      note.textContent = '恐れ入りますが、この日は現在ご案内できない可能性が高い日です。他のご希望日もご記入いただくか、送信後にご相談させてください。';
+      note.style.display = 'block';
+    } else {
+      note.style.display = 'none';
+    }
+  });
 }
 
 // オプション（追加オプション・割引・ジャンル別オプション）のチェック変更をまとめて検知

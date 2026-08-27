@@ -125,6 +125,27 @@ Netlify Functions（booking.js）
 
 ---
 
+## Step 6b. （任意）予約の空き状況の参考表示
+
+予約フォームの日付欄に「この日は現在ご案内できない可能性が高い」という注記を出したい場合のみ設定してください。
+設定しなくてもサイトは通常通り動作します（注記が出ないだけです）。
+
+1. Notionで別のページに、もう一つ **「データベース - フルページ」** を追加。名前は「予約不可日」など。
+2. プロパティを1つ作成：
+
+   | プロパティ名 | 種類 |
+   |---|---|
+   | 日付 | 日付 |
+
+3. Step 6と同じように、右上「•••」→ コネクト → 連携 → `kaede-photo` を選んで接続。
+4. URLから32文字のIDを取得 → `NOTION_BLOCKED_DATES_DATABASE_ID` に使います。
+5. 以降、ブロックしたい日ができたらこのデータベースに行を1件追加するだけで、
+   数分以内（最大5分）に予約フォームの注記に反映されます。
+
+✅ ゴール：使わない場合はこのStepごと読み飛ばしてOK。設定する場合は `NOTION_BLOCKED_DATES_DATABASE_ID` が手元にあればOK。
+
+---
+
 ## Step 7. Netlify に環境変数を登録
 
 1. Netlifyのサイト画面 → **Site configuration → Environment variables → Add a variable**。
@@ -140,6 +161,7 @@ Netlify Functions（booking.js）
    | `NOTION_API_KEY` | Step 5 のシークレット |
    | `NOTION_DATABASE_ID` | Step 6 のID |
    | `SITE_URL` | 公開中の正規URL（独自ドメイン運用中は `https://kaede-photo.com`。未取得の間は Step 2 の `https://〇〇.netlify.app`） |
+   | `NOTION_BLOCKED_DATES_DATABASE_ID`（任意） | Step 6b を設定した場合のみ。そのID |
 
 3. 登録後、**Deploys → Trigger deploy → Deploy site** で再デプロイ（環境変数を反映させるため必須）。
 
@@ -178,6 +200,7 @@ Netlify Functions（booking.js）
 kaede-photo/
 ├── public/index.html              … サイト本体（フォーム送信は /api/booking へ）
 ├── netlify/functions/booking.js   … 予約受付API（本体）
+├── netlify/functions/availability.js … 予約の空き状況API（任意機能。Step 6b参照）
 ├── netlify/functions/utils/
 │   ├── email-templates.js         … メールHTML（だいきさん宛・お客様宛・アラート）
 │   └── notion.js                  … 予約台帳への記録

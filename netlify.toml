@@ -32,6 +32,11 @@
   to = "/.netlify/functions/booking"
   status = 200
 
+[[redirects]]
+  from = "/api/availability"
+  to = "/.netlify/functions/availability"
+  status = 200
+
 # --- URL正規化（拡張子なしURL・index.htmlへの直接アクセスを301で統一） ---
 # Netlifyの既定動作では拡張子なしURLも200でそのまま配信されてしまい、
 # 同一ページがGA4上で複数のパスに分裂して計測される問題があったため、

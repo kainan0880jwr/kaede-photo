@@ -42,8 +42,11 @@ public/                     Static site, deployed as-is (Netlify `publish = "pub
   sitemap.xml / robots.txt
 
 netlify/functions/
-  booking.js                  The one API endpoint (`POST /api/booking`, routed via netlify.toml redirect).
+  booking.js                  The one write API endpoint (`POST /api/booking`, routed via netlify.toml redirect).
                                Handles CORS/origin check → rate limit → validation → email → Notion, in that order.
+  availability.js             Read-only API (`GET /api/availability`) returning dates the photographer has manually
+                               blocked in a separate Notion database. Entirely optional (see below) and never blocks
+                               booking submission — it only drives an informational note on the date fields.
   utils/email-templates.js    HTML email bodies (owner notification, customer auto-reply, failure alerts)
   utils/notion.js              Writes the booking to a Notion database (best-effort — failures alert the owner but don't fail the request)
 
@@ -64,6 +67,10 @@ This is the only piece of backend logic in the project, and it's dense — read 
 - **Mail is sent serially, not in parallel**: owner notification first, then customer auto-reply only if that succeeds — so a failure never results in the customer thinking they're booked while the owner never got notified.
 - **Notion recording is best-effort** and happens last; a Notion failure doesn't fail the booking, it emails the owner an alert instead. Optional Notion properties (`撮影ジャンル`, `エリア`, `概算金額`, `プライバシー同意`, `掲載同意`, `掲載同意の範囲`) are only sent if they already exist on the target database (checked via a 10-minute-TTL cache), so an unconfigured database doesn't break bookings. The consent properties are checkboxes/rich text you must create manually in Notion for them to actually be recorded (same opt-in pattern as `ステータス`).
 - **Consent is validated server-side, not just in the HTML form.** `privacyConsent` (boolean) is required by `validate()` — a request without it is rejected, closing the gap where hitting `/api/booking` directly could skip the privacy-policy checkbox entirely. Portrait/SNS-publication consent (`sns_face`/`sns_noface` on the main form, `collab_sns` on `birthday-collab.html`) is derived server-side from `optionKeys` via `deriveSnsConsent()` — trustworthy because those keys are already whitelist-checked — and recorded as `data.snsConsent`/`data.snsConsentScope`, independent of the ¥0/¥-1000/¥-500 pricing effect of the same keys.
+
+### Availability note (`netlify/functions/availability.js`)
+
+Purely optional, additive feature: the photographer maintains a separate Notion database (`日付` date property, one row per blocked day) via `NOTION_BLOCKED_DATES_DATABASE_ID`. `GET /api/availability` reads it (5-minute in-memory cache) and returns `{ blockedDates: [...] }`; `index.html`'s `#f-date1`/`#f-date2` fields call `checkDateAvailability()` on change (and on page-load restore) to show a soft, non-blocking note when the selected date is in that list. If the env var is unset or the Notion call fails, it silently returns an empty array — this project is a *request* system (a human confirms every booking afterward), so this note is advisory only and must never gate form submission.
 
 ### Landing page pattern
 
@@ -90,7 +97,7 @@ When a `SMASH_CAKE_PLANS`-style time-limited campaign's deadline (`SMASH_CAKE_PL
 
 ## Environment / secrets
 
-Never read or print `.env` — required vars are documented (without values) in `.env.example` and `SETUP.md`. The function needs: `RESEND_API_KEY`, `MAIL_FROM`, `OWNER_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `SITE_URL`.
+Never read or print `.env` — required vars are documented (without values) in `.env.example` and `SETUP.md`. The function needs: `RESEND_API_KEY`, `MAIL_FROM`, `OWNER_EMAIL`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `NOTION_API_KEY`, `NOTION_DATABASE_ID`, `SITE_URL`. `NOTION_BLOCKED_DATES_DATABASE_ID` is optional (see Availability note above).
 
 ## Deployment
 
