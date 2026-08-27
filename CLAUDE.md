@@ -14,6 +14,7 @@ The git repo root is this `kaede-photo/` directory (the parent folder `kaede pho
 npm run dev           # netlify dev — serves public/ + functions together, closest to production
 npm run build         # no-op ("No build step (static site)")
 npm run check:prices  # diff index.html's displayed prices against booking.js's price tables (run after any pricing edit)
+npm run check:policy  # diff cancellation-policy amounts/deadlines across index.html + birthday-collab.html (run after any policy edit)
 ```
 
 There is also a plain-static-only launch config at `.claude/launch.json` (`python3 -m http.server 8770 --directory public`) for when you just need to preview HTML/CSS without the booking API working.
@@ -76,7 +77,7 @@ When editing shared behavior on genre pages (nav, menu, FAQ, GA4 click tracking)
 
 ### Cancellation policy duplication (manual sync, no tooling)
 
-The cancellation/refund policy (studio fees, deposit terms, 特商法12条の6 confirmation-screen text) is written out independently in at least `index.html` (`#policy`, `#tokusho`, and the booking-form deposit note) and `birthday-collab.html` (deposit note + confirm-dialog text). There is a comment at the `birthday-collab.html` confirm dialog reminding editors to update `index.html` too, but nothing enforces it — unlike pricing, there's no `check:prices`-style script for policy text. When editing cancellation/refund wording, grep for `返金はお受けできません` and `キャンセル` across `public/*.html` and update every match, not just the one you started in.
+The cancellation/refund policy (studio fees, deposit terms, 特商法12条の6 confirmation-screen text) is written out independently in at least `index.html` (`#policy`, `#tokusho`, and the booking-form deposit note) and `birthday-collab.html` (deposit note + confirm-dialog text). There is a comment at the `birthday-collab.html` confirm dialog reminding editors to update `index.html` too. `npm run check:policy` (`scripts/check-policy.mjs`) machine-checks the numbers that actually drift in practice — the deposit/cancellation-fee amount (2,000円) and the free-cancel/charged-cancel day cutoffs (5日前 / 4日前以降) — across both files, the same way `check:prices` does for pricing; run it after any policy-wording edit. It only catches numeric drift, not prose drift, so still grep for `返金はお受けできません` and `キャンセル` across `public/*.html` when the wording itself changes, not just the numbers.
 
 ### Time-limited campaign cleanup checklist
 

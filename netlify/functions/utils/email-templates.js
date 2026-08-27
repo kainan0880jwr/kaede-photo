@@ -124,7 +124,14 @@ export function customerConfirmation(data) {
     ${detailsTable(data, { forCustomer: true })}
     <p style="margin:24px 0 0;font-size:13px;line-height:1.8;color:#6b645c;">
     ※このメールは自動送信です。ご返信いただいてもお答えできない場合がございます。<br>
-    お急ぎの場合は、このメールへの返信ではなく公式の連絡先までお問い合わせください。</p>`;
+    お急ぎの場合は、このメールへの返信ではなく公式の連絡先までお問い合わせください。</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;border-top:1px solid #eee;padding-top:20px;">
+      <tr><td style="font-size:12px;line-height:1.9;color:#6b645c;">
+        <a href="https://lin.ee/Pz3VLXT" style="color:${BRAND};">LINE公式アカウント</a>を友だち追加いただくと、やり取りがスムーズです。<br>
+        ご友人・ご家族をご紹介いただくと、次回のご予約が3,000円引きになります。<br>
+        ニューボーンフォト用の衣装・小物は<a href="https://kaede-photo.com/rental.html" style="color:${BRAND};">レンタルショップ</a>でもご用意しています。
+      </td></tr>
+    </table>`;
   return {
     subject: 'ご予約リクエストを受け付けました｜kaede photo',
     html: wrap('ご予約ありがとうございます', inner),

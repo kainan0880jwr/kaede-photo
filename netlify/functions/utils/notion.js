@@ -18,6 +18,7 @@
 //   プライバシー同意 … Checkbox（法務監査#f4対応。同意なしでは予約自体が成立しないため常にtrue）
 //   掲載同意       … Checkbox（法務監査#f4/#f6対応。SNS割 or コラボ企画の掲載チェックに基づく）
 //   掲載同意の範囲  … Rich text（「顔を含む」「顔を含まない」等。掲載同意がfalseのときは空）
+//   ご紹介者      … Rich text（紹介制度の追跡用。次回予約の3,000円引き適用は引き続き手動運用）
 // ============================================================
 
 import { Client } from '@notionhq/client';
@@ -132,6 +133,11 @@ export async function createBookingRecord(data) {
   }
   if (data.snsConsentScope && existingProps.has('掲載同意の範囲')) {
     properties['掲載同意の範囲'] = { rich_text: richText(data.snsConsentScope) };
+  }
+  // 紹介制度の追跡用。以前はmessage欄への埋め込みのみでNotion上で構造化されておらず、
+  // 紹介実績の集計（フィルタ・件数把握）ができなかった
+  if (data.referralName && existingProps.has('ご紹介者')) {
+    properties['ご紹介者'] = { rich_text: richText(data.referralName) };
   }
 
   return getClient().pages.create({

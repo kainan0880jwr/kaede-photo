@@ -1588,7 +1588,7 @@ footer{
             <div class="opt-group">
               <div class="opt-group-title">追加オプション</div>
               <label class="check-row"><input type="checkbox" id="f-weekend" data-opt="weekend"> 土日祝日 ＋3,000円</label>
-              <div style="font-size:10px;color:var(--muted);margin:-6px 0 8px;">※ 撮影希望日が土・日・祝日の場合は自動でチェックされます</div>
+              <div style="font-size:10px;color:var(--muted);margin:-6px 0 8px;">※ 撮影希望日が土・日・祝日の場合は自動でチェックされます。<strong style="color:var(--terra-dk);">平日のご予約はこの追加料金がかかりません。</strong></div>
               <label class="check-row"><input type="checkbox" data-excl="form-delivery" data-opt="early7"> 早期納品（7日以内） ＋5,000円</label>
               <label class="check-row"><input type="checkbox" data-excl="form-delivery" data-opt="early10"> 早期納品（10日以内） ＋3,000円</label>
               <label class="check-row"><input type="checkbox" data-opt="data10"> データ追加（10枚単位） ＋3,000円</label>
@@ -2100,7 +2100,17 @@ footer{
       <h1 class="heading-lg">ご予約を受け付けました</h1>
       <p class="body-sm" style="max-width:480px;margin:0 auto 32px;">2営業日以内に kaepafu1995@gmail.com よりご連絡いたします。<br>メールが届かない場合はLINEにてご連絡ください。</p>
       <div class="flex-gap flex-center">
-        <a href="#top" class="btn btn-primary" onclick="goPage('top');return false;">トップへ戻る</a>
+        <a href="https://lin.ee/Pz3VLXT" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEを友だち追加する</a>
+        <a href="#top" class="btn btn-ghost" onclick="goPage('top');return false;">トップへ戻る</a>
+      </div>
+      <div style="max-width:480px;margin:40px auto 0;padding-top:32px;border-top:1px solid var(--beige);text-align:left;">
+        <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:12px;">
+          <strong style="color:var(--brown);">ご紹介いただくと、次回のご予約が3,000円引きに。</strong><br>
+          ご友人・ご家族に紹介いただいた場合、ご紹介者さま・ご紹介いただいた方それぞれの次回のご予約で3,000円引きになります。フォームの「ご紹介あり」欄からお申し出ください。
+        </p>
+        <p style="font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:0;">
+          ニューボーンフォト用の衣装・小物は<a href="rental.html" style="color:var(--terra-dk);text-decoration:underline;">レンタルショップ</a>でもご用意しています。撮影の前後にぜひご覧ください。
+        </p>
       </div>
     </div>
   </section>
@@ -2899,6 +2909,7 @@ function submitForm(e){
     genre: genreKey,
     area: areaName,
     message: lines.join('\n'),
+    referralName,
     optionKeys,
     // プライバシーポリシー同意チェックはHTML5のrequiredで必須化しており、
     // ここに到達している時点でチェック済み（checkValidity()を通過済み）

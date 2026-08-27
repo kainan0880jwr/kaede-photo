@@ -583,6 +583,9 @@ export const handler = async (event) => {
     genre: str(payload.genre),
     area: str(payload.area),
     message: str(payload.message),
+    // 紹介制度（次回予約適用、金額には影響しない）。以前はmessage欄に埋め込むだけで
+    // Notion上で構造化されていなかったため、紹介実績の集計・追跡ができなかった
+    referralName: str(payload.referralName).slice(0, 60),
     privacyConsent: payload.privacyConsent === true,
     receivedAt: now.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
     receivedAtISO: now.toISOString(),
