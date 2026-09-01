@@ -76,8 +76,8 @@
   force = true
 
 [[redirects]]
-  from = "/birthday-collab"
-  to = "/birthday-collab.html"
+  from = "/shichigosan-plan"
+  to = "/shichigosan-plan.html"
   status = 301
   force = true
 

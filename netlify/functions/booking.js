@@ -84,32 +84,39 @@ const ALLOWED_PLANS = new Set([
   'standard ¥29,000',
   'special ¥39,000',
   'premium ¥77,000',
-  // 期間限定コラボ企画「1st BIRTHDAY smash cake photo」（mémoire×kaede photo）専用プラン
-  'smash cake photo 40cuts ¥35,000',
-  'smash cake photo 50cuts ¥38,000',
+  // 七五三シーズン限定「753 PHOTO PLAN」専用プラン（shichigosan-plan.html）
+  'studio plan 50cuts ¥44,000',
+  'studio plan 50cuts ヘアセット着付けなし ¥34,000',
 ]);
 
-// 上記の期間限定プランは、開催日（2026-09-04/05）を過ぎてもこの文字列さえ分かれば
+// 上記の期間限定プランは、シーズンが終わってもこの文字列さえ分かれば
 // 予約が通り続けてしまう（ページソースやアーカイブから拾われる可能性がある）。
 // 企画終了後は自動的に受付を締め切るため、受付期限を明示的に持たせる。
-const SMASH_CAKE_PLANS = new Set([
-  'smash cake photo 40cuts ¥35,000',
-  'smash cake photo 50cuts ¥38,000',
+//
+// 企画を差し替えるときに触るのはこの3つ（LIMITED_PLANS / LIMITED_PLAN_DEADLINE /
+// LIMITED_PLAN_PAGE）とALLOWED_PLANS、そしてLPのプラン選択肢だけで済むよう、
+// 変数名は特定の企画名ではなく汎用名にしてある。
+const LIMITED_PLANS = new Set([
+  'studio plan 50cuts ¥44,000',
+  'studio plan 50cuts ヘアセット着付けなし ¥34,000',
 ]);
-const SMASH_CAKE_PLAN_DEADLINE = '2026-09-06'; // この日付(Asia/Tokyo)以降は受付終了
+const LIMITED_PLAN_DEADLINE = '2026-12-31'; // この日付(Asia/Tokyo)以降は受付終了
+// 期間限定プランの選択肢が置いてあるページ。scripts/check-prices.mjs が
+// このパスを読んで、プラン文字列がページ側と一致しているかを突き合わせる。
+const LIMITED_PLAN_PAGE = 'public/shichigosan-plan.html'; // eslint-disable-line no-unused-vars
 
-// ALLOWED_PLANS と SMASH_CAKE_PLANS は同じ文字列を別々のリテラル配列として二重管理している
+// ALLOWED_PLANS と LIMITED_PLANS は同じ文字列を別々のリテラル配列として二重管理している
 // （scripts/check-prices.mjs がソースを正規表現で読むため、spread構文にはできない）。
 // 片方だけプラン名を変更すると、そのプランの受付期限チェックが静かに効かなくなる
 // （ALLOWED_PLANS側だけ変えるとホワイトリスト自体を通らなくなるので気づけるが、
-// SMASH_CAKE_PLANS側だけ変え忘れると期限なしで受付し続けてしまう）。
+// LIMITED_PLANS側だけ変え忘れると期限なしで受付し続けてしまう）。
 // コールドスタート時に1回だけ突き合わせ、ズレていたら気づけるようにする。
 // ここでthrowすると以降このコンテナへの全リクエストが道連れで失敗する（予約API全体の障害）
 // ため、あくまでログのみに留める（scripts/check-prices.mjs にも同種のチェックがあり、
 // デプロイ前に気づける可能性が高い）
-for (const p of SMASH_CAKE_PLANS) {
+for (const p of LIMITED_PLANS) {
   if (!ALLOWED_PLANS.has(p)) {
-    console.error(`[config] SMASH_CAKE_PLANS の "${p}" が ALLOWED_PLANS に存在しません（プラン名の変更漏れの可能性があります）`);
+    console.error(`[config] LIMITED_PLANS の "${p}" が ALLOWED_PLANS に存在しません（プラン名の変更漏れの可能性があります）`);
   }
 }
 
@@ -156,9 +163,6 @@ const OPTION_PRICES = {
   // チェック状態と紹介者名（referral-name欄）はメール本文に記載され、
   // 次回予約時に手動で−3,000円を適用する運用。
   referral: 0,           // ご紹介あり（今回の金額には影響しない。次回適用は手動運用）
-  // コラボ企画（birthday-collab.html）専用のSNS掲載同意チェック。通常予約のsns_face/sns_nofaceと
-  // 異なり割引ではないため0円。同意の有無自体はdata.snsConsentとしてNotion記録に渡す。
-  collab_sns: 0,
 };
 
 const AREA_PRICES = {
@@ -172,11 +176,12 @@ const AREA_PRICES = {
   'その他': 0, // 交通費は別途見積り
 };
 
-// エリアのホワイトリスト（AREA_PRICESのキー＋コラボ企画の固定エリア文字列）。
+// エリアのホワイトリスト（AREA_PRICESのキー）。
 // plan/genre/optionKeysと違い、area は文字数上限だけで中身は未検証だったため、
 // 直接APIを叩けば任意の100文字をNotion・オーナー宛メールへ注入できてしまっていた
 //（HTMLエスケープ済みでXSSには至らないが、台帳・通知メールの汚染が可能だった。Opus 5監査 セキュリティM-3）
-const ALLOWED_AREAS = new Set([...Object.keys(AREA_PRICES), 'mémoireスタジオ（大阪市福島区大開）']);
+// 期間限定企画で固定のスタジオ名などを使う場合は、ここへ明示的に追加すること。
+const ALLOWED_AREAS = new Set(Object.keys(AREA_PRICES));
 
 const YEN = n => `¥${n.toLocaleString('ja-JP')}`;
 
@@ -202,7 +207,6 @@ function deriveSnsConsent(optionKeys) {
   const keys = new Set((Array.isArray(optionKeys) ? optionKeys : []).map(k => String(k)));
   if (keys.has('sns_face')) return { consent: true, scope: '顔を含む' };
   if (keys.has('sns_noface')) return { consent: true, scope: '顔を含まない' };
-  if (keys.has('collab_sns')) return { consent: true, scope: 'コラボ企画（kaede photo・mémoire双方）' };
   return { consent: false, scope: '' };
 }
 
@@ -433,7 +437,7 @@ function validate(data) {
     }
   }
   // プランはホワイトリスト照合（直接APIを叩かれた場合の不正値・巨大文字列を弾く）。
-  // フォーム（index.html / birthday-collab.html）はどちらもプラン選択をrequiredにしているため、
+  // フォーム（index.html / shichigosan-plan.html）はどちらもプラン選択をrequiredにしているため、
   // 空文字（未選択のまま直接APIを叩いた場合）もここで弾く
   if (!data.plan) {
     errors.push('ご希望のプランを選択してください。');
@@ -445,10 +449,10 @@ function validate(data) {
     const normalizedPlan = normalizePlanForMatch(data.plan);
     if (!ALLOWED_PLANS.has(normalizedPlan)) {
       errors.push('ご希望のプランが正しくありません。');
-    } else if (SMASH_CAKE_PLANS.has(normalizedPlan)) {
-      // 期間限定コラボ企画：開催日を過ぎたら、文字列を知っているだけでの予約を拒否する
+    } else if (LIMITED_PLANS.has(normalizedPlan)) {
+      // 期間限定企画：受付期限を過ぎたら、文字列を知っているだけでの予約を拒否する
       const today = todayJST();
-      if (today >= SMASH_CAKE_PLAN_DEADLINE) {
+      if (today >= LIMITED_PLAN_DEADLINE) {
         errors.push('このプランは受付を終了しました。');
       }
     }

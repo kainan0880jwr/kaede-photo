@@ -156,66 +156,56 @@ for (const opt of extractOptions(fPlanBlock[1])) {
     mismatches.push(`プラン "${raw}"（正規化後 "${normalized}"）はHTML(#f-plan)にあるが ALLOWED_PLANS に存在しない`);
   }
 }
-const smashCakeMatch = bookingSrc.match(/const SMASH_CAKE_PLANS = new Set\(\[([\s\S]*?)\]\);/);
-const SMASH_CAKE_PLANS = smashCakeMatch ? [...smashCakeMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];
-// ALLOWED_PLANS と SMASH_CAKE_PLANS は booking.js 内で別々のリテラル配列として二重管理されている。
+const limitedMatch = bookingSrc.match(/const LIMITED_PLANS = new Set\(\[([\s\S]*?)\]\);/);
+const LIMITED_PLANS = limitedMatch ? [...limitedMatch[1].matchAll(/'([^']+)'/g)].map(m => m[1]) : [];
+// ALLOWED_PLANS と LIMITED_PLANS は booking.js 内で別々のリテラル配列として二重管理されている。
 // 片方だけプラン名を変更すると受付期限チェックが静かに無効化されるため、ここで先に検出する
-for (const p of SMASH_CAKE_PLANS) {
+for (const p of LIMITED_PLANS) {
   if (!ALLOWED_PLANS.includes(p)) {
-    mismatches.push(`SMASH_CAKE_PLANS の "${p}" が ALLOWED_PLANS に存在しない（受付期限チェックが効かなくなっている可能性）`);
+    mismatches.push(`LIMITED_PLANS の "${p}" が ALLOWED_PLANS に存在しない（受付期限チェックが効かなくなっている可能性）`);
   }
 }
+// 期間限定プランも含め、ALLOWED_PLANS は全て index.html の #f-plan に存在すること。
+// （旧コラボ企画は専用ページ側に独自フォームを持っていたため除外していたが、
+//   七五三企画からはLPが本体の予約フォームへ送る設計に変えたので、例外は不要になった）
 for (const p of ALLOWED_PLANS) {
-  // 期間限定コラボ企画のプランは index.html の #f-plan ではなく birthday-collab.html 側にあるため対象外
-  if (SMASH_CAKE_PLANS.includes(p)) continue;
   if (!seenPlans.has(p)) {
     mismatches.push(`ALLOWED_PLANS の "${p}" が index.html の #f-plan に見つからない`);
   }
 }
 
 // 期限切れの期間限定プランが掃除されずに残っていないかの注意喚起（不一致ではなく警告扱い＝exit codeには影響しない）。
-// SMASH_CAKE_PLANSは受付期限を過ぎても文字列自体はALLOWED_PLANSに残り続ける設計のため、
+// LIMITED_PLANSは受付期限を過ぎても文字列自体はALLOWED_PLANSに残り続ける設計のため、
 // 「消し忘れ」に気づく機会がこのスクリプトの実行タイミングしかない。
-const deadlineMatch = bookingSrc.match(/const SMASH_CAKE_PLAN_DEADLINE = '(\d{4}-\d{2}-\d{2})'/);
+const deadlineMatch = bookingSrc.match(/const LIMITED_PLAN_DEADLINE = '(\d{4}-\d{2}-\d{2})'/);
+const pageMatch = bookingSrc.match(/const LIMITED_PLAN_PAGE = '([^']+)'/);
 const warnings = [];
-if (deadlineMatch && SMASH_CAKE_PLANS.length) {
+if (deadlineMatch && LIMITED_PLANS.length) {
   const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
   if (todayStr >= deadlineMatch[1]) {
     warnings.push(
-      `期間限定プラン（SMASH_CAKE_PLANS）の受付期限（${deadlineMatch[1]}）を過ぎています。` +
-      `booking.js の ALLOWED_PLANS/SMASH_CAKE_PLANS、public/birthday-collab.html、` +
-      `index.html・birthday.html のコラボバナー、sitemap.xml の掲載など、` +
+      `期間限定プラン（LIMITED_PLANS）の受付期限（${deadlineMatch[1]}）を過ぎています。` +
+      `booking.js の ALLOWED_PLANS/LIMITED_PLANS、${pageMatch ? pageMatch[1] : '企画LP'}、` +
+      `index.html・各ジャンルLPの企画バナー、sitemap.xml・netlify.toml の掲載など、` +
       `企画終了後の掃除がまだなら対応してください（CLAUDE.md参照）。`
     );
   }
 }
 
-// 期間限定コラボ企画のプランは birthday-collab.html の #c-plan 側で突き合わせる
-// （企画終了後にページ自体を削除した場合、readFileSyncがENOENTで例外を投げて
-//  スクリプト全体が「不一致0件」でも「N件」でもない形で異常終了してしまう。
-//  SMASH_CAKE_PLANSがまだ残っているのにページが無い、という状態自体を
-//  「プラン削除漏れの可能性」として不一致に変換する）
-if (SMASH_CAKE_PLANS.length) {
-  let collabSrc;
+// 期間限定プランは、企画LP側のプラン比較表にも同じ価格で載っているはず。
+// LPを消したのにプランだけ残っている（またはその逆）状態を検出する。
+if (LIMITED_PLANS.length && pageMatch) {
+  let lpSrc = null;
   try {
-    collabSrc = read('public/birthday-collab.html');
+    lpSrc = read(pageMatch[1]);
   } catch {
-    mismatches.push('SMASH_CAKE_PLANS が残っているのに public/birthday-collab.html が存在しません（企画終了後のプラン削除漏れの可能性）');
+    mismatches.push(`LIMITED_PLANS が残っているのに ${pageMatch[1]} が存在しません（企画終了後のプラン削除漏れの可能性）`);
   }
-  if (collabSrc) {
-    const cPlanBlock = collabSrc.match(/<select[^>]*id="c-plan"[^>]*>([\s\S]*?)<\/select>/);
-    if (!cPlanBlock) {
-      mismatches.push('#c-plan セレクトが birthday-collab.html 内に見つからない（SMASH_CAKE_PLANSの突き合わせ不可）');
-    } else {
-      const seenCollabPlans = new Set();
-      for (const opt of extractOptions(cPlanBlock[1])) {
-        const raw = (opt.value !== undefined ? opt.value : opt.text).trim();
-        if (raw) seenCollabPlans.add(raw);
-      }
-      for (const p of SMASH_CAKE_PLANS) {
-        if (!seenCollabPlans.has(p)) {
-          mismatches.push(`SMASH_CAKE_PLANS の "${p}" が birthday-collab.html の #c-plan に見つからない`);
-        }
+  if (lpSrc) {
+    for (const p of LIMITED_PLANS) {
+      const yen = (p.match(/¥[\d,]+/) || [])[0];
+      if (yen && !lpSrc.includes(yen)) {
+        mismatches.push(`LIMITED_PLANS の "${p}" の価格 ${yen} が ${pageMatch[1]} に見つからない`);
       }
     }
   }

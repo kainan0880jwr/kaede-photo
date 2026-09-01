@@ -4,9 +4,10 @@
 //
 // キャンセル・返金に関する数値（安心保証金の金額／無料キャンセルの締切日数／
 // 保証金が返らなくなる締切日数）は、index.html だけでも予約フォームの注記・
-// #page-policy・特商法表・料金シミュレーターの説明文など複数箇所に、
-// birthday-collab.html にも別文脈で書き出されている（CLAUDE.mdの
-// 「キャンセルポリシー文言の重複」参照）。ビルドステップの無い静的サイトのため
+// #page-policy・特商法表・料金シミュレーターの説明文など複数箇所に
+// 書き出されている（CLAUDE.mdの「キャンセルポリシー文言の重複」参照）。
+// 期間限定企画LPが数値を書き出す場合は下のFILESに追加すること。
+// ビルドステップの無い静的サイトのため
 // これらは手動で二重管理されており、値上げやポリシー変更で一部だけ更新すると
 // お客様への案内が食い違う。
 //
@@ -22,9 +23,10 @@ import path from 'node:path';
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const read = p => readFileSync(path.join(root, p), 'utf8');
 
-// rental.html はレンタル業（別事業・別ポリシー）、genre/areaページは
-// index.html#policy へのリンクのみで数値の書き出しが無いため対象外。
-const FILES = ['public/index.html', 'public/birthday-collab.html'];
+// rental.html はレンタル業（別事業・別ポリシー）、genre/areaページと
+// 期間限定企画LP（shichigosan-plan.html）は index.html#policy へのリンクのみで
+// 数値の書き出しが無いため対象外。
+const FILES = ['public/index.html'];
 
 let mismatches = [];
 

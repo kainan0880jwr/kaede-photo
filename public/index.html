@@ -943,22 +943,22 @@ footer{
     <a href="photographer.html" class="hero-photographer-badge">カメラマン紹介 →</a>
   </div>
 
-  <!-- 期間限定コラボ企画バナー：1st BIRTHDAY smash cake photo（mémoire×kaede photo）
-       受付期限（booking.jsのSMASH_CAKE_PLAN_DEADLINEと同じ2026-09-06）を過ぎたら
+  <!-- 期間限定企画バナー：753 PHOTO PLAN（七五三シーズン）
+       受付期限（booking.jsのLIMITED_PLAN_DEADLINEと同じ2026-12-31）を過ぎたら
        下のscriptで自動非表示にする。バナーだけの対応でLP本体・sitemap掲載の
        取り下げは別途手動対応が必要（CLAUDE.md参照）。 -->
-  <a id="collab-banner" href="birthday-collab.html" style="display:block;background:#8A4B41;color:#fff;text-decoration:none;">
+  <a id="season-banner" href="shichigosan-plan.html" style="display:block;background:#8A5B54;color:#fff;text-decoration:none;">
     <div class="container" style="padding:16px 40px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
-      <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">期間限定コラボ企画「1st BIRTHDAY smash cake photo」mémoire×kaede photo　2026.09.04-05・全6組限定</span>
+      <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">七五三シーズン限定「753 PHOTO PLAN」　スタジオ2時間・ヘアセット着付け込みの studio plan 新登場</span>
       <span style="font-size:12px;text-decoration:underline;white-space:nowrap;">詳しく見る →</span>
     </div>
   </a>
   <script>
     (function(){
-      var deadline = '2026-09-06';
+      var deadline = '2026-12-31';
       var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
       if (today >= deadline) {
-        var b = document.getElementById('collab-banner');
+        var b = document.getElementById('season-banner');
         if (b) b.style.display = 'none';
       }
     })();
@@ -982,8 +982,8 @@ footer{
         </div>
       </div>
 
-      <!-- レンタルショップ開始のお知らせ：以前はコラボ企画バナーの直下に同格の帯として
-           並んでいたが、時限性の高いコラボ企画（ヒーロー直下）と視覚的に競合していたため、
+      <!-- レンタルショップ開始のお知らせ：以前は企画バナーの直下に同格の帯として
+           並んでいたが、時限性の高い期間限定企画（ヒーロー直下）と視覚的に競合していたため、
            控えめなカード形式に変えてConceptセクション末尾へ移動した（Opus 5監査 UI/UX #18） -->
       <a href="rental.html" style="display:block;margin-top:40px;background:var(--surface);border:1px solid var(--beige);border-radius:8px;padding:20px 28px;text-align:center;">
         <span style="font-size:12px;letter-spacing:.06em;color:var(--terra-dk);">NEW</span>
@@ -1583,10 +1583,15 @@ footer{
             <label class="form-label" for="f-plan">ご希望のプラン <span class="req">*</span></label>
             <select class="form-select" id="f-plan" name="plan" required onchange="toggleFormMovie();updateBookingTotal()">
               <option value="">選択してください</option>
-              <option value="simple ¥19,000">simple ¥19,000</option>
-              <option value="standard ¥29,000（おすすめ）">standard ¥29,000（おすすめ）</option>
-              <option value="special ¥39,000">special ¥39,000</option>
-              <option value="premium ¥77,000">premium ¥77,000</option>
+              <option value="simple ¥19,000" data-plan-key="simple">simple ¥19,000</option>
+              <option value="standard ¥29,000（おすすめ）" data-plan-key="standard">standard ¥29,000（おすすめ）</option>
+              <option value="special ¥39,000" data-plan-key="special">special ¥39,000</option>
+              <option value="premium ¥77,000" data-plan-key="premium">premium ¥77,000</option>
+              <!-- 七五三シーズン限定プラン（shichigosan-plan.html）。受付期限は booking.js の
+                   LIMITED_PLAN_DEADLINE（2026-12-31）でサーバー側でも締め切られる。
+                   通常の料金カード（#plan）には意図的に載せていない。 -->
+              <option value="studio plan 50cuts ¥44,000" data-plan-key="studio">studio plan 50cuts ¥44,000（七五三限定・スタジオ2時間＋ヘアセット着付け込み）</option>
+              <option value="studio plan 50cuts ヘアセット着付けなし ¥34,000" data-plan-key="studio-nohair">studio plan 50cuts ヘアセット着付けなし ¥34,000（七五三限定・スタジオ2時間込み）</option>
             </select>
           </div>
 
@@ -1930,7 +1935,7 @@ footer{
           <span class="faq-q-inner"><span class="faq-q-mark">Q</span><span>個人情報はどのように管理されますか？</span></span>
           <span class="faq-icon" aria-hidden="true">＋</span>
         </button>
-        <div class="faq-a">お預かりした個人情報は、ご予約の確認・ご連絡・データ納品のために使用します。業務委託先（メール送信・予約管理などの外部サービス）と、他事業者とのコラボ企画にお申し込みの場合の共同利用を除き、第三者への提供は行いません。詳しくは<a href="#privacy" onclick="goPage('privacy');return false;" style="color:var(--terra-dk);">プライバシーポリシー</a>をご覧ください。</div>
+        <div class="faq-a">お預かりした個人情報は、ご予約の確認・ご連絡・データ納品のために使用します。業務委託先（メール送信・予約管理などの外部サービス）を除き、第三者への提供は行いません。詳しくは<a href="#privacy" onclick="goPage('privacy');return false;" style="color:var(--terra-dk);">プライバシーポリシー</a>をご覧ください。</div>
       </div>
 
       <div style="margin-top:40px;" class="flex-gap">
@@ -1959,25 +1964,11 @@ footer{
       </div>
       <div class="priv-section">
         <div class="priv-heading">利用目的</div>
-        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・レンタル商品の受注・発送・返却管理、延滞料・破損時の費用のご請求<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例として当サイト・各企画ページ・ポートフォリオ・SNS（Instagram等）・広告に掲載<br><br>掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方、またはコラボ企画で掲載同意にチェックいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
+        <div class="priv-body">お預かりした個人情報は、以下の目的のみに使用します。<br>・撮影ご予約の確認・日程調整のご連絡（お電話でご連絡する場合があります）<br>・撮影データの納品<br>・レンタル商品の受注・発送・返却管理、延滞料・破損時の費用のご請求<br>・お問い合わせへの回答<br>・Instagramアカウントをご記入いただいた場合、撮影後の投稿でのタグ付けに関するご連絡（Instagramのダイレクトメッセージを含む）<br>・次回以降のご予約を円滑にするための顧客管理<br>・お子さまの成長記録として、七五三・成人式など将来の節目の撮影をご案内するための顧客管理<br>・お客様の個別の同意をいただいた場合に限り、撮影データを作例として当サイト・各企画ページ・ポートフォリオ・SNS（Instagram等）・広告に掲載<br><br>掲載は、ご予約時にご同意いただいた方（オプション「SNS割」をお選びいただいた方）の撮影データに限り、お子さまのお顔を含めるかどうかもご指定いただけます。<strong>掲載へのご同意は任意です。</strong>同意いただかない場合も撮影・ご予約の内容には一切影響ありません。また、ご同意はいつでも撤回いただけます。掲載後に削除をご希望の場合は、下記お問い合わせ窓口までご連絡ください。速やかに対応いたします（掲載したお子さま本人が成長後にご自身で削除をご希望される場合も、同様にご連絡いただければ対応いたします）。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">第三者提供</div>
-        <div class="priv-body">法令に基づく場合、下記「外部サービスの利用・業務委託」および「共同利用」に記載する場合を除き、お客様の個人情報を第三者に提供することはありません。</div>
-      </div>
-      <!-- 共同利用の記載（個人情報保護法27条5項3号）＋コラボ予約フォームでの明示同意（同27条1項）を
-           併用する設計。管理責任者の住所は非公開方針のため、共同利用の公表要件だけに依拠せず、
-           birthday-collab.html の同意チェック（共同利用への同意＋掲載同意）で本人同意を別途取得する。
-           共有する項目・共同利用者・利用目的・責任者のいずれかが変わったときは、
-           birthday-collab.html の同意チェック文言も合わせて更新すること。 -->
-      <div class="priv-section">
-        <div class="priv-heading">共同利用（コラボ企画にお申し込みの場合）</div>
-        <div class="priv-body">「1st BIRTHDAY smash cake photo」等、他事業者との共同企画にお申し込みいただいた場合に限り、企画の実施に必要な範囲で、以下のとおり個人情報を共同利用します。ご予約フォームでの<strong>お申し込み自体を、本共同利用への同意の意思表示</strong>としています。<br>
-        ・<strong>共同利用する項目</strong>：保護者さまのお名前、お子さまのお名前、メールアドレス、電話番号、Instagramアカウント、ご希望の日時・プラン<br>
-        ・<strong>共同利用する者の範囲</strong>：焼き菓子みもあ "mémoire"（大阪府大阪市福島区大開1丁目10-10）<br>
-        ・<strong>利用目的</strong>：ご予約内容の確認、ケーキの製作準備、当日のご案内、撮影後のご連絡、企画の告知・作例としてのSNS掲載（フォームで掲載に同意いただいた場合に限る）<br>
-        ・<strong>管理について責任を有する者</strong>：kaede photo（運営統括責任者：池端 楓／kaepafu1995@gmail.com）。住所は、下記お問い合わせ窓口までご請求いただければ遅滞なく開示します。<br>
-        通常のご予約（コラボ企画以外）では、mémoireを含む他事業者への提供・共同利用は行いません。</div>
+        <div class="priv-body">法令に基づく場合、および下記「外部サービスの利用・業務委託」に記載する場合を除き、お客様の個人情報を第三者に提供することはありません。他事業者との共同企画を実施する場合は、その企画の申込みページで共同利用の内容を個別にご案内し、あらためて同意をいただきます。</div>
       </div>
       <div class="priv-section">
         <div class="priv-heading">外部サービスの利用・業務委託</div>
@@ -2427,14 +2418,25 @@ function toggleSimMovie(){
 }
 
 // 「このプランで予約」：選んだプランを予約フォームに引き継いでフォームへ
-function selectPlanAndBook(planKey){
+// プラン選択の引き継ぎ。data-plan-key（表示文言から独立した安定キー）を最優先で照合し、
+// 見つからない場合だけ従来の表示文言の先頭一致にフォールバックする。
+// 「studio plan 50cuts ¥44,000」と「studio plan 50cuts ヘアセット着付けなし ¥34,000」のように
+// 表示文言の先頭が同じプランが並ぶと、先頭一致では常に前者が選ばれてしまうため。
+function applyPlanKey(planKey){
   const sel = document.getElementById('f-plan');
-  if(sel){
-    for(const opt of sel.options){
-      if(opt.textContent.trim().toLowerCase().startsWith(planKey)){ sel.value = opt.value; break; }
-    }
-    if(typeof toggleFormMovie === 'function') toggleFormMovie();
+  if(!sel || !planKey) return;
+  const key = String(planKey).trim().toLowerCase();
+  for(const opt of sel.options){
+    if((opt.dataset.planKey || '').toLowerCase() === key){ sel.value = opt.value; return; }
   }
+  for(const opt of sel.options){
+    if(opt.textContent.trim().toLowerCase().startsWith(key)){ sel.value = opt.value; return; }
+  }
+}
+
+function selectPlanAndBook(planKey){
+  applyPlanKey(planKey);
+  if(typeof toggleFormMovie === 'function') toggleFormMovie();
   if(typeof updateBookingTotal === 'function') updateBookingTotal();
   goPage('booking');
 }
@@ -2612,14 +2614,9 @@ function applyGenreFromUrl(){
   // 予約フォームのプラン選択まで引き継ぐ（従来はgenreしか見ておらず、LP側にCTA自体が無かった）
   const planKey = params.get('plan');
   if(planKey){
-    const planSel = document.getElementById('f-plan');
-    if(planSel){
-      for(const opt of planSel.options){
-        if(opt.textContent.trim().toLowerCase().startsWith(planKey)){ planSel.value = opt.value; break; }
-      }
-      if(typeof toggleFormMovie === 'function') toggleFormMovie();
-      if(typeof updateBookingTotal === 'function') updateBookingTotal();
-    }
+    applyPlanKey(planKey);
+    if(typeof toggleFormMovie === 'function') toggleFormMovie();
+    if(typeof updateBookingTotal === 'function') updateBookingTotal();
   }
 
   if(!genre) return;

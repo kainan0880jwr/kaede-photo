@@ -164,6 +164,26 @@
   <div class="hero-scroll">scroll</div>
 </div>
 
+<!-- 期間限定企画バナー：753 PHOTO PLAN（七五三シーズン）
+     受付期限（booking.jsのLIMITED_PLAN_DEADLINEと同じ2026-12-31）を過ぎたら
+     下のscriptで自動非表示にする。 -->
+<a id="season-banner" href="shichigosan-plan.html" style="display:block;background:#8A5B54;color:#fff;text-decoration:none;">
+  <div class="container" style="padding:16px 40px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
+    <span style="font-family:var(--f-display);font-size:15px;letter-spacing:.04em;">七五三シーズン限定「753 PHOTO PLAN」　スタジオ2時間・ヘアセット着付け込みの studio plan 新登場</span>
+    <span style="font-size:12px;text-decoration:underline;white-space:nowrap;">詳しく見る →</span>
+  </div>
+</a>
+<script>
+  (function(){
+    var deadline = '2026-12-31';
+    var today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Tokyo' });
+    if (today >= deadline) {
+      var b = document.getElementById('season-banner');
+      if (b) b.style.display = 'none';
+    }
+  })();
+</script>
+
 <!-- Intro -->
 <section class="section">
   <div class="container">
