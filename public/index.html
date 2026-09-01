@@ -14,8 +14,24 @@
   // robots.txtでのアクセス許可（AIおすすめ対策/GEO）には影響しない。ページ自体は通常通り配信される。
   var _botUA = /bot|crawl|spider|slurp|GPTBot|ClaudeBot|PerplexityBot|OAI-SearchBot|ChatGPT-User|Google-Extended|Applebot|Bingbot|facebookexternalhit|HeadlessChrome|Puppeteer|Playwright|Lighthouse|PhantomJS/i;
   var _isBotVisit = _botUA.test(navigator.userAgent);
+  // 本番ドメイン以外（localhost・Netlifyのプレビュードメイン）は計測しない。
+  // 2026年8月は、ローカル確認とプレビューで610PV中130PV・キーイベント3件が
+  // お客様の数字に混ざっていた。www.kaede-photo.com は本番へ301されるが念のため許可する。
+  var _isProdHost = /(^|\.)kaede-photo\.com$/i.test(location.hostname);
+  // 本番サイト上での自分自身の動作確認を除外する。?internal=1 を一度付けて開くと
+  // このブラウザでは以降GA4を送らなくなる（解除は ?internal=0）。
+  // GA4管理画面のIP除外と違い、回線のIPが変わっても効き続ける。
+  // 2026年8月は本番フォームへの自己テスト1件が「予約4件」として1か月計上されていた。
+  var _isInternal = false;
+  try {
+    var _iq = new URLSearchParams(location.search).get('internal');
+    if (_iq === '1') localStorage.setItem('kp_internal', '1');
+    if (_iq === '0') localStorage.removeItem('kp_internal');
+    _isInternal = localStorage.getItem('kp_internal') === '1';
+  } catch (e) { /* プライベートモード等でlocalStorageが使えない場合は通常計測 */ }
+  var _noTrack = _isBotVisit || !_isProdHost || _isInternal;
   window.dataLayer = window.dataLayer || [];
-  function gtag(){ if(!_isBotVisit){ dataLayer.push(arguments); } }
+  function gtag(){ if(!_noTrack){ dataLayer.push(arguments); } }
   gtag('js', new Date());
   gtag('config', 'G-RH2JQL8Y1V', { send_page_view: false });
 </script>
